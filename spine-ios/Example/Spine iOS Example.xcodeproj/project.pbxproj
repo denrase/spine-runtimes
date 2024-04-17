@@ -11,6 +11,8 @@
 		924C0C182BCFCF21004E63F7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924C0C172BCFCF21004E63F7 /* ContentView.swift */; };
 		924C0C1A2BCFCF22004E63F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 924C0C192BCFCF22004E63F7 /* Assets.xcassets */; };
 		928A8CC22BCFE7DF00D9D35B /* Spine in Frameworks */ = {isa = PBXBuildFile; productRef = 928A8CC12BCFE7DF00D9D35B /* Spine */; };
+		92921E532BCFEEC2002E2FC4 /* spineboy.mesh in Resources */ = {isa = PBXBuildFile; fileRef = 92921E512BCFEEC2002E2FC4 /* spineboy.mesh */; };
+		92921E542BCFEEC2002E2FC4 /* spineboy.png in Resources */ = {isa = PBXBuildFile; fileRef = 92921E522BCFEEC2002E2FC4 /* spineboy.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		924C0C172BCFCF21004E63F7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		924C0C192BCFCF22004E63F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		924C0C1B2BCFCF22004E63F7 /* SpineiOSExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpineiOSExample.entitlements; sourceTree = "<group>"; };
+		92921E512BCFEEC2002E2FC4 /* spineboy.mesh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spineboy.mesh; sourceTree = "<group>"; };
+		92921E522BCFEEC2002E2FC4 /* spineboy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spineboy.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,12 +57,22 @@
 		924C0C142BCFCF21004E63F7 /* Spine iOS Example */ = {
 			isa = PBXGroup;
 			children = (
+				92921E502BCFEEA1002E2FC4 /* Assets */,
 				924C0C152BCFCF21004E63F7 /* SpineExampleApp.swift */,
 				924C0C172BCFCF21004E63F7 /* ContentView.swift */,
 				924C0C192BCFCF22004E63F7 /* Assets.xcassets */,
 				924C0C1B2BCFCF22004E63F7 /* SpineiOSExample.entitlements */,
 			);
 			path = "Spine iOS Example";
+			sourceTree = "<group>";
+		};
+		92921E502BCFEEA1002E2FC4 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				92921E512BCFEEC2002E2FC4 /* spineboy.mesh */,
+				92921E522BCFEEC2002E2FC4 /* spineboy.png */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		92CE2BE32BCFE57600E9B376 /* Frameworks */ = {
@@ -133,6 +147,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				924C0C1A2BCFCF22004E63F7 /* Assets.xcassets in Resources */,
+				92921E532BCFEEC2002E2FC4 /* spineboy.mesh in Resources */,
+				92921E542BCFEEC2002E2FC4 /* spineboy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
