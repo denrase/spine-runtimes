@@ -13,14 +13,14 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     
     let mtkView: MTKView
     let renderCommand: RenderCommand
-    
     let device: MTLDevice
+    let texture: MTLTexture?
     let pipelineState: MTLRenderPipelineState
     let commandQueue: MTLCommandQueue
     
     var viewPortSize = vector_uint2(0, 0)
     
-    init(mtkView: MTKView, renderCommand: RenderCommand) throws {
+    init(mtkView: MTKView, renderCommand: RenderCommand, imageURL: URL) throws {
         self.mtkView = mtkView
         self.renderCommand = renderCommand
         
@@ -28,12 +28,31 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         self.device = device
         
         let defaultLibrary = device.makeDefaultLibrary()
+        let textureLoader = MTKTextureLoader(device: device)
+        
+        texture = try textureLoader.newTexture(
+            URL: imageURL,
+            options: [
+                .textureUsage: NSNumber(value: MTLTextureUsage.shaderRead.rawValue),
+                .SRGB: false,
+            ]
+        )
         
         let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
-        pipelineStateDescriptor.label = "Simple Pipeline";
         pipelineStateDescriptor.vertexFunction = defaultLibrary?.makeFunction(name: "vertexShader")
         pipelineStateDescriptor.fragmentFunction = defaultLibrary?.makeFunction(name: "fragmentShader")
         pipelineStateDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
+        
+        pipelineStateDescriptor.colorAttachments[0].isBlendingEnabled = true
+        
+        pipelineStateDescriptor.colorAttachments[0].rgbBlendOperation = .add
+        pipelineStateDescriptor.colorAttachments[0].alphaBlendOperation = .add
+
+        pipelineStateDescriptor.colorAttachments[0].sourceRGBBlendFactor = .one
+        pipelineStateDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .sourceAlpha
+
+        pipelineStateDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
+        pipelineStateDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
         
         pipelineState = try device.makeRenderPipelineState(descriptor: pipelineStateDescriptor)
         commandQueue = device.makeCommandQueue()!
@@ -47,12 +66,9 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         let vertices = Array(renderCommand.getVertices())
         let verticesBufferSize = MemoryLayout<AAPLVertex>.stride * vertices.count
         
-        
-        
         guard let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
         }
-        commandBuffer.label = "MyCommandBuffer"
         
         guard let renderPassDescriptor = view.currentRenderPassDescriptor else {
             return
@@ -66,7 +82,6 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             return
         }
         
-        renderEncoder.label = "MyRenderEncoder"
         renderEncoder.setViewport(
             MTLViewport(
                 originX: 0.0,
@@ -92,6 +107,13 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             index: Int(AAPLVertexInputIndexViewportSize.rawValue)
         )
         
+        if let texture {
+            renderEncoder.setFragmentTexture(
+                texture,
+                index: Int(AAPLTextureIndexBaseColor.rawValue)
+            )
+        }
+        
         renderEncoder.drawPrimitives(
             type: .triangle,
             vertexStart: 0,
@@ -99,11 +121,9 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         )
 
         renderEncoder.endEncoding()
-        if let currentDrawable = view.currentDrawable {
-            commandBuffer.present(currentDrawable)
-            commandBuffer.commit()
-        } else {
-            print("FOO could not get drawable")
+        view.currentDrawable.flatMap {
+            commandBuffer.present($0)
         }
+        commandBuffer.commit()
     }
 }

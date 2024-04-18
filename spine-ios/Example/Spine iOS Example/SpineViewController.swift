@@ -24,22 +24,17 @@ final class SpineViewController: UIViewController {
         super.viewDidLoad()
         
         mtkView.device = MTLCreateSystemDefaultDevice()
-        mtkView.clearColor = MTLClearColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-
+        mtkView.clearColor = MTLClearColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+        
         do {
             let meshUrl = Bundle.main.url(forResource: "spineboy", withExtension: "mesh")!
             let imageUrl = Bundle.main.url(forResource: "spineboy", withExtension: "png")!
             
-            let mesh = try String(contentsOf: meshUrl, encoding: .utf8)
-            let imageData = try Data(contentsOf: imageUrl)
-            let image = UIImage(data: imageData)!
-            
             let renderCommand = RenderCommand(
-                mesh: mesh,
-                texture: image
+                mesh: try String(contentsOf: meshUrl, encoding: .utf8)
             )
             
-            renderer = try SpineRenderer(mtkView: mtkView, renderCommand: renderCommand)
+            renderer = try SpineRenderer(mtkView: mtkView, renderCommand: renderCommand, imageURL: imageUrl)
             renderer?.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
             mtkView.delegate = renderer;
         } catch {

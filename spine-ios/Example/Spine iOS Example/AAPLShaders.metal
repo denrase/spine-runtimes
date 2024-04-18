@@ -21,6 +21,13 @@ typedef enum AAPLVertexInputIndex
     AAPLVertexInputIndexViewportSize = 1,
 } AAPLVertexInputIndex;
 
+// Texture index values shared between shader and C code to ensure Metal shader buffer inputs match
+//   Metal API texture set calls
+typedef enum AAPLTextureIndex
+{
+    AAPLTextureIndexBaseColor = 0,
+} AAPLTextureIndex;
+
 //  This structure defines the layout of vertices sent to the vertex
 //  shader. This header is shared between the .metal shader and C code, to guarantee that
 //  the layout of the vertex array in the C code matches the layout that the .metal
@@ -29,7 +36,7 @@ typedef struct
 {
     vector_float2 position;
     vector_float4 color;
-    vector_float2 mv;
+    vector_float2 uv;
 } AAPLVertex;
 
 // Vertex shader outputs and fragment shader inputs
@@ -64,22 +71,30 @@ vertexShader(uint vertexID [[vertex_id]],
     // Get the viewport size and cast to float.
     vector_float2 viewportSize = vector_float2(*viewportSizePointer);
     
-
     // To convert from positions in pixel space to positions in clip-space,
     //  divide the pixel coordinates by half the size of the viewport.
     out.position = vector_float4(0.0, 0.0, 0.0, 1.0);
-    out.position.xy = pixelSpacePosition / (viewportSize / 2.0);
+    out.position.xy = pixelSpacePosition / (viewportSize / 2.0) * 8; // TODO: Scaling
     out.position.y *= -1;
     
     // Pass the input color directly to the rasterizer.
     out.color = vertices[vertexID].color;
-
+    
+    out.textureCoordinate = vertices[vertexID].uv;
+    
     return out;
 }
 
-fragment float4 fragmentShader(RasterizerData in [[stage_in]])
+fragment float4
+fragmentShader(RasterizerData in [[stage_in]],
+               texture2d<half> colorTexture [[ texture(AAPLTextureIndexBaseColor) ]])
 {
-    // Return the interpolated color.
-    return in.color;
+    constexpr sampler textureSampler (mag_filter::nearest,
+                                      min_filter::nearest);
+    
+    // Sample the texture to obtain a color
+    const half4 colorSample = colorTexture.sample(textureSampler, in.textureCoordinate);
+    
+    return float4(colorSample); // * in.color; TODO: mix texture with color
 }
 

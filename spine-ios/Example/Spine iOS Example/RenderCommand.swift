@@ -15,9 +15,8 @@ struct RenderCommand {
     let uvs: [Float32]
     let colors: [Int32]
     let indices: [UInt16]
-    let texture: UIImage
     
-    init(mesh: String, texture: UIImage) {
+    init(mesh: String) {
         let lines = mesh.split(separator: "\n")
         let numVertices = Int(lines[0])!;
         let numIndices = Int(lines[1])!;
@@ -33,7 +32,7 @@ struct RenderCommand {
             idx += 1
         }
         for i in 0..<numVertices * 2 {
-            uvs[i] = Float32(lines[idx])! * (i % 2 == 0 ? Float32(texture.size.width) : Float32(texture.size.height));
+            uvs[i] = Float32(lines[idx])!
             idx += 1
         }
         for i in 0 ..< numVertices {
@@ -51,7 +50,6 @@ struct RenderCommand {
         self.uvs = uvs
         self.colors = colors
         self.indices = indices
-        self.texture = texture
     }
     
     func getVertices() -> [AAPLVertex] {
@@ -70,8 +68,8 @@ struct RenderCommand {
             
             let vertex = AAPLVertex(
                 position: vector_float2(positionX, positionY),
-                color: vector_float4(0.0, 1.0, 0.0, 1.0), // TODO
-                mv: vector_float2(uvX, uvY)
+                color: vector_float4(1.0, 1.0, 1.0, 1.0), // TODO: Correct Color
+                uv: vector_float2(uvX, uvY)
             )
             vertices.append(vertex)
         }
