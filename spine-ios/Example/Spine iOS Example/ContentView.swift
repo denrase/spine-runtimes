@@ -8,12 +8,9 @@
 import SwiftUI
 import Spine
 
-import UIKit
-import Metal
-
 struct ContentView: View {
     var body: some View {
-        SpineView()
+        SpineView(mesh: "spineboy")
     }
 }
 

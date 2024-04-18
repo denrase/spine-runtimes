@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum BlendMode {
+public enum BlendMode {
     case normal
     case additive
     case multiply
