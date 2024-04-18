@@ -29,6 +29,7 @@ typedef struct
 {
     vector_float2 position;
     vector_float4 color;
+    vector_float2 mv;
 } AAPLVertex;
 
 // Vertex shader outputs and fragment shader inputs
@@ -44,6 +45,8 @@ struct RasterizerData
     // and then passes the interpolated value to the fragment shader for each
     // fragment in the triangle.
     float4 color;
+    
+    float2 textureCoordinate;
 };
 
 vertex RasterizerData

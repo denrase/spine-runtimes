@@ -59,12 +59,19 @@ struct RenderCommand {
         
         for i in  0..<indices.count {
             let index = Int(indices[i])
-            let x = positions[2 * index]
-            let y = positions[2 * index + 1]
+            
+            let xIndex = 2 * index
+            let yIndex = xIndex + 1
+            
+            let positionX = positions[xIndex]
+            let positionY = positions[yIndex]
+            let uvX = uvs[xIndex]
+            let uvY = uvs[yIndex]
             
             let vertex = AAPLVertex(
-                position: vector_float2(x, y),
-                color: vector_float4(0.0, 1.0, 0.0, 1.0)
+                position: vector_float2(positionX, positionY),
+                color: vector_float4(0.0, 1.0, 0.0, 1.0), // TODO
+                mv: vector_float2(uvX, uvY)
             )
             vertices.append(vertex)
         }
