@@ -16,7 +16,10 @@ struct RenderCommand {
     let colors: [Int32]
     let indices: [UInt16]
     
-    init(mesh: String) {
+    let blendMode: BlendMode
+    let premultipliedAlpha: Bool
+    
+    init(mesh: String, blendMode: BlendMode, premultipliedAlpha: Bool) {
         let lines = mesh.split(separator: "\n")
         let numVertices = Int(lines[0])!;
         let numIndices = Int(lines[1])!;
@@ -50,6 +53,9 @@ struct RenderCommand {
         self.uvs = uvs
         self.colors = colors
         self.indices = indices
+        
+        self.blendMode = blendMode
+        self.premultipliedAlpha = premultipliedAlpha
     }
     
     func getVertices() -> [AAPLVertex] {

@@ -31,7 +31,9 @@ final class SpineViewController: UIViewController {
             let imageUrl = Bundle.main.url(forResource: "spineboy", withExtension: "png")!
             
             let renderCommand = RenderCommand(
-                mesh: try String(contentsOf: meshUrl, encoding: .utf8)
+                mesh: try String(contentsOf: meshUrl, encoding: .utf8),
+                blendMode: .normal,
+                premultipliedAlpha: true
             )
             
             renderer = try SpineRenderer(mtkView: mtkView, renderCommand: renderCommand, imageURL: imageUrl)

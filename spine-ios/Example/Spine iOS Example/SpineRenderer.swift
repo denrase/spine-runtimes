@@ -42,17 +42,10 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         pipelineStateDescriptor.vertexFunction = defaultLibrary?.makeFunction(name: "vertexShader")
         pipelineStateDescriptor.fragmentFunction = defaultLibrary?.makeFunction(name: "fragmentShader")
         pipelineStateDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
-        
-        pipelineStateDescriptor.colorAttachments[0].isBlendingEnabled = true
-        
-        pipelineStateDescriptor.colorAttachments[0].rgbBlendOperation = .add
-        pipelineStateDescriptor.colorAttachments[0].alphaBlendOperation = .add
-
-        pipelineStateDescriptor.colorAttachments[0].sourceRGBBlendFactor = .one
-        pipelineStateDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .sourceAlpha
-
-        pipelineStateDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
-        pipelineStateDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
+        pipelineStateDescriptor.colorAttachments[0].apply(
+            blendMode: renderCommand.blendMode,
+            with: renderCommand.premultipliedAlpha
+        )
         
         pipelineState = try device.makeRenderPipelineState(descriptor: pipelineStateDescriptor)
         commandQueue = device.makeCommandQueue()!
@@ -125,5 +118,39 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             commandBuffer.present($0)
         }
         commandBuffer.commit()
+    }
+}
+
+fileprivate extension MTLRenderPipelineColorAttachmentDescriptor {
+    
+    func apply(blendMode: BlendMode, with premultipliedAlpha: Bool) {
+        isBlendingEnabled = true
+        sourceRGBBlendFactor = blendMode.sourceRGBBlendFactor(premultipliedAlpha: premultipliedAlpha)
+        destinationRGBBlendFactor = blendMode.destinationRGBBlendFactor
+        destinationAlphaBlendFactor = .oneMinusSourceAlpha
+    }
+}
+
+fileprivate extension BlendMode {
+    func sourceRGBBlendFactor(premultipliedAlpha: Bool) -> MTLBlendFactor {
+        switch self {
+        case .normal, .additive:
+            return premultipliedAlpha ? .one : .sourceAlpha
+        case .multiply:
+            return .destinationColor
+        case .screen:
+            return .one
+        }
+    }
+    
+    var destinationRGBBlendFactor: MTLBlendFactor {
+        switch self {
+        case .normal, .multiply:
+            return .oneMinusSourceAlpha
+        case .additive:
+            return .one
+        case .screen:
+            return .oneMinusSourceColor
+        }
     }
 }
