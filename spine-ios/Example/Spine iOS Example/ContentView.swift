@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
-import BaseViews
 import Spine
+
+import UIKit
+import Metal
 
 struct ContentView: View {
     
@@ -27,13 +29,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, \(Spine.name)!")
-        }
-        .padding()
+        SpineView()
     }
     
     func loadVertices(mesh: String, texture: UIImage) {
@@ -44,7 +40,7 @@ struct ContentView: View {
         var positions = [Float32](repeating: 0, count: numVertices * 2)
         var uvs = [Float32](repeating: 0, count: numVertices * 2)
         var colors = [Int32](repeating: 0, count: numVertices)
-        var indices = [UInt16](repeating: 0, count: numVertices)
+        var indices = [UInt16](repeating: 0, count: numIndices) // 3 vertex indices that build a triangle
         
         var idx = 2
         for i in 0..<numVertices * 2 {
@@ -59,12 +55,10 @@ struct ContentView: View {
             colors[i] = Int32(lines[idx])!;
             idx += 1
         }
-        for i in 0 ..< numVertices {
+        for i in 0 ..< numIndices {
             indices[i] = UInt16(lines[idx])!;
             idx += 1
         }
-        
-        print("foo")
     }
 }
 

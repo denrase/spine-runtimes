@@ -13,6 +13,10 @@
 		928A8CC22BCFE7DF00D9D35B /* Spine in Frameworks */ = {isa = PBXBuildFile; productRef = 928A8CC12BCFE7DF00D9D35B /* Spine */; };
 		92921E532BCFEEC2002E2FC4 /* spineboy.mesh in Resources */ = {isa = PBXBuildFile; fileRef = 92921E512BCFEEC2002E2FC4 /* spineboy.mesh */; };
 		92921E542BCFEEC2002E2FC4 /* spineboy.png in Resources */ = {isa = PBXBuildFile; fileRef = 92921E522BCFEEC2002E2FC4 /* spineboy.png */; };
+		92921E562BCFFB13002E2FC4 /* SpineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92921E552BCFFB13002E2FC4 /* SpineViewController.swift */; };
+		92921E582BCFFB15002E2FC4 /* SpineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92921E572BCFFB15002E2FC4 /* SpineView.swift */; };
+		92921E5A2BD00ECF002E2FC4 /* SpineRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92921E592BD00ECF002E2FC4 /* SpineRenderer.swift */; };
+		92FFE53B2BD018CA00C64889 /* AAPLShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 92FFE53A2BD018CA00C64889 /* AAPLShaders.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +27,10 @@
 		924C0C1B2BCFCF22004E63F7 /* SpineiOSExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpineiOSExample.entitlements; sourceTree = "<group>"; };
 		92921E512BCFEEC2002E2FC4 /* spineboy.mesh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spineboy.mesh; sourceTree = "<group>"; };
 		92921E522BCFEEC2002E2FC4 /* spineboy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spineboy.png; sourceTree = "<group>"; };
+		92921E552BCFFB13002E2FC4 /* SpineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpineViewController.swift; sourceTree = "<group>"; };
+		92921E572BCFFB15002E2FC4 /* SpineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpineView.swift; sourceTree = "<group>"; };
+		92921E592BD00ECF002E2FC4 /* SpineRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpineRenderer.swift; sourceTree = "<group>"; };
+		92FFE53A2BD018CA00C64889 /* AAPLShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = AAPLShaders.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +68,10 @@
 				92921E502BCFEEA1002E2FC4 /* Assets */,
 				924C0C152BCFCF21004E63F7 /* SpineExampleApp.swift */,
 				924C0C172BCFCF21004E63F7 /* ContentView.swift */,
+				92921E572BCFFB15002E2FC4 /* SpineView.swift */,
+				92921E552BCFFB13002E2FC4 /* SpineViewController.swift */,
+				92921E592BD00ECF002E2FC4 /* SpineRenderer.swift */,
+				92FFE53A2BD018CA00C64889 /* AAPLShaders.metal */,
 				924C0C192BCFCF22004E63F7 /* Assets.xcassets */,
 				924C0C1B2BCFCF22004E63F7 /* SpineiOSExample.entitlements */,
 			);
@@ -159,8 +171,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92FFE53B2BD018CA00C64889 /* AAPLShaders.metal in Sources */,
+				92921E582BCFFB15002E2FC4 /* SpineView.swift in Sources */,
 				924C0C182BCFCF21004E63F7 /* ContentView.swift in Sources */,
 				924C0C162BCFCF21004E63F7 /* SpineExampleApp.swift in Sources */,
+				92921E5A2BD00ECF002E2FC4 /* SpineRenderer.swift in Sources */,
+				92921E562BCFFB13002E2FC4 /* SpineViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
