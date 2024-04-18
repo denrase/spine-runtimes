@@ -12,14 +12,17 @@ import SpineSharedStructs
 final class SpineRenderer: NSObject, MTKViewDelegate {
     
     let mtkView: MTKView
+    let renderCommand: RenderCommand
+    
     let device: MTLDevice
     let pipelineState: MTLRenderPipelineState
     let commandQueue: MTLCommandQueue
     
     var viewPortSize = vector_uint2(0, 0)
     
-    init(mtkView: MTKView) throws {
+    init(mtkView: MTKView, renderCommand: RenderCommand) throws {
         self.mtkView = mtkView
+        self.renderCommand = renderCommand
         
         let device = mtkView.device!
         self.device = device
@@ -41,14 +44,10 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     }
     
     func draw(in view: MTKView) {
-        let triangleVertices = [
-            AAPLVertex(position: vector_float2(x: 250, y: -250), color: vector_float4(1, 0, 0, 1)),
-            AAPLVertex(position: vector_float2(x: -250, y: -250), color: vector_float4(0, 1, 0, 1)),
-            AAPLVertex(position: vector_float2(x: 250, y: 250), color: vector_float4(0, 0, 1, 1)),
-            AAPLVertex(position: vector_float2(x: -250, y: -250), color: vector_float4(0, 1, 0, 1)),
-            AAPLVertex(position: vector_float2(x: 250, y: 250), color: vector_float4(0, 0, 1, 1)),
-            AAPLVertex(position: vector_float2(x: -250, y: 250), color: vector_float4(0, 0, 1, 1)),
-        ]
+        let vertices = Array(renderCommand.getVertices())
+        let verticesBufferSize = MemoryLayout<AAPLVertex>.stride * vertices.count
+        
+        
         
         guard let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
@@ -62,6 +61,11 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
             return
         }
+        
+        guard let vertexBuffer = device.makeBuffer(length: verticesBufferSize, options: .storageModeShared) else {
+            return
+        }
+        
         renderEncoder.label = "MyRenderEncoder"
         renderEncoder.setViewport(
             MTLViewport(
@@ -75,12 +79,13 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         )
         renderEncoder.setRenderPipelineState(pipelineState)
         
-        renderEncoder.setVertexBytes(
-            triangleVertices,
-            length: MemoryLayout<AAPLVertex>.stride * triangleVertices.count,
+        memcpy(vertexBuffer.contents(), vertices, verticesBufferSize)
+        
+        renderEncoder.setVertexBuffer(
+            vertexBuffer,
+            offset: 0,
             index: Int(AAPLVertexInputIndexVertices.rawValue)
         )
-                    
         renderEncoder.setVertexBytes(
             &viewPortSize,
             length: MemoryLayout.size(ofValue: viewPortSize),
@@ -90,7 +95,7 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         renderEncoder.drawPrimitives(
             type: .triangle,
             vertexStart: 0,
-            vertexCount: 6
+            vertexCount: vertices.count
         )
 
         renderEncoder.endEncoding()

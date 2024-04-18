@@ -17,6 +17,7 @@
 		92921E582BCFFB15002E2FC4 /* SpineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92921E572BCFFB15002E2FC4 /* SpineView.swift */; };
 		92921E5A2BD00ECF002E2FC4 /* SpineRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92921E592BD00ECF002E2FC4 /* SpineRenderer.swift */; };
 		92FFE53B2BD018CA00C64889 /* AAPLShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 92FFE53A2BD018CA00C64889 /* AAPLShaders.metal */; };
+		92FFE53D2BD0F96700C64889 /* RenderCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92FFE53C2BD0F96700C64889 /* RenderCommand.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		92921E572BCFFB15002E2FC4 /* SpineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpineView.swift; sourceTree = "<group>"; };
 		92921E592BD00ECF002E2FC4 /* SpineRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpineRenderer.swift; sourceTree = "<group>"; };
 		92FFE53A2BD018CA00C64889 /* AAPLShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = AAPLShaders.metal; sourceTree = "<group>"; };
+		92FFE53C2BD0F96700C64889 /* RenderCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderCommand.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				92921E572BCFFB15002E2FC4 /* SpineView.swift */,
 				92921E552BCFFB13002E2FC4 /* SpineViewController.swift */,
 				92921E592BD00ECF002E2FC4 /* SpineRenderer.swift */,
+				92FFE53C2BD0F96700C64889 /* RenderCommand.swift */,
 				92FFE53A2BD018CA00C64889 /* AAPLShaders.metal */,
 				924C0C192BCFCF22004E63F7 /* Assets.xcassets */,
 				924C0C1B2BCFCF22004E63F7 /* SpineiOSExample.entitlements */,
@@ -176,6 +179,7 @@
 				924C0C182BCFCF21004E63F7 /* ContentView.swift in Sources */,
 				924C0C162BCFCF21004E63F7 /* SpineExampleApp.swift in Sources */,
 				92921E5A2BD00ECF002E2FC4 /* SpineRenderer.swift in Sources */,
+				92FFE53D2BD0F96700C64889 /* RenderCommand.swift in Sources */,
 				92921E562BCFFB13002E2FC4 /* SpineViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
