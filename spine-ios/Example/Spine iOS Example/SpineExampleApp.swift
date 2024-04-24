@@ -17,7 +17,7 @@ struct SpineExampleApp: App {
         
         Task {
             do {
-                let atlas = try await Atlas.fromAsset("spineboy")
+                let atlas = try await Atlas.fromAsset("spineboy.atlas")
                 print(atlas)
             } catch {
                 print(error)
