@@ -6,6 +6,6 @@ import SpineWrapper
 
 public class Spine {
     public static var name: String {
-        return String(cString: SpineTest.version())
+        return "\(spine_major_version())"
     }
 }

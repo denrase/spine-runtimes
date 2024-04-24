@@ -26,7 +26,9 @@ let package = Package(
                 "SpineWrapper", "SpineSharedStructs"
             ],
             path: "Sources/Spine",
-            swiftSettings: [.interoperabilityMode(.Cxx)]
+            swiftSettings: [
+                .interoperabilityMode(.Cxx)
+            ]
         ),
         .target(
             name: "SpineWrapper",
@@ -36,5 +38,6 @@ let package = Package(
             name: "SpineSharedStructs",
             path: "Sources/SpineSharedStructs"
         )
-    ]
+    ],
+    cxxLanguageStandard: .cxx11
 )
