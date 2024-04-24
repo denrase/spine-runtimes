@@ -6,7 +6,8 @@
 //
 
 #include "SpineTest.h"
+#import "SpineWrapper.h"
 
 const char* SpineTest::version() {
-    return "Spine 0.1.0";
+    return SPINE_VERSION_STRING;
 }

@@ -1,0 +1,4 @@
+module SpineWrapper {
+    header "SpineWrapper.h"
+    export *
+}

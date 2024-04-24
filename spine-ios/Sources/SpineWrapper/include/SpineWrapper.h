@@ -2,3 +2,4 @@
 #pragma once
 
 #include <SpineTest.h>
+#include <spine/Version.h>
