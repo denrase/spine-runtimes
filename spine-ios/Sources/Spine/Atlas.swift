@@ -8,7 +8,6 @@ import Foundation
 ///
 /// Use the static methods [fromAsset], [fromFile], and [fromHttp] to load an atlas. Call [dispose]
 /// when the atlas is no longer in use to release its resources.
-/// Dispose is also called automatically on deinit.
 public final class Atlas {
     private let atlas: spine_atlas
     private let atlasPages: [Image]
@@ -17,10 +16,6 @@ public final class Atlas {
     private init(atlas: spine_atlas, atlasPages: [Image]) {
         self.atlas = atlas
         self.atlasPages = atlasPages
-    }
-    
-    deinit {
-        dispose()
     }
     
     private static func load(atlasFileName: String, loadFile: (_ name: String) async throws -> Data) async throws -> Atlas {
