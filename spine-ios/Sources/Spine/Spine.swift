@@ -2,7 +2,10 @@
 // https://docs.swift.org/swift-book
 
 import SpineSharedStructs
+import SpineWrapper
 
 public class Spine {
-    public static let name = "Spine iOS"
+    public static var name: String {
+        return String(cString: SpineTest.version())
+    }
 }
