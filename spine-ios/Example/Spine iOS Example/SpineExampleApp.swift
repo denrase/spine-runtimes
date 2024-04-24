@@ -14,6 +14,15 @@ struct SpineExampleApp: App {
     init() {
         let version = Spine.version
         print("Spine \(version)")
+        
+        Task {
+            do {
+                let atlas = try await Atlas.fromAsset("spineboy")
+                print(atlas)
+            } catch {
+                print(error)
+            }
+        }
     }
     
     var body: some Scene {
