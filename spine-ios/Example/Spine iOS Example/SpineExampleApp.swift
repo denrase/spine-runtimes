@@ -12,8 +12,8 @@ import Spine
 struct SpineExampleApp: App {
     
     init() {
-        let name = Spine.name
-        print(name)
+        let version = Spine.version
+        print("Spine \(version)")
     }
     
     var body: some Scene {
