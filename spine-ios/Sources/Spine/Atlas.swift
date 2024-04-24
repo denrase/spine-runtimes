@@ -26,7 +26,7 @@ public final class Atlas {
     private static func load(atlasFileName: String, loadFile: (_ name: String) async throws -> Data) async throws -> Atlas {
         let atlasBytes = try await loadFile(atlasFileName)
         guard let atlasData: NSString = String(data: atlasBytes, encoding: .utf8) as? NSString else {
-            throw "Could not read atlas bytes"
+            throw "Couldn't read atlas bytes"
         }
         
         let atlasDataNative = UnsafeMutablePointer<CChar>(mutating: atlasData.utf8String)
