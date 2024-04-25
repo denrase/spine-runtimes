@@ -154,12 +154,12 @@ class SwiftTypeWriter:
         self.type = type
         self.c_to_swift_type_map = {
           'void *': 'UnsafeMutableRawPointer',          # Generic pointer
-          'const utf8 *': 'UnsafePointer<CChar>',      # Pointer to UTF-8 characters; can also be mapped to 'String' if converting
+          'const utf8 *': 'UnsafeMutablePointer<utf8>',      # Pointer to UTF-8 characters; can also be mapped to 'String' if converting
           'uint64_t': 'UInt64',                        # Unsigned 64-bit integer
           'float *': 'UnsafeMutablePointer<Float>',    # Pointer to a float
           'float': 'Float',                            # Floating-point number
           'int32_t': 'Int32',                           # 32-bit integer
-          'utf8 *': 'UnsafePointer<CChar>'
+          'utf8 *': 'UnsafeMutablePointer<utf8>'
       }
     def write(self):
         parameter_type = self.c_to_swift_type_map.get(self.type)
@@ -247,6 +247,7 @@ class SwiftObjectWriter:
 
 print("import Foundation")
 print("import SpineWrapper")
+print("")
 
 for object in objects:
     print(SwiftObjectWriter(spine_object = object).write())
