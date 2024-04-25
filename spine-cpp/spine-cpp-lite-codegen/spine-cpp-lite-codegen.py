@@ -149,6 +149,8 @@ def snake_to_title(snake_str):
     title_str = ''.join(words)
     return title_str
 
+inset = "    "
+
 class SwiftTypeWriter:
     def __init__(self, type):
         self.type = type
@@ -181,8 +183,6 @@ class SwiftFunctionWriter:
         self.spine_function = spine_function
 
     def write(self):
-        inset = "  "
-
         function_prefix = f"{self.spine_object_name}_"
         function_name = self.spine_function.name.replace(function_prefix, "", 1)
 
@@ -258,3 +258,5 @@ for object in objects:
 # TODO: Handle arrays (pointer pointer)
 # TODO: Handle char* string return
 # TODO: Handle char* arguments as string
+# TODO: ctor invocations for spine return type
+# TODO: get/set booleans as -1/1
