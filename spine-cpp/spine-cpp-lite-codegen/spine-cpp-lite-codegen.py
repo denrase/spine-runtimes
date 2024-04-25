@@ -86,11 +86,15 @@ def parse_function_declaration(declaration):
         # Splitting each argument on comma
         param_list = params.split(',')
         for param in param_list:
-            # Assuming type and name are separated by space and taking the last space as the separator
-            param_parts = param.rsplit(' ', 1)
+            
+            param_parts = []
+            if '*' in param: # Split at the pointer and add it as a suffix to the type
+              param_parts = param.rsplit('*', 1)
+              param_parts[0] = param_parts[0] + '*'
+            else: # Assuming type and name are separated by space and taking the last space as the separator
+              param_parts = param.rsplit(' ', 1)
             param_type, param_name = param_parts
             spine_param = SpineParam(parameter_type = param_type.strip(), name = param_name.strip())
-            # print(spine_param)
             parameters.append(spine_param)
     
     return SpineFunction(
@@ -126,4 +130,110 @@ for type in sorted_types:
 
     function_declarations = [item for item in function_declarations if item not in hits]
 
-print(objects)
+def snake_to_camel(snake_str):
+    # Split the string by underscore
+    parts = snake_str.split('_')
+    # Return the first part lowercased and concatenate capitalized subsequent parts
+    return parts[0] + ''.join(word.capitalize() for word in parts[1:])
+
+def snake_to_title(snake_str):
+    # Split the string at underscores
+    words = snake_str.split('_')
+    # Capitalize the first letter of each word
+    words = [word.capitalize() for word in words]
+    # Join the words into a single string without any separator
+    title_str = ''.join(words)
+    return title_str
+
+class SwiftTypeWriter:
+    def __init__(self, type):
+        self.type = type
+        self.c_to_swift_type_map = {
+          'void *': 'UnsafeMutableRawPointer',          # Generic pointer
+          'const utf8 *': 'UnsafePointer<CChar>',      # Pointer to UTF-8 characters; can also be mapped to 'String' if converting
+          'uint64_t': 'UInt64',                        # Unsigned 64-bit integer
+          'float *': 'UnsafeMutablePointer<Float>',    # Pointer to a float
+          'float': 'Float',                            # Floating-point number
+          'int32_t': 'Int32'                           # 32-bit integer
+      }
+    def write(self):
+        parameter_type = self.c_to_swift_type_map.get(self.type)
+        if parameter_type is None:
+          parameter_type = self.type
+        return parameter_type
+        
+class SwiftParamWriter:
+    def __init__(self, param):
+        self.param = param
+        
+    def write(self):
+        parameter_type = SwiftTypeWriter(type = self.param.parameter_type).write()
+        return f"{snake_to_camel(self.param.name)}: {parameter_type}"
+    
+class SwiftFunctionWriter:
+    def __init__(self, spine_object_name, spine_function):
+        self.spine_object_name = spine_object_name
+        self.spine_function = spine_function
+
+    def write(self):
+        function_prefix = f"{self.spine_object_name}_"
+        function_name = self.spine_function.name.replace(function_prefix, "", 1)
+
+        function_string = f"func {snake_to_camel(function_name)}"
+        function_string += "("
+        swift_params = [
+            SwiftParamWriter(param = spine_param).write()
+            for spine_param in self.spine_function.parameters
+        ]
+        function_string += ", ".join(swift_params)
+        function_string += ")"
+
+        if not self.spine_function.return_type == "void":
+            function_string += f" -> {SwiftTypeWriter(type = self.spine_function.return_type).write()}"
+
+        function_string += " {"
+        function_string += "\n"
+
+        function_string += "  "
+
+        if not self.spine_function.return_type == "void":
+            function_string += "return "
+        
+        function_string += f"{self.spine_function.name}"
+        function_string += "("
+
+        swift_param_names = [
+            spine_param.name
+            for spine_param in self.spine_function.parameters
+        ]
+
+        function_string += ", ".join(swift_param_names)
+        function_string += ")"
+
+        function_string += "\n"
+
+        function_string += "}"
+
+        return function_string
+
+class SwiftObjectWriter:
+    def __init__(self, spine_object):
+        self.spine_object = spine_object
+
+    def write(self):
+        object_string = f"final class {snake_to_title(self.spine_object.name)}"
+
+        object_string += " {"
+        object_string += "\n"
+
+        for spine_function in self.spine_object.functions:
+            object_string += SwiftFunctionWriter(spine_object_name = self.spine_object.name, spine_function = spine_function).write()
+            object_string += "\n"
+
+        object_string += "}"
+
+        return object_string
+
+for object in objects:
+    print(SwiftObjectWriter(spine_object = object).write())
+    print("")
