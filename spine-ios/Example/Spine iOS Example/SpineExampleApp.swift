@@ -17,8 +17,28 @@ struct SpineExampleApp: App {
         
         Task {
             do {
+                // Load
+                
                 let atlas = try await Atlas.fromAsset("spineboy.atlas")
                 print(atlas)
+                
+                let skeletonDataFromJson = try SkeletonData.fromAsset(
+                    atlas: atlas,
+                    skeletonFile: "spineboy-pro.json"
+                )
+                print(skeletonDataFromJson)
+                
+                let skeletonDataFromBinary = try SkeletonData.fromAsset(
+                    atlas: atlas,
+                    skeletonFile: "spineboy-pro.skel"
+                )
+                print(skeletonDataFromBinary)
+                
+                // Dispose
+                
+                atlas.dispose()
+                skeletonDataFromJson.dispose()
+                skeletonDataFromBinary.dispose()
             } catch {
                 print(error)
             }

@@ -9,7 +9,7 @@ import Foundation
 /// Use the static methods [fromAsset], [fromFile], and [fromHttp] to load an atlas. Call [dispose]
 /// when the atlas is no longer in use to release its resources.
 public final class Atlas {
-    private let atlas: spine_atlas
+    internal let atlas: spine_atlas
     private let atlasPages: [Image]
     private var disposed = false
     
@@ -64,16 +64,7 @@ public final class Atlas {
     /// Throws an [Exception] in case the atlas could not be loaded.
     public static func fromAsset(_ atlasFileName: String, bundle: Bundle = .main) async throws -> Atlas {
         return try await Self.load(atlasFileName: atlasFileName) { name in
-            let components = name.split(separator: ".")
-            guard components.count > 1, let ext = components.last else {
-                throw "Provide both file name and file extension"
-            }
-            let name = components.dropLast(1).joined(separator: ".")
-            
-            guard let fileUrl = bundle.url(forResource: name, withExtension: String(ext)) else {
-                throw "Could not find atlas with file name \(name)"
-            }
-            return try Data(contentsOf: fileUrl, options: [])
+            return try bundle.loadAsData(fileName: atlasFileName)
         }
     }
     
@@ -94,10 +85,32 @@ public final class Atlas {
     /// Disposes the (native) resources of this atlas. The atlas can no longer be
     /// used after calling this function. Only the first call to this method will
     /// have an effect. Subsequent calls are ignored.
-    func dispose() {
+    public func dispose() {
         if disposed { return }
         disposed = true
         spine_atlas_dispose(atlas)
+    }
+}
+
+// Helper
+
+extension Bundle {
+    func loadFileUrl(fileName: String) throws -> URL {
+        let components = fileName.split(separator: ".")
+        guard components.count > 1, let ext = components.last else {
+            throw "Provide both file name and file extension"
+        }
+        let name = components.dropLast(1).joined(separator: ".")
+        
+        guard let fileUrl = url(forResource: name, withExtension: String(ext)) else {
+            throw "Could not load file with name \(name)"
+        }
+        return fileUrl
+    }
+    
+    func loadAsData(fileName: String) throws -> Data {
+        let fileUrl = try loadFileUrl(fileName: fileName)
+        return try Data(contentsOf: fileUrl, options: [])
     }
 }
 
