@@ -181,6 +181,8 @@ typedef enum spine_physics {
 
 } spine_physics;
 
+// parse_start: spine_function_declarations
+
 SPINE_CPP_LITE_EXPORT int32_t spine_major_version();
 SPINE_CPP_LITE_EXPORT int32_t spine_minor_version();
 SPINE_CPP_LITE_EXPORT void spine_enable_debug_extension(int32_t enable);
@@ -996,5 +998,7 @@ SPINE_CPP_LITE_EXPORT int32_t spine_texture_region_get_original_width(spine_text
 SPINE_CPP_LITE_EXPORT void spine_texture_region_set_original_width(spine_texture_region textureRegion, int32_t originalWidth);
 SPINE_CPP_LITE_EXPORT int32_t spine_texture_region_get_original_height(spine_texture_region textureRegion);
 SPINE_CPP_LITE_EXPORT void spine_texture_region_set_original_height(spine_texture_region textureRegion, int32_t originalHeight);
+
+// parse_end: spine_function_declarations
 
 #endif
