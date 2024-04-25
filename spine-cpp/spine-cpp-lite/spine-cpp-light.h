@@ -59,6 +59,8 @@
 	} name##_wrapper;               \
 	typedef name##_wrapper *name;
 
+// parse_start: spine_opaque_types
+
 SPINE_OPAQUE_TYPE(spine_skeleton)
 SPINE_OPAQUE_TYPE(spine_skeleton_data)
 SPINE_OPAQUE_TYPE(spine_bone)
@@ -102,6 +104,8 @@ SPINE_OPAQUE_TYPE(spine_vector)
 SPINE_OPAQUE_TYPE(spine_skeleton_drawable)
 SPINE_OPAQUE_TYPE(spine_skin_entry)
 SPINE_OPAQUE_TYPE(spine_skin_entries)
+
+// parse_end: spine_opaque_types
 
 typedef char utf8;
 
