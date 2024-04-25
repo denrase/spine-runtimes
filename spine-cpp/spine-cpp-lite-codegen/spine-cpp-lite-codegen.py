@@ -1,7 +1,11 @@
 import re
+import os
+
+script_directory = os.path.dirname(os.path.abspath(__file__))
+input_path = os.path.join(script_directory, '../spine-cpp-lite/spine-cpp-light.h')
 
 # TODO Handle correct directory relative path or provide it as a parameter
-with open('./spine-cpp-lite/spine-cpp-light.h', 'r') as file:
+with open(input_path, 'r') as file:
     file_contents = file.read()
 
 # file_lines = file_contents.splitlines()
@@ -154,7 +158,8 @@ class SwiftTypeWriter:
           'uint64_t': 'UInt64',                        # Unsigned 64-bit integer
           'float *': 'UnsafeMutablePointer<Float>',    # Pointer to a float
           'float': 'Float',                            # Floating-point number
-          'int32_t': 'Int32'                           # 32-bit integer
+          'int32_t': 'Int32',                           # 32-bit integer
+          'utf8 *': 'UnsafePointer<CChar>'
       }
     def write(self):
         parameter_type = self.c_to_swift_type_map.get(self.type)
@@ -176,11 +181,15 @@ class SwiftFunctionWriter:
         self.spine_function = spine_function
 
     def write(self):
+        inset = "  "
+
         function_prefix = f"{self.spine_object_name}_"
         function_name = self.spine_function.name.replace(function_prefix, "", 1)
 
-        function_string = f"func {snake_to_camel(function_name)}"
+        function_string = inset;
+        function_string += f"public func {snake_to_camel(function_name)}"
         function_string += "("
+
         swift_params = [
             SwiftParamWriter(param = spine_param).write()
             for spine_param in self.spine_function.parameters
@@ -194,7 +203,7 @@ class SwiftFunctionWriter:
         function_string += " {"
         function_string += "\n"
 
-        function_string += "  "
+        function_string += inset + inset
 
         if not self.spine_function.return_type == "void":
             function_string += "return "
@@ -212,7 +221,8 @@ class SwiftFunctionWriter:
 
         function_string += "\n"
 
-        function_string += "}"
+        function_string += inset + "}"
+        function_string += "\n"
 
         return function_string
 
@@ -221,9 +231,10 @@ class SwiftObjectWriter:
         self.spine_object = spine_object
 
     def write(self):
-        object_string = f"final class {snake_to_title(self.spine_object.name)}"
+        object_string = f"public final class {snake_to_title(self.spine_object.name)}"
 
         object_string += " {"
+        object_string += "\n"
         object_string += "\n"
 
         for spine_function in self.spine_object.functions:
@@ -234,6 +245,15 @@ class SwiftObjectWriter:
 
         return object_string
 
+print("import Foundation")
+print("import SpineWrapper")
+
 for object in objects:
     print(SwiftObjectWriter(spine_object = object).write())
     print("")
+
+# TODO: Hold instanve variable if object name and first arg type match
+# TODO: Getter/Setter as var computed property
+# TODO: Handle arrays (pointer pointer)
+# TODO: Handle char* string return
+# TODO: Handle char* arguments as string
