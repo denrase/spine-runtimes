@@ -6,7 +6,7 @@ public final class Color {
     public let b: Double
     public let a: Double
     
-    init(r: Double, g: Double, b: Double, a: Double) {
+    public init(r: Double, g: Double, b: Double, a: Double) {
         self.r = r
         self.g = g
         self.b = b

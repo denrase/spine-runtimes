@@ -20,7 +20,7 @@ public final class Atlas {
     
     private static func load(atlasFileName: String, loadFile: (_ name: String) async throws -> Data) async throws -> Atlas {
         let atlasBytes = try await loadFile(atlasFileName)
-        guard let atlasData: NSString = String(data: atlasBytes, encoding: .utf8) as? NSString else {
+        guard let atlasData = String(data: atlasBytes, encoding: .utf8) as? NSString else {
             throw "Couldn't read atlas bytes"
         }
         
@@ -29,8 +29,8 @@ public final class Atlas {
             throw "Couldn't load atlas data"
         }
         
-        if let atlasError = spine_atlas_get_error(atlas) {
-            let message = String(cString: atlasError)
+        if let error = spine_atlas_get_error(atlas) {
+            let message = String(cString: error)
             spine_atlas_dispose(atlas)
             throw "Couldn't load atlas: \(message)"
         }
@@ -43,15 +43,11 @@ public final class Atlas {
                 continue
             }
             let atlasPageFile = String(cString: atlasPageFilePointer)
-            do {
-                let imageData = try await loadFile(atlasPageFile)
-                guard let image = UIImage(data: imageData) else {
-                    continue
-                }
-                atlasPages.append(Image(uiImage: image))
-            } catch {
-                print(error)
+            let imageData = try await loadFile(atlasPageFile)
+            guard let image = UIImage(data: imageData) else {
+                continue
             }
+            atlasPages.append(Image(uiImage: image))
         }
         
         // TODO: Paint in Swift?
@@ -72,14 +68,14 @@ public final class Atlas {
     ///
     /// Throws an [Exception] in case the atlas could not be loaded.
     public static func fromFile(_ atlasFileName: String) async throws -> Atlas {
-        throw "Not implemented."
+        throw "Not implemented"
     }
         
     /// Loads an [Atlas] from the URL [atlasURL].
     ///
     /// Throws an [Exception] in case the atlas could not be loaded.
     public static func fromHttp(_ atlasURL: String) async throws -> Atlas {
-        throw "Not implemented."
+        throw "Not implemented"
     }
     
     /// Disposes the (native) resources of this atlas. The atlas can no longer be
