@@ -2489,7 +2489,7 @@ float spine_bone_get_a_shear_y(spine_bone bone) {
 	return _bone->getAShearY();
 }
 
-void spine_bone_set_shear_a_y(spine_bone bone, float shearY) {
+void spine_bone_set_a_shear_y(spine_bone bone, float shearY) {
 	if (bone == nullptr) return;
 	Bone *_bone = (Bone *) bone;
 	_bone->setAShearY(shearY);
@@ -3369,10 +3369,16 @@ void spine_ik_constraint_data_set_stretch(spine_ik_constraint_data data, int32_t
 	_data->setStretch(stretch);
 }
 
-int32_t spine_ik_constraint_data_get_uniform(spine_ik_constraint_data data) {
+int32_t spine_ik_constraint_data_get_uniform(spine_ik_constraint_data data){
 	if (data == nullptr) return 0;
 	IkConstraintData *_data = (IkConstraintData *) data;
 	return _data->getUniform() ? -1 : 0;
+}
+
+void spine_ik_constraint_data_set_uniform(spine_ik_constraint_data data, int32_t uniform) {
+	if (data == nullptr) return;
+	IkConstraintData *_data = (IkConstraintData *) data;
+	_data->setUniform(uniform);
 }
 
 float spine_ik_constraint_data_get_mix(spine_ik_constraint_data data) {

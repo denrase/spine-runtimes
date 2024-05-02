@@ -734,9 +734,9 @@ public final class SpineIkConstraintData {
         return spine_ik_constraint_data_get_uniform(wrappee)
     }
 
-//    public func setUniform(uniform: Int32) {
-//        spine_ik_constraint_data_set_uniform(wrappee, uniform)
-//    }
+    public func setUniform(uniform: Int32) {
+        spine_ik_constraint_data_set_uniform(wrappee, uniform)
+    }
 
     public func getMix() -> Float {
         return spine_ik_constraint_data_get_mix(wrappee)
