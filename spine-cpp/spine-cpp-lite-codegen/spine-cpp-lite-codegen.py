@@ -28,14 +28,14 @@ supported_types = [
 
 supported_types_to_swift_types = {
     'void *': 'UnsafeMutableRawPointer',
-    'const utf8 *': 'UnsafeMutablePointer<utf8>',
+    'const utf8 *': 'String?',
     'uint64_t': 'UInt64',
-    'float *': 'UnsafeMutablePointer<Float>',
+    'float *': 'Float?',
     'float': 'Float',
     'int32_t': 'Int32',
-    'utf8 *': 'UnsafeMutablePointer<utf8>',
-    'int32_t *': 'UnsafeMutablePointer<Int32>',
-    'uint16_t *': 'UnsafeMutablePointer<UInt16>'
+    'utf8 *': 'String?',
+    'int32_t *': 'Int32?',
+    'uint16_t *': 'UInt16'
 }
 
 def read_spine_types(data):
@@ -276,6 +276,10 @@ class SwiftFunctionWriter:
           if not self.spine_function.return_type == "void":
               function_string += "return "
           function_string += function_call
+          if self.spine_function.return_type == "const utf8 *" or self.spine_function.return_type == "utf8 *":
+            function_string += ".flatMap { String(cString: $0) }"
+          if self.spine_function.return_type == "int32_t *" or self.spine_function.return_type == "float *":
+            function_string += ".flatMap { $0.pointee }"
 
         function_string += "\n"
 
@@ -302,7 +306,7 @@ class SwiftObjectWriter:
         object_string += "\n"
 
         object_string += inset
-        object_string += f"internal init({ivar_name}: {ivar_type})"
+        object_string += f"internal init(_ {ivar_name}: {ivar_type})"
         object_string += " {"
         object_string += "\n"
         object_string += inset + inset

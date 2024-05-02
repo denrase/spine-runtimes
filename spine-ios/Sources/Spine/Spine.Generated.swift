@@ -5,7 +5,7 @@ public final class SpineTransformConstraintData {
 
     internal let data: spine_transform_constraint_data
 
-    internal init(data: spine_transform_constraint_data) {
+    internal init(_ data: spine_transform_constraint_data) {
         self.data = data
     }
 
@@ -145,7 +145,7 @@ public final class SpineBoundingBoxAttachment {
 
     internal let attachment: spine_bounding_box_attachment
 
-    internal init(attachment: spine_bounding_box_attachment) {
+    internal init(_ attachment: spine_bounding_box_attachment) {
         self.attachment = attachment
     }
 
@@ -163,7 +163,7 @@ public final class SpinePhysicsConstraintData {
 
     internal let data: spine_physics_constraint_data
 
-    internal init(data: spine_physics_constraint_data) {
+    internal init(_ data: spine_physics_constraint_data) {
         self.data = data
     }
 
@@ -349,7 +349,7 @@ public final class SpineAnimationStateEvents {
 
     internal let events: spine_animation_state_events
 
-    internal init(events: spine_animation_state_events) {
+    internal init(_ events: spine_animation_state_events) {
         self.events = events
     }
 
@@ -379,7 +379,7 @@ public final class SpineTransformConstraint {
 
     internal let constraint: spine_transform_constraint
 
-    internal init(constraint: spine_transform_constraint) {
+    internal init(_ constraint: spine_transform_constraint) {
         self.constraint = constraint
     }
 
@@ -475,7 +475,7 @@ public final class SpinePathConstraintData {
 
     internal let data: spine_path_constraint_data
 
-    internal init(data: spine_path_constraint_data) {
+    internal init(_ data: spine_path_constraint_data) {
         self.data = data
     }
 
@@ -575,7 +575,7 @@ public final class SpineAnimationStateData {
 
     internal let data: spine_animation_state_data
 
-    internal init(data: spine_animation_state_data) {
+    internal init(_ data: spine_animation_state_data) {
         self.data = data
     }
 
@@ -599,11 +599,11 @@ public final class SpineAnimationStateData {
         return spine_animation_state_data_get_mix(data, from, to)
     }
 
-    public func setMixByName(fromName: UnsafeMutablePointer<utf8>, toName: UnsafeMutablePointer<utf8>, duration: Float) {
+    public func setMixByName(fromName: String?, toName: String?, duration: Float) {
         spine_animation_state_data_set_mix_by_name(data, fromName, toName, duration)
     }
 
-    public func getMixByName(fromName: UnsafeMutablePointer<utf8>, toName: UnsafeMutablePointer<utf8>) -> Float {
+    public func getMixByName(fromName: String?, toName: String?) -> Float {
         return spine_animation_state_data_get_mix_by_name(data, fromName, toName)
     }
 
@@ -617,12 +617,12 @@ public final class SpineSkeletonDataResult {
 
     internal let result: spine_skeleton_data_result
 
-    internal init(result: spine_skeleton_data_result) {
+    internal init(_ result: spine_skeleton_data_result) {
         self.result = result
     }
 
-    public func getError() -> UnsafeMutablePointer<utf8> {
-        return spine_skeleton_data_result_get_error(result)
+    public func getError() -> String? {
+        return spine_skeleton_data_result_get_error(result).flatMap { String(cString: $0) }
     }
 
     public func getData() -> spine_skeleton_data {
@@ -639,7 +639,7 @@ public final class SpineClippingAttachment {
 
     internal let attachment: spine_clipping_attachment
 
-    internal init(attachment: spine_clipping_attachment) {
+    internal init(_ attachment: spine_clipping_attachment) {
         self.attachment = attachment
     }
 
@@ -665,7 +665,7 @@ public final class SpineIkConstraintData {
 
     internal let data: spine_ik_constraint_data
 
-    internal init(data: spine_ik_constraint_data) {
+    internal init(_ data: spine_ik_constraint_data) {
         self.data = data
     }
 
@@ -741,7 +741,7 @@ public final class SpinePhysicsConstraint {
 
     internal let constraint: spine_physics_constraint
 
-    internal init(constraint: spine_physics_constraint) {
+    internal init(_ constraint: spine_physics_constraint) {
         self.constraint = constraint
     }
 
@@ -975,7 +975,7 @@ public final class SpineRegionAttachment {
 
     internal let attachment: spine_region_attachment
 
-    internal init(attachment: spine_region_attachment) {
+    internal init(_ attachment: spine_region_attachment) {
         self.attachment = attachment
     }
 
@@ -983,7 +983,7 @@ public final class SpineRegionAttachment {
         spine_region_attachment_update_region(attachment)
     }
 
-    public func computeWorldVertices(slot: spine_slot, worldVertices: UnsafeMutablePointer<Float>) {
+    public func computeWorldVertices(slot: spine_slot, worldVertices: Float?) {
         spine_region_attachment_compute_world_vertices(attachment, slot, worldVertices)
     }
 
@@ -1051,8 +1051,8 @@ public final class SpineRegionAttachment {
         spine_region_attachment_set_color(attachment, r, g, b, a)
     }
 
-    public func getPath() -> UnsafeMutablePointer<utf8> {
-        return spine_region_attachment_get_path(attachment)
+    public func getPath() -> String? {
+        return spine_region_attachment_get_path(attachment).flatMap { String(cString: $0) }
     }
 
     public func getRegion() -> spine_texture_region {
@@ -1067,7 +1067,7 @@ public final class SpineRegionAttachment {
         return spine_region_attachment_get_num_offset(attachment)
     }
 
-    public func getOffset() -> [UnsafeMutablePointer<Float>] {
+    public func getOffset() -> [Float?] {
         let num = Int(spine_region_attachment_get_num_offset(attachment))
         let native = spine_region_attachment_get_offset(attachment)
         return (0..<num).compactMap { native?[$0] }
@@ -1077,7 +1077,7 @@ public final class SpineRegionAttachment {
         return spine_region_attachment_get_num_uvs(attachment)
     }
 
-    public func getUvs() -> [UnsafeMutablePointer<Float>] {
+    public func getUvs() -> [Float?] {
         let num = Int(spine_region_attachment_get_num_uvs(attachment))
         let native = spine_region_attachment_get_uvs(attachment)
         return (0..<num).compactMap { native?[$0] }
@@ -1089,7 +1089,7 @@ public final class SpineVertexAttachment {
 
     internal let attachment: spine_vertex_attachment
 
-    internal init(attachment: spine_vertex_attachment) {
+    internal init(_ attachment: spine_vertex_attachment) {
         self.attachment = attachment
     }
 
@@ -1097,7 +1097,7 @@ public final class SpineVertexAttachment {
         return spine_vertex_attachment_get_world_vertices_length(attachment)
     }
 
-    public func computeWorldVertices(slot: spine_slot, worldVertices: UnsafeMutablePointer<Float>) {
+    public func computeWorldVertices(slot: spine_slot, worldVertices: Float?) {
         spine_vertex_attachment_compute_world_vertices(attachment, slot, worldVertices)
     }
 
@@ -1105,7 +1105,7 @@ public final class SpineVertexAttachment {
         return spine_vertex_attachment_get_num_bones(attachment)
     }
 
-    public func getBones() -> [UnsafeMutablePointer<Int32>] {
+    public func getBones() -> [Int32?] {
         let num = Int(spine_vertex_attachment_get_num_bones(attachment))
         let native = spine_vertex_attachment_get_bones(attachment)
         return (0..<num).compactMap { native?[$0] }
@@ -1115,7 +1115,7 @@ public final class SpineVertexAttachment {
         return spine_vertex_attachment_get_num_vertices(attachment)
     }
 
-    public func getVertices() -> [UnsafeMutablePointer<Float>] {
+    public func getVertices() -> [Float?] {
         let num = Int(spine_vertex_attachment_get_num_vertices(attachment))
         let native = spine_vertex_attachment_get_vertices(attachment)
         return (0..<num).compactMap { native?[$0] }
@@ -1135,7 +1135,7 @@ public final class SpineSkeletonDrawable {
 
     internal let drawable: spine_skeleton_drawable
 
-    internal init(drawable: spine_skeleton_drawable) {
+    internal init(_ drawable: spine_skeleton_drawable) {
         self.drawable = drawable
     }
 
@@ -1173,7 +1173,7 @@ public final class SpinePointAttachment {
 
     internal let attachment: spine_point_attachment
 
-    internal init(attachment: spine_point_attachment) {
+    internal init(_ attachment: spine_point_attachment) {
         self.attachment = attachment
     }
 
@@ -1223,7 +1223,7 @@ public final class SpineMeshAttachment {
 
     internal let attachment: spine_mesh_attachment
 
-    internal init(attachment: spine_mesh_attachment) {
+    internal init(_ attachment: spine_mesh_attachment) {
         self.attachment = attachment
     }
 
@@ -1243,7 +1243,7 @@ public final class SpineMeshAttachment {
         return spine_mesh_attachment_get_num_region_uvs(attachment)
     }
 
-    public func getRegionUvs() -> [UnsafeMutablePointer<Float>] {
+    public func getRegionUvs() -> [Float?] {
         let num = Int(spine_mesh_attachment_get_num_region_uvs(attachment))
         let native = spine_mesh_attachment_get_region_uvs(attachment)
         return (0..<num).compactMap { native?[$0] }
@@ -1253,7 +1253,7 @@ public final class SpineMeshAttachment {
         return spine_mesh_attachment_get_num_uvs(attachment)
     }
 
-    public func getUvs() -> [UnsafeMutablePointer<Float>] {
+    public func getUvs() -> [Float?] {
         let num = Int(spine_mesh_attachment_get_num_uvs(attachment))
         let native = spine_mesh_attachment_get_uvs(attachment)
         return (0..<num).compactMap { native?[$0] }
@@ -1263,7 +1263,7 @@ public final class SpineMeshAttachment {
         return spine_mesh_attachment_get_num_triangles(attachment)
     }
 
-    public func getTriangles() -> [UnsafeMutablePointer<UInt16>] {
+    public func getTriangles() -> [UInt16] {
         let num = Int(spine_mesh_attachment_get_num_triangles(attachment))
         let native = spine_mesh_attachment_get_triangles(attachment)
         return (0..<num).compactMap { native?[$0] }
@@ -1277,8 +1277,8 @@ public final class SpineMeshAttachment {
         spine_mesh_attachment_set_color(attachment, r, g, b, a)
     }
 
-    public func getPath() -> UnsafeMutablePointer<utf8> {
-        return spine_mesh_attachment_get_path(attachment)
+    public func getPath() -> String? {
+        return spine_mesh_attachment_get_path(attachment).flatMap { String(cString: $0) }
     }
 
     public func getRegion() -> spine_texture_region {
@@ -1301,7 +1301,7 @@ public final class SpineMeshAttachment {
         return spine_mesh_attachment_get_num_edges(attachment)
     }
 
-    public func getEdges() -> [UnsafeMutablePointer<UInt16>] {
+    public func getEdges() -> [UInt16] {
         let num = Int(spine_mesh_attachment_get_num_edges(attachment))
         let native = spine_mesh_attachment_get_edges(attachment)
         return (0..<num).compactMap { native?[$0] }
@@ -1329,7 +1329,7 @@ public final class SpinePathAttachment {
 
     internal let attachment: spine_path_attachment
 
-    internal init(attachment: spine_path_attachment) {
+    internal init(_ attachment: spine_path_attachment) {
         self.attachment = attachment
     }
 
@@ -1337,7 +1337,7 @@ public final class SpinePathAttachment {
         return spine_path_attachment_get_num_lengths(attachment)
     }
 
-    public func getLengths() -> [UnsafeMutablePointer<Float>] {
+    public func getLengths() -> [Float?] {
         let num = Int(spine_path_attachment_get_num_lengths(attachment))
         let native = spine_path_attachment_get_lengths(attachment)
         return (0..<num).compactMap { native?[$0] }
@@ -1373,7 +1373,7 @@ public final class SpineConstraintData {
 
     internal let data: spine_constraint_data
 
-    internal init(data: spine_constraint_data) {
+    internal init(_ data: spine_constraint_data) {
         self.data = data
     }
 
@@ -1381,8 +1381,8 @@ public final class SpineConstraintData {
         return spine_constraint_data_get_type(data)
     }
 
-    public func getName() -> UnsafeMutablePointer<utf8> {
-        return spine_constraint_data_get_name(data)
+    public func getName() -> String? {
+        return spine_constraint_data_get_name(data).flatMap { String(cString: $0) }
     }
 
     public func getOrder() -> UInt64 {
@@ -1407,7 +1407,7 @@ public final class SpinePathConstraint {
 
     internal let constraint: spine_path_constraint
 
-    internal init(constraint: spine_path_constraint) {
+    internal init(_ constraint: spine_path_constraint) {
         self.constraint = constraint
     }
 
@@ -1495,7 +1495,7 @@ public final class SpineAnimationState {
 
     internal let state: spine_animation_state
 
-    internal init(state: spine_animation_state) {
+    internal init(_ state: spine_animation_state) {
         self.state = state
     }
 
@@ -1519,7 +1519,7 @@ public final class SpineAnimationState {
         return spine_animation_state_get_num_tracks(state)
     }
 
-    public func setAnimationByName(trackIndex: Int32, animationName: UnsafeMutablePointer<utf8>, loop: Int32) -> spine_track_entry {
+    public func setAnimationByName(trackIndex: Int32, animationName: String?, loop: Int32) -> spine_track_entry {
         return spine_animation_state_set_animation_by_name(state, trackIndex, animationName, loop)
     }
 
@@ -1527,7 +1527,7 @@ public final class SpineAnimationState {
         return spine_animation_state_set_animation(state, trackIndex, animation, loop)
     }
 
-    public func addAnimationByName(trackIndex: Int32, animationName: UnsafeMutablePointer<utf8>, loop: Int32, delay: Float) -> spine_track_entry {
+    public func addAnimationByName(trackIndex: Int32, animationName: String?, loop: Int32, delay: Float) -> spine_track_entry {
         return spine_animation_state_add_animation_by_name(state, trackIndex, animationName, loop, delay)
     }
 
@@ -1573,7 +1573,7 @@ public final class SpineTextureRegion {
 
     internal let region: spine_texture_region
 
-    internal init(region: spine_texture_region) {
+    internal init(_ region: spine_texture_region) {
         self.region = region
     }
 
@@ -1679,27 +1679,27 @@ public final class SpineRenderCommand {
 
     internal let command: spine_render_command
 
-    internal init(command: spine_render_command) {
+    internal init(_ command: spine_render_command) {
         self.command = command
     }
 
-    public func getPositions() -> UnsafeMutablePointer<Float> {
-        return spine_render_command_get_positions(command)
+    public func getPositions() -> Float? {
+        return spine_render_command_get_positions(command).flatMap { $0.pointee }
     }
 
-    public func getUvs() -> UnsafeMutablePointer<Float> {
-        return spine_render_command_get_uvs(command)
+    public func getUvs() -> Float? {
+        return spine_render_command_get_uvs(command).flatMap { $0.pointee }
     }
 
-    public func getColors() -> UnsafeMutablePointer<Int32> {
-        return spine_render_command_get_colors(command)
+    public func getColors() -> Int32? {
+        return spine_render_command_get_colors(command).flatMap { $0.pointee }
     }
 
     public func getNumVertices() -> Int32 {
         return spine_render_command_get_num_vertices(command)
     }
 
-    public func getIndices() -> [UnsafeMutablePointer<UInt16>] {
+    public func getIndices() -> [UInt16] {
         let num = Int(spine_render_command_get_num_indices(command))
         let native = spine_render_command_get_indices(command)
         return (0..<num).compactMap { native?[$0] }
@@ -1727,11 +1727,11 @@ public final class SpineSkeletonData {
 
     internal let data: spine_skeleton_data
 
-    internal init(data: spine_skeleton_data) {
+    internal init(_ data: spine_skeleton_data) {
         self.data = data
     }
 
-    public func loadJson(atlas: spine_atlas, skeletonData: UnsafeMutablePointer<utf8>) -> spine_skeleton_data_result {
+    public func loadJson(atlas: spine_atlas, skeletonData: String?) -> spine_skeleton_data_result {
         return spine_skeleton_data_load_json(atlas, skeletonData)
     }
 
@@ -1739,44 +1739,44 @@ public final class SpineSkeletonData {
         return spine_skeleton_data_load_binary(atlas, skeletonData, length)
     }
 
-    public func findBone(name: UnsafeMutablePointer<utf8>) -> spine_bone_data {
+    public func findBone(name: String?) -> spine_bone_data {
         return spine_skeleton_data_find_bone(data, name)
     }
 
-    public func findSlot(name: UnsafeMutablePointer<utf8>) -> spine_slot_data {
+    public func findSlot(name: String?) -> spine_slot_data {
         return spine_skeleton_data_find_slot(data, name)
     }
 
-    public func findSkin(name: UnsafeMutablePointer<utf8>) -> spine_skin {
+    public func findSkin(name: String?) -> spine_skin {
         return spine_skeleton_data_find_skin(data, name)
     }
 
-    public func findEvent(name: UnsafeMutablePointer<utf8>) -> spine_event_data {
+    public func findEvent(name: String?) -> spine_event_data {
         return spine_skeleton_data_find_event(data, name)
     }
 
-    public func findAnimation(name: UnsafeMutablePointer<utf8>) -> spine_animation {
+    public func findAnimation(name: String?) -> spine_animation {
         return spine_skeleton_data_find_animation(data, name)
     }
 
-    public func findIkConstraint(name: UnsafeMutablePointer<utf8>) -> spine_ik_constraint_data {
+    public func findIkConstraint(name: String?) -> spine_ik_constraint_data {
         return spine_skeleton_data_find_ik_constraint(data, name)
     }
 
-    public func findTransformConstraint(name: UnsafeMutablePointer<utf8>) -> spine_transform_constraint_data {
+    public func findTransformConstraint(name: String?) -> spine_transform_constraint_data {
         return spine_skeleton_data_find_transform_constraint(data, name)
     }
 
-    public func findPathConstraint(name: UnsafeMutablePointer<utf8>) -> spine_path_constraint_data {
+    public func findPathConstraint(name: String?) -> spine_path_constraint_data {
         return spine_skeleton_data_find_path_constraint(data, name)
     }
 
-    public func findPhysicsConstraint(name: UnsafeMutablePointer<utf8>) -> spine_physics_constraint_data {
+    public func findPhysicsConstraint(name: String?) -> spine_physics_constraint_data {
         return spine_skeleton_data_find_physics_constraint(data, name)
     }
 
-    public func getName() -> UnsafeMutablePointer<utf8> {
-        return spine_skeleton_data_get_name(data)
+    public func getName() -> String? {
+        return spine_skeleton_data_get_name(data).flatMap { String(cString: $0) }
     }
 
     public func getNumBones() -> Int32 {
@@ -1909,20 +1909,20 @@ public final class SpineSkeletonData {
         spine_skeleton_data_set_height(data, height)
     }
 
-    public func getVersion() -> UnsafeMutablePointer<utf8> {
-        return spine_skeleton_data_get_version(data)
+    public func getVersion() -> String? {
+        return spine_skeleton_data_get_version(data).flatMap { String(cString: $0) }
     }
 
-    public func getHash() -> UnsafeMutablePointer<utf8> {
-        return spine_skeleton_data_get_hash(data)
+    public func getHash() -> String? {
+        return spine_skeleton_data_get_hash(data).flatMap { String(cString: $0) }
     }
 
-    public func getImagesPath() -> UnsafeMutablePointer<utf8> {
-        return spine_skeleton_data_get_images_path(data)
+    public func getImagesPath() -> String? {
+        return spine_skeleton_data_get_images_path(data).flatMap { String(cString: $0) }
     }
 
-    public func getAudioPath() -> UnsafeMutablePointer<utf8> {
-        return spine_skeleton_data_get_audio_path(data)
+    public func getAudioPath() -> String? {
+        return spine_skeleton_data_get_audio_path(data).flatMap { String(cString: $0) }
     }
 
     public func getFps() -> Float {
@@ -1943,7 +1943,7 @@ public final class SpineIkConstraint {
 
     internal let constraint: spine_ik_constraint
 
-    internal init(constraint: spine_ik_constraint) {
+    internal init(_ constraint: spine_ik_constraint) {
         self.constraint = constraint
     }
 
@@ -2031,7 +2031,7 @@ public final class SpineSkinEntries {
 
     internal let entries: spine_skin_entries
 
-    internal init(entries: spine_skin_entries) {
+    internal init(_ entries: spine_skin_entries) {
         self.entries = entries
     }
 
@@ -2053,7 +2053,7 @@ public final class SpineTrackEntry {
 
     internal let entry: spine_track_entry
 
-    internal init(entry: spine_track_entry) {
+    internal init(_ entry: spine_track_entry) {
         self.entry = entry
     }
 
@@ -2255,12 +2255,12 @@ public final class SpineAttachment {
 
     internal let attachment: spine_attachment
 
-    internal init(attachment: spine_attachment) {
+    internal init(_ attachment: spine_attachment) {
         self.attachment = attachment
     }
 
-    public func getName() -> UnsafeMutablePointer<utf8> {
-        return spine_attachment_get_name(attachment)
+    public func getName() -> String? {
+        return spine_attachment_get_name(attachment).flatMap { String(cString: $0) }
     }
 
     public func getType() -> spine_attachment_type {
@@ -2281,7 +2281,7 @@ public final class SpineConstraint {
 
     internal let constraint: spine_constraint
 
-    internal init(constraint: spine_constraint) {
+    internal init(_ constraint: spine_constraint) {
         self.constraint = constraint
     }
 
@@ -2291,12 +2291,12 @@ public final class SpineEventData {
 
     internal let data: spine_event_data
 
-    internal init(data: spine_event_data) {
+    internal init(_ data: spine_event_data) {
         self.data = data
     }
 
-    public func getName() -> UnsafeMutablePointer<utf8> {
-        return spine_event_data_get_name(data)
+    public func getName() -> String? {
+        return spine_event_data_get_name(data).flatMap { String(cString: $0) }
     }
 
     public func getIntValue() -> Int32 {
@@ -2315,16 +2315,16 @@ public final class SpineEventData {
         spine_event_data_set_float_value(data, value)
     }
 
-    public func getStringValue() -> UnsafeMutablePointer<utf8> {
-        return spine_event_data_get_string_value(data)
+    public func getStringValue() -> String? {
+        return spine_event_data_get_string_value(data).flatMap { String(cString: $0) }
     }
 
-    public func setStringValue(value: UnsafeMutablePointer<utf8>) {
+    public func setStringValue(value: String?) {
         spine_event_data_set_string_value(data, value)
     }
 
-    public func getAudioPath() -> UnsafeMutablePointer<utf8> {
-        return spine_event_data_get_audio_path(data)
+    public func getAudioPath() -> String? {
+        return spine_event_data_get_audio_path(data).flatMap { String(cString: $0) }
     }
 
     public func getVolume() -> Float {
@@ -2349,7 +2349,7 @@ public final class SpineSkinEntry {
 
     internal let entry: spine_skin_entry
 
-    internal init(entry: spine_skin_entry) {
+    internal init(_ entry: spine_skin_entry) {
         self.entry = entry
     }
 
@@ -2357,8 +2357,8 @@ public final class SpineSkinEntry {
         return spine_skin_entry_get_slot_index(entry)
     }
 
-    public func getName() -> UnsafeMutablePointer<utf8> {
-        return spine_skin_entry_get_name(entry)
+    public func getName() -> String? {
+        return spine_skin_entry_get_name(entry).flatMap { String(cString: $0) }
     }
 
     public func getAttachment() -> spine_attachment {
@@ -2371,7 +2371,7 @@ public final class SpineBoneData {
 
     internal let data: spine_bone_data
 
-    internal init(data: spine_bone_data) {
+    internal init(_ data: spine_bone_data) {
         self.data = data
     }
 
@@ -2379,8 +2379,8 @@ public final class SpineBoneData {
         return spine_bone_data_get_index(data)
     }
 
-    public func getName() -> UnsafeMutablePointer<utf8> {
-        return spine_bone_data_get_name(data)
+    public func getName() -> String? {
+        return spine_bone_data_get_name(data).flatMap { String(cString: $0) }
     }
 
     public func getParent() -> spine_bone_data {
@@ -2489,7 +2489,7 @@ public final class SpineSlotData {
 
     internal let data: spine_slot_data
 
-    internal init(data: spine_slot_data) {
+    internal init(_ data: spine_slot_data) {
         self.data = data
     }
 
@@ -2497,8 +2497,8 @@ public final class SpineSlotData {
         return spine_slot_data_get_index(data)
     }
 
-    public func getName() -> UnsafeMutablePointer<utf8> {
-        return spine_slot_data_get_name(data)
+    public func getName() -> String? {
+        return spine_slot_data_get_name(data).flatMap { String(cString: $0) }
     }
 
     public func getBoneData() -> spine_bone_data {
@@ -2529,11 +2529,11 @@ public final class SpineSlotData {
         spine_slot_data_set_has_dark_color(data, hasDarkColor)
     }
 
-    public func getAttachmentName() -> UnsafeMutablePointer<utf8> {
-        return spine_slot_data_get_attachment_name(data)
+    public func getAttachmentName() -> String? {
+        return spine_slot_data_get_attachment_name(data).flatMap { String(cString: $0) }
     }
 
-    public func setAttachmentName(attachmentName: UnsafeMutablePointer<utf8>) {
+    public func setAttachmentName(attachmentName: String?) {
         spine_slot_data_set_attachment_name(data, attachmentName)
     }
 
@@ -2559,12 +2559,12 @@ public final class SpineAnimation {
 
     internal let animation: spine_animation
 
-    internal init(animation: spine_animation) {
+    internal init(_ animation: spine_animation) {
         self.animation = animation
     }
 
-    public func getName() -> UnsafeMutablePointer<utf8> {
-        return spine_animation_get_name(animation)
+    public func getName() -> String? {
+        return spine_animation_get_name(animation).flatMap { String(cString: $0) }
     }
 
     public func getDuration() -> Float {
@@ -2577,7 +2577,7 @@ public final class SpineSkeleton {
 
     internal let skeleton: spine_skeleton
 
-    internal init(skeleton: spine_skeleton) {
+    internal init(_ skeleton: spine_skeleton) {
         self.skeleton = skeleton
     }
 
@@ -2605,15 +2605,15 @@ public final class SpineSkeleton {
         spine_skeleton_set_slots_to_setup_pose(skeleton)
     }
 
-    public func findBone(boneName: UnsafeMutablePointer<utf8>) -> spine_bone {
+    public func findBone(boneName: String?) -> spine_bone {
         return spine_skeleton_find_bone(skeleton, boneName)
     }
 
-    public func findSlot(slotName: UnsafeMutablePointer<utf8>) -> spine_slot {
+    public func findSlot(slotName: String?) -> spine_slot {
         return spine_skeleton_find_slot(skeleton, slotName)
     }
 
-    public func setSkinByName(skinName: UnsafeMutablePointer<utf8>) {
+    public func setSkinByName(skinName: String?) {
         spine_skeleton_set_skin_by_name(skeleton, skinName)
     }
 
@@ -2621,31 +2621,31 @@ public final class SpineSkeleton {
         spine_skeleton_set_skin(skeleton, skin)
     }
 
-    public func getAttachmentByName(slotName: UnsafeMutablePointer<utf8>, attachmentName: UnsafeMutablePointer<utf8>) -> spine_attachment {
+    public func getAttachmentByName(slotName: String?, attachmentName: String?) -> spine_attachment {
         return spine_skeleton_get_attachment_by_name(skeleton, slotName, attachmentName)
     }
 
-    public func getAttachment(slotIndex: Int32, attachmentName: UnsafeMutablePointer<utf8>) -> spine_attachment {
+    public func getAttachment(slotIndex: Int32, attachmentName: String?) -> spine_attachment {
         return spine_skeleton_get_attachment(skeleton, slotIndex, attachmentName)
     }
 
-    public func setAttachment(slotName: UnsafeMutablePointer<utf8>, attachmentName: UnsafeMutablePointer<utf8>) {
+    public func setAttachment(slotName: String?, attachmentName: String?) {
         spine_skeleton_set_attachment(skeleton, slotName, attachmentName)
     }
 
-    public func findIkConstraint(constraintName: UnsafeMutablePointer<utf8>) -> spine_ik_constraint {
+    public func findIkConstraint(constraintName: String?) -> spine_ik_constraint {
         return spine_skeleton_find_ik_constraint(skeleton, constraintName)
     }
 
-    public func findTransformConstraint(constraintName: UnsafeMutablePointer<utf8>) -> spine_transform_constraint {
+    public func findTransformConstraint(constraintName: String?) -> spine_transform_constraint {
         return spine_skeleton_find_transform_constraint(skeleton, constraintName)
     }
 
-    public func findPathConstraint(constraintName: UnsafeMutablePointer<utf8>) -> spine_path_constraint {
+    public func findPathConstraint(constraintName: String?) -> spine_path_constraint {
         return spine_skeleton_find_path_constraint(skeleton, constraintName)
     }
 
-    public func findPhysicsConstraint(constraintName: UnsafeMutablePointer<utf8>) -> spine_physics_constraint {
+    public func findPhysicsConstraint(constraintName: String?) -> spine_physics_constraint {
         return spine_skeleton_find_physics_constraint(skeleton, constraintName)
     }
 
@@ -2797,7 +2797,7 @@ public final class SpineSequence {
 
     internal let sequence: spine_sequence
 
-    internal init(sequence: spine_sequence) {
+    internal init(_ sequence: spine_sequence) {
         self.sequence = sequence
     }
 
@@ -2805,8 +2805,8 @@ public final class SpineSequence {
         spine_sequence_apply(sequence, slot, attachment)
     }
 
-    public func getPath(basePath: UnsafeMutablePointer<utf8>, index: Int32) -> UnsafeMutablePointer<utf8> {
-        return spine_sequence_get_path(sequence, basePath, index)
+    public func getPath(basePath: String?, index: Int32) -> String? {
+        return spine_sequence_get_path(sequence, basePath, index).flatMap { String(cString: $0) }
     }
 
     public func getId() -> Int32 {
@@ -2857,7 +2857,7 @@ public final class SpineBounds {
 
     internal let bounds: spine_bounds
 
-    internal init(bounds: spine_bounds) {
+    internal init(_ bounds: spine_bounds) {
         self.bounds = bounds
     }
 
@@ -2883,7 +2883,7 @@ public final class SpineVector {
 
     internal let vector: spine_vector
 
-    internal init(vector: spine_vector) {
+    internal init(_ vector: spine_vector) {
         self.vector = vector
     }
 
@@ -2901,7 +2901,7 @@ public final class SpineEvent {
 
     internal let event: spine_event
 
-    internal init(event: spine_event) {
+    internal init(_ event: spine_event) {
         self.event = event
     }
 
@@ -2929,11 +2929,11 @@ public final class SpineEvent {
         spine_event_set_float_value(event, value)
     }
 
-    public func getStringValue() -> UnsafeMutablePointer<utf8> {
-        return spine_event_get_string_value(event)
+    public func getStringValue() -> String? {
+        return spine_event_get_string_value(event).flatMap { String(cString: $0) }
     }
 
-    public func setStringValue(value: UnsafeMutablePointer<utf8>) {
+    public func setStringValue(value: String?) {
         spine_event_set_string_value(event, value)
     }
 
@@ -2959,11 +2959,11 @@ public final class SpineAtlas {
 
     internal let atlas: spine_atlas
 
-    internal init(atlas: spine_atlas) {
+    internal init(_ atlas: spine_atlas) {
         self.atlas = atlas
     }
 
-    public func load(atlasData: UnsafeMutablePointer<utf8>) -> spine_atlas {
+    public func load(atlasData: String?) -> spine_atlas {
         return spine_atlas_load(atlasData)
     }
 
@@ -2971,12 +2971,12 @@ public final class SpineAtlas {
         return spine_atlas_get_num_image_paths(atlas)
     }
 
-    public func getImagePath(index: Int32) -> UnsafeMutablePointer<utf8> {
-        return spine_atlas_get_image_path(atlas, index)
+    public func getImagePath(index: Int32) -> String? {
+        return spine_atlas_get_image_path(atlas, index).flatMap { String(cString: $0) }
     }
 
-    public func getError() -> UnsafeMutablePointer<utf8> {
-        return spine_atlas_get_error(atlas)
+    public func getError() -> String? {
+        return spine_atlas_get_error(atlas).flatMap { String(cString: $0) }
     }
 
     public func dispose() {
@@ -2989,7 +2989,7 @@ public final class SpineColor {
 
     internal let color: spine_color
 
-    internal init(color: spine_color) {
+    internal init(_ color: spine_color) {
         self.color = color
     }
 
@@ -3015,7 +3015,7 @@ public final class SpineBone {
 
     internal let bone: spine_bone
 
-    internal init(bone: spine_bone) {
+    internal init(_ bone: spine_bone) {
         self.bone = bone
     }
 
@@ -3303,7 +3303,7 @@ public final class SpineSlot {
 
     internal let slot: spine_slot
 
-    internal init(slot: spine_slot) {
+    internal init(_ slot: spine_slot) {
         self.slot = slot
     }
 
@@ -3365,24 +3365,24 @@ public final class SpineSkin {
 
     internal let skin: spine_skin
 
-    internal init(skin: spine_skin) {
+    internal init(_ skin: spine_skin) {
         self.skin = skin
     }
 
-    public func setAttachment(slotIndex: Int32, name: UnsafeMutablePointer<utf8>, attachment: spine_attachment) {
+    public func setAttachment(slotIndex: Int32, name: String?, attachment: spine_attachment) {
         spine_skin_set_attachment(skin, slotIndex, name, attachment)
     }
 
-    public func getAttachment(slotIndex: Int32, name: UnsafeMutablePointer<utf8>) -> spine_attachment {
+    public func getAttachment(slotIndex: Int32, name: String?) -> spine_attachment {
         return spine_skin_get_attachment(skin, slotIndex, name)
     }
 
-    public func removeAttachment(slotIndex: Int32, name: UnsafeMutablePointer<utf8>) {
+    public func removeAttachment(slotIndex: Int32, name: String?) {
         spine_skin_remove_attachment(skin, slotIndex, name)
     }
 
-    public func getName() -> UnsafeMutablePointer<utf8> {
-        return spine_skin_get_name(skin)
+    public func getName() -> String? {
+        return spine_skin_get_name(skin).flatMap { String(cString: $0) }
     }
 
     public func addSkin(other: spine_skin) {
@@ -3417,7 +3417,7 @@ public final class SpineSkin {
         return (0..<num).compactMap { native?[$0] }
     }
 
-    public func create(name: UnsafeMutablePointer<utf8>) -> spine_skin {
+    public func create(name: String?) -> spine_skin {
         return spine_skin_create(name)
     }
 
