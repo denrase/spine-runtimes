@@ -66,6 +66,7 @@ class SpineObject:
     def __init__(self, name, functions):
         self.name = name
         self.functions = functions
+        self.function_names = {function.name for function in functions}
         self.var_name = name.split("_")[-1]
 
     def __str__(self):
@@ -180,17 +181,18 @@ inset = "    "
 class SwiftTypeWriter:
     def __init__(self, type):
         self.type = type
-        parameter_type = supported_types_to_swift_types.get(self.type)
-        self.is_array = parameter_type is None and type.endswith(" *")
         
-    def write(self):
+    def write(self, as_array):
         parameter_type = supported_types_to_swift_types.get(self.type)
         if parameter_type is None:
-          if self.is_array: # Check if this is a pointer-pointer, e.g array. Only relevant for function return types
-            parameter_type = f"[{self.type[:-2]}]"
-          else:
-            parameter_type = self.type
+          parameter_type = self.type
         
+        if as_array:
+            if parameter_type.endswith(" *"):
+              parameter_type = f"[{parameter_type[:-2]}]"
+            else:
+              parameter_type = f"[{parameter_type}]"
+
         return parameter_type
         
 class SwiftParamWriter:
@@ -198,7 +200,7 @@ class SwiftParamWriter:
         self.param = param
         
     def write(self):
-        type = SwiftTypeWriter(type = self.param.type).write()
+        type = SwiftTypeWriter(type = self.param.type).write(as_array=False)
         return f"{snake_to_camel(self.param.name)}: {type}"
     
 class SwiftFunctionWriter:
@@ -231,9 +233,11 @@ class SwiftFunctionWriter:
         function_string += ")"
 
         swift_return_type_writer = SwiftTypeWriter(type = self.spine_function.return_type)
-        swift_return_type = swift_return_type_writer.write()
-        swift_return_type_is_array = swift_return_type_writer.is_array
 
+        num_function_name = self.spine_function.name.replace("get_", "get_num_")
+        swift_return_type_is_array = "get_" in self.spine_function.name and num_function_name in self.spine_object.function_names
+        swift_return_type = swift_return_type_writer.write(as_array = swift_return_type_is_array)
+        
         if not self.spine_function.return_type == "void":
             function_string += f" -> {swift_return_type}"
 
@@ -246,7 +250,7 @@ class SwiftFunctionWriter:
         function_call += f"{self.spine_function.name}"
         function_call += "("
 
-        # Replace nae with ivar name
+        # Replace name with ivar name
         spine_params_with_ivar_name = spine_params
         if spine_params_with_ivar_name and spine_params_with_ivar_name[0].type == self.spine_object.name:
           spine_params_with_ivar_name[0].name = self.spine_object.var_name
@@ -260,7 +264,7 @@ class SwiftFunctionWriter:
         function_call += ")"
 
         if swift_return_type_is_array:
-          num_function_name = self.spine_function.name.replace("get_", "get_num_")
+          
           function_string += f"let num = Int({num_function_name}({self.spine_object.var_name}))"
           function_string += "\n"
           function_string += inset + inset
@@ -327,7 +331,6 @@ for object in objects:
 
 # Must Have
 
-# TODO: Handle arrays (pointer pointer)
 # TODO: Handle char* string return
 # TODO: Handle char* arguments as string
 # TODO: only return wrapper objects, not spine c types (invoke ctor)

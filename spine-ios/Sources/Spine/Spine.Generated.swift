@@ -1067,16 +1067,20 @@ public final class SpineRegionAttachment {
         return spine_region_attachment_get_num_offset(attachment)
     }
 
-    public func getOffset() -> UnsafeMutablePointer<Float> {
-        return spine_region_attachment_get_offset(attachment)
+    public func getOffset() -> [UnsafeMutablePointer<Float>] {
+        let num = Int(spine_region_attachment_get_num_offset(attachment))
+        let native = spine_region_attachment_get_offset(attachment)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumUvs() -> Int32 {
         return spine_region_attachment_get_num_uvs(attachment)
     }
 
-    public func getUvs() -> UnsafeMutablePointer<Float> {
-        return spine_region_attachment_get_uvs(attachment)
+    public func getUvs() -> [UnsafeMutablePointer<Float>] {
+        let num = Int(spine_region_attachment_get_num_uvs(attachment))
+        let native = spine_region_attachment_get_uvs(attachment)
+        return (0..<num).compactMap { native?[$0] }
     }
 
 }
@@ -1101,16 +1105,20 @@ public final class SpineVertexAttachment {
         return spine_vertex_attachment_get_num_bones(attachment)
     }
 
-    public func getBones() -> UnsafeMutablePointer<Int32> {
-        return spine_vertex_attachment_get_bones(attachment)
+    public func getBones() -> [UnsafeMutablePointer<Int32>] {
+        let num = Int(spine_vertex_attachment_get_num_bones(attachment))
+        let native = spine_vertex_attachment_get_bones(attachment)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumVertices() -> Int32 {
         return spine_vertex_attachment_get_num_vertices(attachment)
     }
 
-    public func getVertices() -> UnsafeMutablePointer<Float> {
-        return spine_vertex_attachment_get_vertices(attachment)
+    public func getVertices() -> [UnsafeMutablePointer<Float>] {
+        let num = Int(spine_vertex_attachment_get_num_vertices(attachment))
+        let native = spine_vertex_attachment_get_vertices(attachment)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getTimelineAttachment() -> spine_attachment {
@@ -1235,24 +1243,30 @@ public final class SpineMeshAttachment {
         return spine_mesh_attachment_get_num_region_uvs(attachment)
     }
 
-    public func getRegionUvs() -> UnsafeMutablePointer<Float> {
-        return spine_mesh_attachment_get_region_uvs(attachment)
+    public func getRegionUvs() -> [UnsafeMutablePointer<Float>] {
+        let num = Int(spine_mesh_attachment_get_num_region_uvs(attachment))
+        let native = spine_mesh_attachment_get_region_uvs(attachment)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumUvs() -> Int32 {
         return spine_mesh_attachment_get_num_uvs(attachment)
     }
 
-    public func getUvs() -> UnsafeMutablePointer<Float> {
-        return spine_mesh_attachment_get_uvs(attachment)
+    public func getUvs() -> [UnsafeMutablePointer<Float>] {
+        let num = Int(spine_mesh_attachment_get_num_uvs(attachment))
+        let native = spine_mesh_attachment_get_uvs(attachment)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumTriangles() -> Int32 {
         return spine_mesh_attachment_get_num_triangles(attachment)
     }
 
-    public func getTriangles() -> UnsafeMutablePointer<UInt16> {
-        return spine_mesh_attachment_get_triangles(attachment)
+    public func getTriangles() -> [UnsafeMutablePointer<UInt16>] {
+        let num = Int(spine_mesh_attachment_get_num_triangles(attachment))
+        let native = spine_mesh_attachment_get_triangles(attachment)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getColor() -> spine_color {
@@ -1287,8 +1301,10 @@ public final class SpineMeshAttachment {
         return spine_mesh_attachment_get_num_edges(attachment)
     }
 
-    public func getEdges() -> UnsafeMutablePointer<UInt16> {
-        return spine_mesh_attachment_get_edges(attachment)
+    public func getEdges() -> [UnsafeMutablePointer<UInt16>] {
+        let num = Int(spine_mesh_attachment_get_num_edges(attachment))
+        let native = spine_mesh_attachment_get_edges(attachment)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getWidth() -> Float {
@@ -1321,8 +1337,10 @@ public final class SpinePathAttachment {
         return spine_path_attachment_get_num_lengths(attachment)
     }
 
-    public func getLengths() -> UnsafeMutablePointer<Float> {
-        return spine_path_attachment_get_lengths(attachment)
+    public func getLengths() -> [UnsafeMutablePointer<Float>] {
+        let num = Int(spine_path_attachment_get_num_lengths(attachment))
+        let native = spine_path_attachment_get_lengths(attachment)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getIsClosed() -> Int32 {
@@ -1681,8 +1699,10 @@ public final class SpineRenderCommand {
         return spine_render_command_get_num_vertices(command)
     }
 
-    public func getIndices() -> UnsafeMutablePointer<UInt16> {
-        return spine_render_command_get_indices(command)
+    public func getIndices() -> [UnsafeMutablePointer<UInt16>] {
+        let num = Int(spine_render_command_get_num_indices(command))
+        let native = spine_render_command_get_indices(command)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumIndices() -> Int32 {
@@ -1715,7 +1735,7 @@ public final class SpineSkeletonData {
         return spine_skeleton_data_load_json(atlas, skeletonData)
     }
 
-    public func loadBinary(atlas: spine_atlas, skeletonData: [const uint8_t], length: Int32) -> spine_skeleton_data_result {
+    public func loadBinary(atlas: spine_atlas, skeletonData: const uint8_t *, length: Int32) -> spine_skeleton_data_result {
         return spine_skeleton_data_load_binary(atlas, skeletonData, length)
     }
 
