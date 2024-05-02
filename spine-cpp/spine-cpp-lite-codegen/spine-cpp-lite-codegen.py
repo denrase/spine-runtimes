@@ -259,23 +259,7 @@ class SwiftFunctionWriter:
         function_string += "\n"
 
         function_string += inset + inset
-
-        function_call = ""
-        function_call += f"{self.spine_function.name}"
-        function_call += "("
-
-        # Replace name with ivar name
-        spine_params_with_ivar_name = spine_params
-        if spine_params_with_ivar_name and spine_params_with_ivar_name[0].type == self.spine_object.name:
-          spine_params_with_ivar_name[0].name = self.spine_object.var_name
-        
-        swift_param_names = [
-            f"{spine_param.name}.wrappee" if spine_param.type.startswith("spine_") and spine_param.type not in enums and idx > 0 else spine_param.name
-            for idx, spine_param in enumerate(spine_params_with_ivar_name)
-        ]
-
-        function_call += ", ".join(swift_param_names)
-        function_call += ")"
+        function_call = self.write_function_call(spine_params)
 
         if swift_return_type_is_array:
           
@@ -329,6 +313,25 @@ class SwiftFunctionWriter:
         function_string += "\n"
 
         return function_string
+
+    def write_function_call(self, spine_params):
+      function_call = ""
+      function_call += f"{self.spine_function.name}"
+      function_call += "("
+
+      # Replace name with ivar name
+      spine_params_with_ivar_name = spine_params
+      if spine_params_with_ivar_name and spine_params_with_ivar_name[0].type == self.spine_object.name:
+        spine_params_with_ivar_name[0].name = self.spine_object.var_name
+      
+      swift_param_names = [
+          f"{spine_param.name}.wrappee" if spine_param.type.startswith("spine_") and spine_param.type not in enums and idx > 0 else spine_param.name
+          for idx, spine_param in enumerate(spine_params_with_ivar_name)
+      ]
+
+      function_call += ", ".join(swift_param_names)
+      function_call += ")"
+      return function_call
 
 class SwiftObjectWriter:
     def __init__(self, spine_object):
