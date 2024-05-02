@@ -62,6 +62,12 @@ def read_spine_function_declarations(data):
 
     return function_declaration
 
+def read_spine_enums(data):
+    enums_start = data.find('// parse_start: spine_enums') + len('// parse_start: spine_enums')
+    enums_end = data.find('// parse_end: spine_enums')
+    enums_section = data[enums_start:enums_end]
+    return re.findall(r"typedef enum (\w+) \{", enums_section)
+
 class SpineObject:
     def __init__(self, name, functions):
         self.name = name
@@ -136,6 +142,7 @@ def parse_function_declaration(declaration):
 
 types = read_spine_types(file_contents)
 function_declarations = read_spine_function_declarations(file_contents)
+enums = read_spine_enums(file_contents)
 
 sorted_types = sorted(types, key=len, reverse=True) # Sorted by legth descending so we can match longest prefix.
 spine_functions = [
@@ -256,7 +263,7 @@ class SwiftFunctionWriter:
           spine_params_with_ivar_name[0].name = self.spine_object.var_name
         
         swift_param_names = [
-            f"{spine_param.name}.wrappee" if spine_param.type.startswith("spine_") and idx > 0 else spine_param.name
+            f"{spine_param.name}.wrappee" if spine_param.type.startswith("spine_") and spine_param.type not in enums and idx > 0 else spine_param.name
             for idx, spine_param in enumerate(spine_params_with_ivar_name)
         ]
 
@@ -276,7 +283,10 @@ class SwiftFunctionWriter:
           function_string += inset + inset + inset
 
           if self.spine_function.return_type.startswith("spine_"):
-            function_string += "ptr?[$0].flatMap { .init($0) }"
+            if self.spine_function.return_type in enums:
+              function_string += "ptr?[$0].flatMap { .init($0.rawValue) }"
+            else:
+              function_string += "ptr?[$0].flatMap { .init($0) }" 
           else:
             function_string += "ptr?[$0]"
 
@@ -290,7 +300,10 @@ class SwiftFunctionWriter:
           if self.spine_function.return_type.startswith("spine_"):
             function_string += ".init("
             function_string += function_call
-            function_string += ")"
+            if self.spine_function.return_type in enums:
+              function_string += ".rawValue)"
+            else:
+               function_string += ")"
           else:
             function_string += function_call
           
@@ -343,10 +356,22 @@ class SwiftObjectWriter:
 
         return object_string
 
+class SwiftEnumWriter:
+    def __init__(self, spine_enum):
+        self.spine_enum = spine_enum
+
+    def write(self):
+       return f"public typealias {snake_to_title(self.spine_enum)} = {self.spine_enum}"
+
 print("import Foundation")
 print("import SpineWrapper")
 print("")
 
+for enum in enums:
+   print(SwiftEnumWriter(spine_enum=enum).write())
+
+print("")
+  
 for object in objects:
     print(SwiftObjectWriter(spine_object = object).write())
     print("")

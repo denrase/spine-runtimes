@@ -109,6 +109,8 @@ SPINE_OPAQUE_TYPE(spine_skin_entries)
 
 typedef char utf8;
 
+// parse_start: spine_enums
+
 typedef enum spine_blend_mode {
 	SPINE_BLEND_MODE_NORMAL = 0,
 	SPINE_BLEND_MODE_ADDITIVE,
@@ -180,6 +182,8 @@ typedef enum spine_physics {
 	SPINE_PHYSICS_POSE
 
 } spine_physics;
+
+// parse_end: spine_enums
 
 // parse_start: spine_function_declarations
 
