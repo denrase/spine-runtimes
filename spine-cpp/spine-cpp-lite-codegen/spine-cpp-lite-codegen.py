@@ -4,27 +4,8 @@ import os
 script_directory = os.path.dirname(os.path.abspath(__file__))
 input_path = os.path.join(script_directory, '../spine-cpp-lite/spine-cpp-light.h')
 
-# TODO Handle correct directory relative path or provide it as a parameter
 with open(input_path, 'r') as file:
     file_contents = file.read()
-
-# file_lines = file_contents.splitlines()
-
-# for file_line in file_lines:
-#     print("FOO {}".format(file_line))
-
-supported_types = [
-    'void *',       # Generic pointer
-    'const utf8 *', # Pointer to UTF-8 characters; can also be mapped to 'String' if converting
-    'uint64_t',     # Unsigned 64-bit integer
-    'float *',      # Pointer to a float
-    'float',        # Floating-point number
-    'int32_t',      # 32-bit integer
-    'utf8 *',       # Pointer to UTF-8 characters; can also be mapped to 'String' if converting
-
-    'int32_t *',    # 32-bit integer
-    'uint16_t *'    # 16-bit integer
-]
 
 supported_types_to_swift_types = {
     'void *': 'UnsafeMutableRawPointer',
@@ -39,21 +20,32 @@ supported_types_to_swift_types = {
 }
 
 def read_spine_types(data):
-    types_start = data.find('// parse_start: spine_opaque_types') + len('// parse_start: spine_opaque_types')
-    types_end = data.find('// parse_end: spine_opaque_types')
+    types_start = data.find('// @start: opaque_types') + len('// @start: opaque_types')
+    types_end = data.find('// @end: paque_types')
     types_section = data[types_start:types_end]
     return re.findall(r'SPINE_OPAQUE_TYPE\(([^)]+)\)', types_section)
 
 def read_spine_function_declarations(data):
-    declarations_start = data.find('// parse_start: spine_function_declarations') + len('// parse_start: spine_function_declarations')
-    declarations_end = data.find('// parse_end: spine_function_declarations')
+    declarations_start = data.find('// @start: function_declarations') + len('// @start: function_declarations')
+    declarations_end = data.find('// @end: function_declarations')
     declarations_section = data[declarations_start:declarations_end]
     lines = declarations_section.split('\n')
 
-    filtered_lines = [
-        line.strip() for line in lines
-        if not line.strip().startswith('//') and line.strip() != ''
-    ]
+    filtered_lines = []
+    ignore_next = False;
+    for line in lines:
+      if ignore_next:
+         ignore_next = False
+         continue
+      
+      line = line.strip()
+
+      if not line.strip().startswith('//') and line.strip() != '':
+        filtered_lines.append(line)
+        ignore_next = False
+
+      if line.startswith('//') and '@ignore' in line:
+        ignore_next = True;
 
     function_declaration = [
         line.replace('SPINE_CPP_LITE_EXPORT', '').strip()
@@ -63,8 +55,8 @@ def read_spine_function_declarations(data):
     return function_declaration
 
 def read_spine_enums(data):
-    enums_start = data.find('// parse_start: spine_enums') + len('// parse_start: spine_enums')
-    enums_end = data.find('// parse_end: spine_enums')
+    enums_start = data.find('// @start: enums') + len('// @start: enums')
+    enums_end = data.find('// @end: enums')
     enums_section = data[enums_start:enums_end]
     return re.findall(r"typedef enum (\w+) \{", enums_section)
 

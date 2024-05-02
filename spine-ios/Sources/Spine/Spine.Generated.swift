@@ -1002,10 +1002,6 @@ public final class SpineRegionAttachment {
         spine_region_attachment_update_region(wrappee)
     }
 
-//    public func computeWorldVertices(slot: SpineSlot, worldVertices: Float?) {
-//        spine_region_attachment_compute_world_vertices(wrappee, slot.wrappee, worldVertices)
-//    }
-
     public func getX() -> Float {
         return spine_region_attachment_get_x(wrappee)
     }
@@ -1120,10 +1116,6 @@ public final class SpineVertexAttachment {
         return spine_vertex_attachment_get_world_vertices_length(wrappee)
     }
 
-//    public func computeWorldVertices(slot: SpineSlot, worldVertices: Float?) {
-//        spine_vertex_attachment_compute_world_vertices(wrappee, slot.wrappee, worldVertices)
-//    }
-
     public func getNumBones() -> Int32 {
         return spine_vertex_attachment_get_num_bones(wrappee)
     }
@@ -1165,10 +1157,6 @@ public final class SpineSkeletonDrawable {
     internal init(_ wrappee: spine_skeleton_drawable) {
         self.wrappee = wrappee
     }
-
-//    public func create(skeletonData: SpineSkeletonData) -> SpineSkeletonDrawable {
-//        return .init(spine_skeleton_drawable_create(skeletonData))
-//    }
 
     public func render() -> SpineRenderCommand {
         return .init(spine_skeleton_drawable_render(wrappee))
@@ -1771,14 +1759,6 @@ public final class SpineSkeletonData {
     internal init(_ wrappee: spine_skeleton_data) {
         self.wrappee = wrappee
     }
-
-//    public func loadJson(atlas: SpineAtlas, skeletonData: String?) -> SpineSkeletonDataResult {
-//        return .init(spine_skeleton_data_load_json(atlas, skeletonData))
-//    }
-//
-//    public func loadBinary(atlas: SpineAtlas, skeletonData: Const uint8T *, length: Int32) -> SpineSkeletonDataResult {
-//        return .init(spine_skeleton_data_load_binary(atlas, skeletonData, length))
-//    }
 
     public func findBone(name: String?) -> SpineBoneData {
         return .init(spine_skeleton_data_find_bone(wrappee, name))
