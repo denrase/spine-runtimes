@@ -202,6 +202,86 @@ class SwiftParamWriter:
         type = SwiftTypeWriter(type = self.param.type).write(as_array=False)
         return f"{snake_to_camel(self.param.name)}: {type}"
 
+class SwiftFunctionBodyWriter:
+  def __init__(self, spine_object, spine_function):
+      self.spine_object = spine_object
+      self.spine_function = spine_function
+
+  def write(self):
+    body = ""
+
+    num_function_name = self.spine_function.name.replace("get_", "get_num_")
+    swift_return_type_is_array = "get_" in self.spine_function.name and num_function_name in self.spine_object.function_names
+    
+    spine_params = self.spine_function.parameters;
+    function_call = self.write_c_function_call(spine_params)
+
+    if swift_return_type_is_array:
+      body += self.write_array_call(num_function_name, function_call)
+      body += inset + inset
+      body += "}"
+    else:
+      if not self.spine_function.return_type == "void":
+        body += "return "
+
+      if self.spine_function.return_type.startswith("spine_"):
+        body += ".init("
+        body += function_call
+        if self.spine_function.return_type in enums:
+          body += ".rawValue)"
+        else:
+          body += ")"
+      else:
+        body += function_call
+      
+      if self.spine_function.return_type == "const utf8 *" or self.spine_function.return_type == "utf8 *":
+        body += ".flatMap { String(cString: $0) }"
+      if self.spine_function.return_type == "int32_t *" or self.spine_function.return_type == "float *":
+        body += ".flatMap { $0.pointee }"
+
+    return body
+  
+  def write_c_function_call(self, spine_params):
+      function_call = ""
+      function_call += f"{self.spine_function.name}"
+      function_call += "("
+
+      # Replace name with ivar name
+      spine_params_with_ivar_name = spine_params
+      if spine_params_with_ivar_name and spine_params_with_ivar_name[0].type == self.spine_object.name:
+        spine_params_with_ivar_name[0].name = self.spine_object.var_name
+      
+      swift_param_names = [
+          f"{spine_param.name}.wrappee" if spine_param.type.startswith("spine_") and spine_param.type not in enums and idx > 0 else spine_param.name
+          for idx, spine_param in enumerate(spine_params_with_ivar_name)
+      ]
+
+      function_call += ", ".join(swift_param_names)
+      function_call += ")"
+      return function_call
+    
+  def write_array_call(self, num_function_name, function_call):
+    array_call = f"let num = Int({num_function_name}({self.spine_object.var_name}))"
+    array_call += "\n"
+    array_call += inset + inset
+    array_call += f"let ptr = {function_call}"
+    array_call += "\n"
+    array_call += inset + inset
+    array_call += "return (0..<num).compactMap {"
+    array_call += "\n"
+    array_call += inset + inset + inset
+
+    if self.spine_function.return_type.startswith("spine_"):
+      if self.spine_function.return_type in enums:
+        array_call += "ptr?[$0].flatMap { .init($0.rawValue) }"
+      else:
+        array_call += "ptr?[$0].flatMap { .init($0) }" 
+    else:
+      array_call += "ptr?[$0]"
+
+    array_call += "\n"
+    return array_call
+
 class SwiftFunctionWriter:
     def __init__(self, spine_object, spine_function):
         self.spine_object = spine_object
@@ -225,38 +305,14 @@ class SwiftFunctionWriter:
         else:
           function_string += self.write_method_signature(function_name, swift_return_type)
         
+        function_string += " {"
         function_string += "\n"
 
         function_string += inset + inset
 
-        spine_params = self.spine_function.parameters;
-        function_call = self.write_c_function_call(spine_params)
-
-        if swift_return_type_is_array:
-          function_string += self.write_array_call(num_function_name, function_call)
-          function_string += inset + inset
-          function_string += "}"
-        else:
-          if not self.spine_function.return_type == "void":
-            function_string += "return "
-
-          if self.spine_function.return_type.startswith("spine_"):
-            function_string += ".init("
-            function_string += function_call
-            if self.spine_function.return_type in enums:
-              function_string += ".rawValue)"
-            else:
-              function_string += ")"
-          else:
-            function_string += function_call
-          
-          if self.spine_function.return_type == "const utf8 *" or self.spine_function.return_type == "utf8 *":
-            function_string += ".flatMap { String(cString: $0) }"
-          if self.spine_function.return_type == "int32_t *" or self.spine_function.return_type == "float *":
-            function_string += ".flatMap { $0.pointee }"
+        function_string += SwiftFunctionBodyWriter(spine_object = self.spine_object, spine_function = self.spine_function).write()
 
         function_string += "\n"
-
         function_string += inset + "}"
         function_string += "\n"
 
@@ -265,7 +321,6 @@ class SwiftFunctionWriter:
     def write_computed_property_signature(self, function_name, swift_return_type):
       property_name = snake_to_camel(function_name.replace("get_", ""))
       property_string = f"public var {property_name}: {swift_return_type}"
-      property_string += " {"
       return property_string
 
     def write_method_signature(self, function_name, swift_return_type):
@@ -292,50 +347,7 @@ class SwiftFunctionWriter:
       if not self.spine_function.return_type == "void":
         function_string += f" -> {swift_return_type}"
 
-      function_string += " {"
-
       return function_string
-
-    def write_c_function_call(self, spine_params):
-      function_call = ""
-      function_call += f"{self.spine_function.name}"
-      function_call += "("
-
-      # Replace name with ivar name
-      spine_params_with_ivar_name = spine_params
-      if spine_params_with_ivar_name and spine_params_with_ivar_name[0].type == self.spine_object.name:
-        spine_params_with_ivar_name[0].name = self.spine_object.var_name
-      
-      swift_param_names = [
-          f"{spine_param.name}.wrappee" if spine_param.type.startswith("spine_") and spine_param.type not in enums and idx > 0 else spine_param.name
-          for idx, spine_param in enumerate(spine_params_with_ivar_name)
-      ]
-
-      function_call += ", ".join(swift_param_names)
-      function_call += ")"
-      return function_call
-    
-    def write_array_call(self, num_function_name, function_call):
-      array_call = f"let num = Int({num_function_name}({self.spine_object.var_name}))"
-      array_call += "\n"
-      array_call += inset + inset
-      array_call += f"let ptr = {function_call}"
-      array_call += "\n"
-      array_call += inset + inset
-      array_call += "return (0..<num).compactMap {"
-      array_call += "\n"
-      array_call += inset + inset + inset
-
-      if self.spine_function.return_type.startswith("spine_"):
-        if self.spine_function.return_type in enums:
-          array_call += "ptr?[$0].flatMap { .init($0.rawValue) }"
-        else:
-          array_call += "ptr?[$0].flatMap { .init($0) }" 
-      else:
-        array_call += "ptr?[$0]"
-
-      array_call += "\n"
-      return array_call
 
 class SwiftObjectWriter:
     def __init__(self, spine_object):
