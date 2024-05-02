@@ -962,6 +962,7 @@ SPINE_CPP_LITE_EXPORT void spine_physics_constraint_set_remaining(spine_physics_
 SPINE_CPP_LITE_EXPORT float spine_physics_constraint_get_remaining(spine_physics_constraint constraint);
 SPINE_CPP_LITE_EXPORT void spine_physics_constraint_set_last_time(spine_physics_constraint constraint, float value);
 SPINE_CPP_LITE_EXPORT float spine_physics_constraint_get_last_time(spine_physics_constraint constraint);
+// @ignore
 SPINE_CPP_LITE_EXPORT void spine_physics_constraint_reset(spine_physics_constraint constraint);
 // Omitted setToSetupPose()
 SPINE_CPP_LITE_EXPORT void spine_physics_constraint_update(spine_physics_constraint data, spine_physics physics);

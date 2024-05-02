@@ -201,7 +201,7 @@ class SwiftParamWriter:
     def write(self):
         type = SwiftTypeWriter(type = self.param.type).write(as_array=False)
         return f"{snake_to_camel(self.param.name)}: {type}"
-    
+
 class SwiftFunctionWriter:
     def __init__(self, spine_object, spine_function):
         self.spine_object = spine_object
@@ -210,10 +210,20 @@ class SwiftFunctionWriter:
     def write(self):
         function_prefix = f"{self.spine_object.name}_"
         function_name = self.spine_function.name.replace(function_prefix, "", 1)
+        is_getter = function_name.startswith("get_") and len(self.spine_function.parameters) < 2
 
         function_string = inset;
-        function_string += f"public func {snake_to_camel(function_name)}"
-        function_string += "("
+
+        if is_getter:
+          function_string += "public var "
+          function_name = function_name.replace("get_", "")
+        else:
+          function_string += "public func "
+        
+        function_string += f"{snake_to_camel(function_name)}"
+        
+        if not is_getter:
+          function_string += "("
 
         spine_params = self.spine_function.parameters;
 
@@ -229,7 +239,9 @@ class SwiftFunctionWriter:
         ]
 
         function_string += ", ".join(swift_params)
-        function_string += ")"
+
+        if not is_getter:
+          function_string += ")"
 
         swift_return_type_writer = SwiftTypeWriter(type = self.spine_function.return_type)
 
@@ -238,6 +250,9 @@ class SwiftFunctionWriter:
         swift_return_type = swift_return_type_writer.write(as_array = swift_return_type_is_array)
         
         if not self.spine_function.return_type == "void":
+          if is_getter:
+            function_string += f": {swift_return_type}"
+          else:
             function_string += f" -> {swift_return_type}"
 
         function_string += " {"
@@ -286,7 +301,11 @@ class SwiftFunctionWriter:
           function_string += inset + inset
           function_string += "}"
         else:
+          
           if not self.spine_function.return_type == "void":
+            if is_getter:
+              function_string += "return "
+            else:
               function_string += "return "
 
           if self.spine_function.return_type.startswith("spine_"):
@@ -295,7 +314,7 @@ class SwiftFunctionWriter:
             if self.spine_function.return_type in enums:
               function_string += ".rawValue)"
             else:
-               function_string += ")"
+              function_string += ")"
           else:
             function_string += function_call
           
@@ -341,8 +360,8 @@ class SwiftObjectWriter:
         object_string += "\n"
 
         for spine_function in self.spine_object.functions:
-            object_string += SwiftFunctionWriter(spine_object = self.spine_object, spine_function = spine_function).write()
-            object_string += "\n"
+          object_string += SwiftFunctionWriter(spine_object = self.spine_object, spine_function = spine_function).write()
+          object_string += "\n"
 
         object_string += "}"
 
@@ -370,11 +389,5 @@ for object in objects:
 
 # Must Have
 
-# TODO: Handle char* string return
-# TODO: Handle char* arguments as string
-# TODO: only return wrapper objects, not spine c types (invoke ctor)
-# TODO: get/set booleans as -1/1
-
-# Nice To Have
-
 # TODO: Getter/Setter as var computed property
+# TODO: get/set booleans as -1/1
