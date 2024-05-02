@@ -203,9 +203,10 @@ class SwiftParamWriter:
         return f"{snake_to_camel(self.param.name)}: {type}"
 
 class SwiftFunctionBodyWriter:
-  def __init__(self, spine_object, spine_function):
+  def __init__(self, spine_object, spine_function, is_setter):
       self.spine_object = spine_object
       self.spine_function = spine_function
+      self.is_setter = is_setter
 
   def write(self):
     body = ""
@@ -251,6 +252,9 @@ class SwiftFunctionBodyWriter:
       if spine_params_with_ivar_name and spine_params_with_ivar_name[0].type == self.spine_object.name:
         spine_params_with_ivar_name[0].name = self.spine_object.var_name
       
+      if self.is_setter and len(spine_params_with_ivar_name) == 2:
+        spine_params_with_ivar_name[1].name = "newValue"
+
       swift_param_names = [
           f"{spine_param.name}.wrappee" if spine_param.type.startswith("spine_") and spine_param.type not in enums and idx > 0 else spine_param.name
           for idx, spine_param in enumerate(spine_params_with_ivar_name)
@@ -282,15 +286,17 @@ class SwiftFunctionBodyWriter:
     array_call += "\n"
     return array_call
 
+
 class SwiftFunctionWriter:
-    def __init__(self, spine_object, spine_function):
+    def __init__(self, spine_object, spine_function, spine_setter_function):
         self.spine_object = spine_object
         self.spine_function = spine_function
+        self.spine_setter_function = spine_setter_function
 
     def write(self):
         function_prefix = f"{self.spine_object.name}_"
         function_name = self.spine_function.name.replace(function_prefix, "", 1)
-        is_getter = function_name.startswith("get_") and len(self.spine_function.parameters) < 2
+        is_getter = (function_name.startswith("get_") or function_name.startswith("is_")) and len(self.spine_function.parameters) < 2
 
         num_function_name = self.spine_function.name.replace("get_", "get_num_")
         swift_return_type_is_array = "get_" in self.spine_function.name and num_function_name in self.spine_object.function_names
@@ -298,10 +304,16 @@ class SwiftFunctionWriter:
         swift_return_type_writer = SwiftTypeWriter(type = self.spine_function.return_type)
         swift_return_type = swift_return_type_writer.write(as_array = swift_return_type_is_array)
 
-        function_string = inset;
+        function_string = inset
 
         if is_getter:
+          
           function_string += self.write_computed_property_signature(function_name, swift_return_type)
+          if self.spine_setter_function:
+             function_string += " {\n"
+             function_string += inset + inset
+             function_string += "get"
+
         else:
           function_string += self.write_method_signature(function_name, swift_return_type)
         
@@ -310,11 +322,29 @@ class SwiftFunctionWriter:
 
         function_string += inset + inset
 
-        function_string += SwiftFunctionBodyWriter(spine_object = self.spine_object, spine_function = self.spine_function).write()
+        if self.spine_setter_function:
+          function_string += inset
+        
+        function_string += SwiftFunctionBodyWriter(spine_object = self.spine_object, spine_function = self.spine_function, is_setter=False).write()
+
+        if self.spine_setter_function:
+           function_string += "\n"
+           function_string += inset + inset + "}"
+
+        if self.spine_setter_function:
+           function_string += "\n"
+           function_string += inset + inset + "set {"
+           function_string += "\n"
+           function_string += inset + inset + inset
+           function_string += SwiftFunctionBodyWriter(spine_object = self.spine_object, spine_function = self.spine_setter_function, is_setter=True).write()
+           function_string += "\n"
+           function_string += inset + inset + "}"
 
         function_string += "\n"
         function_string += inset + "}"
         function_string += "\n"
+
+        
 
         return function_string
     
@@ -380,8 +410,45 @@ class SwiftObjectWriter:
         
         filtered_spine_functions = [spine_function for spine_function in self.spine_object.functions if not "_get_num_" in spine_function.name]
 
+        spine_functions_by_name = {}
+        getter_names = []
+        setter_names = []
+        method_names = []
+        
         for spine_function in filtered_spine_functions:
-          object_string += SwiftFunctionWriter(spine_object = self.spine_object, spine_function = spine_function).write()
+          spine_functions_by_name[spine_function.name] = spine_function
+
+          if ("_get_" in spine_function.name or "_is_" in spine_function.name) and len(spine_function.parameters) == 1:
+            getter_names.append(spine_function.name)
+          elif "_set_" in spine_function.name and len(spine_function.parameters) == 2:
+            setter_names.append(spine_function.name)
+          else:
+            method_names.append(spine_function.name)
+
+        get_set_pairs = []
+
+        for setter_name in setter_names:
+          getter_name = setter_name.replace("_set_", "_get_")
+          if getter_name in getter_names:
+            getter_names.remove(getter_name)
+            get_set_pairs.append((getter_name, setter_name))
+        
+        # print(get_set_pairs)
+
+        for getter_name in getter_names:
+          spine_function = spine_functions_by_name[getter_name]
+          object_string += SwiftFunctionWriter(spine_object = self.spine_object, spine_function = spine_function, spine_setter_function=None).write()
+          object_string += "\n"
+        
+        for get_set_pair in get_set_pairs:
+          getter_function = spine_functions_by_name[get_set_pair[0]]
+          setter_function = spine_functions_by_name[get_set_pair[1]]
+          object_string += SwiftFunctionWriter(spine_object = self.spine_object, spine_function = getter_function, spine_setter_function=setter_function).write()
+          object_string += "\n"
+
+        for method_name in method_names:
+          spine_function = spine_functions_by_name[method_name]
+          object_string += SwiftFunctionWriter(spine_object = self.spine_object, spine_function = spine_function, spine_setter_function=None).write()
           object_string += "\n"
 
         object_string += "}"
@@ -410,7 +477,5 @@ for object in objects:
 
 # Must Have
 
-# TODO: Getter/Setter as var computed property
 # TODO: get/set booleans as -1/1
-
 # TODO: Subclasses & generics?

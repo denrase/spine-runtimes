@@ -3828,7 +3828,7 @@ void spine_transform_constraint_set_mix_shear_y(spine_transform_constraint const
 	_constraint->setMixShearY(mixShearY);
 }
 
-float spine_transform_constraint_get_is_active(spine_transform_constraint constraint) {
+int32_t spine_transform_constraint_get_is_active(spine_transform_constraint constraint) {
 	if (constraint == nullptr) return 0;
 	TransformConstraint *_constraint = (TransformConstraint *) constraint;
 	return _constraint->isActive() ? -1 : 0;
