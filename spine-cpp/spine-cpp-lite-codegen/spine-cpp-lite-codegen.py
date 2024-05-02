@@ -13,6 +13,31 @@ with open(input_path, 'r') as file:
 # for file_line in file_lines:
 #     print("FOO {}".format(file_line))
 
+supported_types = [
+    'void *',       # Generic pointer
+    'const utf8 *', # Pointer to UTF-8 characters; can also be mapped to 'String' if converting
+    'uint64_t',     # Unsigned 64-bit integer
+    'float *',      # Pointer to a float
+    'float',        # Floating-point number
+    'int32_t',      # 32-bit integer
+    'utf8 *',       # Pointer to UTF-8 characters; can also be mapped to 'String' if converting
+
+    'int32_t *',    # 32-bit integer
+    'uint16_t *'    # 16-bit integer
+]
+
+supported_types_to_swift_types = {
+    'void *': 'UnsafeMutableRawPointer',
+    'const utf8 *': 'UnsafeMutablePointer<utf8>',
+    'uint64_t': 'UInt64',
+    'float *': 'UnsafeMutablePointer<Float>',
+    'float': 'Float',
+    'int32_t': 'Int32',
+    'utf8 *': 'UnsafeMutablePointer<utf8>',
+    'int32_t *': 'UnsafeMutablePointer<Int32>',
+    'uint16_t *': 'UnsafeMutablePointer<UInt16>'
+}
+
 def read_spine_types(data):
     types_start = data.find('// parse_start: spine_opaque_types') + len('// parse_start: spine_opaque_types')
     types_end = data.find('// parse_end: spine_opaque_types')
@@ -155,19 +180,17 @@ inset = "    "
 class SwiftTypeWriter:
     def __init__(self, type):
         self.type = type
-        self.c_to_swift_type_map = {
-          'void *': 'UnsafeMutableRawPointer',          # Generic pointer
-          'const utf8 *': 'UnsafeMutablePointer<utf8>',      # Pointer to UTF-8 characters; can also be mapped to 'String' if converting
-          'uint64_t': 'UInt64',                        # Unsigned 64-bit integer
-          'float *': 'UnsafeMutablePointer<Float>',    # Pointer to a float
-          'float': 'Float',                            # Floating-point number
-          'int32_t': 'Int32',                           # 32-bit integer
-          'utf8 *': 'UnsafeMutablePointer<utf8>'
-      }
+        parameter_type = supported_types_to_swift_types.get(self.type)
+        self.is_array = parameter_type is None and type.endswith(" *")
+        
     def write(self):
-        parameter_type = self.c_to_swift_type_map.get(self.type)
+        parameter_type = supported_types_to_swift_types.get(self.type)
         if parameter_type is None:
-          parameter_type = self.type
+          if self.is_array: # Check if this is a pointer-pointer, e.g array. Only relevant for function return types
+            parameter_type = f"[{self.type[:-2]}]"
+          else:
+            parameter_type = self.type
+        
         return parameter_type
         
 class SwiftParamWriter:
@@ -198,9 +221,7 @@ class SwiftFunctionWriter:
           spine_params_without_ivar = spine_params[1:] 
         else:
           spine_params_without_ivar = spine_params
-
         
-
         swift_params = [
             SwiftParamWriter(param = spine_param).write()
             for spine_param in spine_params_without_ivar
@@ -209,19 +230,21 @@ class SwiftFunctionWriter:
         function_string += ", ".join(swift_params)
         function_string += ")"
 
+        swift_return_type_writer = SwiftTypeWriter(type = self.spine_function.return_type)
+        swift_return_type = swift_return_type_writer.write()
+        swift_return_type_is_array = swift_return_type_writer.is_array
+
         if not self.spine_function.return_type == "void":
-            function_string += f" -> {SwiftTypeWriter(type = self.spine_function.return_type).write()}"
+            function_string += f" -> {swift_return_type}"
 
         function_string += " {"
         function_string += "\n"
 
         function_string += inset + inset
 
-        if not self.spine_function.return_type == "void":
-            function_string += "return "
-        
-        function_string += f"{self.spine_function.name}"
-        function_string += "("
+        function_call = ""
+        function_call += f"{self.spine_function.name}"
+        function_call += "("
 
         # Replace nae with ivar name
         spine_params_with_ivar_name = spine_params
@@ -233,8 +256,22 @@ class SwiftFunctionWriter:
             for spine_param in spine_params_with_ivar_name
         ]
 
-        function_string += ", ".join(swift_param_names)
-        function_string += ")"
+        function_call += ", ".join(swift_param_names)
+        function_call += ")"
+
+        if swift_return_type_is_array:
+          num_function_name = self.spine_function.name.replace("get_", "get_num_")
+          function_string += f"let num = Int({num_function_name}({self.spine_object.var_name}))"
+          function_string += "\n"
+          function_string += inset + inset
+          function_string += f"let native = {function_call}"
+          function_string += "\n"
+          function_string += inset + inset
+          function_string += "return (0..<num).compactMap { native?[$0] }"
+        else:
+          if not self.spine_function.return_type == "void":
+              function_string += "return "
+          function_string += function_call
 
         function_string += "\n"
 

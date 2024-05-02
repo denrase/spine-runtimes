@@ -13,8 +13,10 @@ public final class SpineTransformConstraintData {
         return spine_transform_constraint_data_get_num_bones(data)
     }
 
-    public func getBones() -> spine_bone_data * {
-        return spine_transform_constraint_data_get_bones(data)
+    public func getBones() -> [spine_bone_data] {
+        let num = Int(spine_transform_constraint_data_get_num_bones(data))
+        let native = spine_transform_constraint_data_get_bones(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getTarget() -> spine_bone_data {
@@ -397,8 +399,10 @@ public final class SpineTransformConstraint {
         return spine_transform_constraint_get_num_bones(constraint)
     }
 
-    public func getBones() -> spine_bone * {
-        return spine_transform_constraint_get_bones(constraint)
+    public func getBones() -> [spine_bone] {
+        let num = Int(spine_transform_constraint_get_num_bones(constraint))
+        let native = spine_transform_constraint_get_bones(constraint)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getTarget() -> spine_bone {
@@ -479,8 +483,10 @@ public final class SpinePathConstraintData {
         return spine_path_constraint_data_get_num_bones(data)
     }
 
-    public func getBones() -> spine_bone_data * {
-        return spine_path_constraint_data_get_bones(data)
+    public func getBones() -> [spine_bone_data] {
+        let num = Int(spine_path_constraint_data_get_num_bones(data))
+        let native = spine_path_constraint_data_get_bones(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getTarget() -> spine_slot_data {
@@ -667,8 +673,10 @@ public final class SpineIkConstraintData {
         return spine_ik_constraint_data_get_num_bones(data)
     }
 
-    public func getBones() -> spine_bone_data * {
-        return spine_ik_constraint_data_get_bones(data)
+    public func getBones() -> [spine_bone_data] {
+        let num = Int(spine_ik_constraint_data_get_num_bones(data))
+        let native = spine_ik_constraint_data_get_bones(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getTarget() -> spine_bone_data {
@@ -1093,7 +1101,7 @@ public final class SpineVertexAttachment {
         return spine_vertex_attachment_get_num_bones(attachment)
     }
 
-    public func getBones() -> int32_t * {
+    public func getBones() -> UnsafeMutablePointer<Int32> {
         return spine_vertex_attachment_get_bones(attachment)
     }
 
@@ -1243,7 +1251,7 @@ public final class SpineMeshAttachment {
         return spine_mesh_attachment_get_num_triangles(attachment)
     }
 
-    public func getTriangles() -> uint16_t * {
+    public func getTriangles() -> UnsafeMutablePointer<UInt16> {
         return spine_mesh_attachment_get_triangles(attachment)
     }
 
@@ -1279,7 +1287,7 @@ public final class SpineMeshAttachment {
         return spine_mesh_attachment_get_num_edges(attachment)
     }
 
-    public func getEdges() -> uint16_t * {
+    public func getEdges() -> UnsafeMutablePointer<UInt16> {
         return spine_mesh_attachment_get_edges(attachment)
     }
 
@@ -1401,8 +1409,10 @@ public final class SpinePathConstraint {
         return spine_path_constraint_get_num_bones(constraint)
     }
 
-    public func getBones() -> spine_bone * {
-        return spine_path_constraint_get_bones(constraint)
+    public func getBones() -> [spine_bone] {
+        let num = Int(spine_path_constraint_get_num_bones(constraint))
+        let native = spine_path_constraint_get_bones(constraint)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getTarget() -> spine_slot {
@@ -1663,7 +1673,7 @@ public final class SpineRenderCommand {
         return spine_render_command_get_uvs(command)
     }
 
-    public func getColors() -> int32_t * {
+    public func getColors() -> UnsafeMutablePointer<Int32> {
         return spine_render_command_get_colors(command)
     }
 
@@ -1671,7 +1681,7 @@ public final class SpineRenderCommand {
         return spine_render_command_get_num_vertices(command)
     }
 
-    public func getIndices() -> uint16_t * {
+    public func getIndices() -> UnsafeMutablePointer<UInt16> {
         return spine_render_command_get_indices(command)
     }
 
@@ -1705,7 +1715,7 @@ public final class SpineSkeletonData {
         return spine_skeleton_data_load_json(atlas, skeletonData)
     }
 
-    public func loadBinary(atlas: spine_atlas, skeletonData: const uint8_t *, length: Int32) -> spine_skeleton_data_result {
+    public func loadBinary(atlas: spine_atlas, skeletonData: [const uint8_t], length: Int32) -> spine_skeleton_data_result {
         return spine_skeleton_data_load_binary(atlas, skeletonData, length)
     }
 
@@ -1753,24 +1763,30 @@ public final class SpineSkeletonData {
         return spine_skeleton_data_get_num_bones(data)
     }
 
-    public func getBones() -> spine_bone_data * {
-        return spine_skeleton_data_get_bones(data)
+    public func getBones() -> [spine_bone_data] {
+        let num = Int(spine_skeleton_data_get_num_bones(data))
+        let native = spine_skeleton_data_get_bones(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumSlots() -> Int32 {
         return spine_skeleton_data_get_num_slots(data)
     }
 
-    public func getSlots() -> spine_slot_data * {
-        return spine_skeleton_data_get_slots(data)
+    public func getSlots() -> [spine_slot_data] {
+        let num = Int(spine_skeleton_data_get_num_slots(data))
+        let native = spine_skeleton_data_get_slots(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumSkins() -> Int32 {
         return spine_skeleton_data_get_num_skins(data)
     }
 
-    public func getSkins() -> spine_skin * {
-        return spine_skeleton_data_get_skins(data)
+    public func getSkins() -> [spine_skin] {
+        let num = Int(spine_skeleton_data_get_num_skins(data))
+        let native = spine_skeleton_data_get_skins(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getDefaultSkin() -> spine_skin {
@@ -1785,48 +1801,60 @@ public final class SpineSkeletonData {
         return spine_skeleton_data_get_num_events(data)
     }
 
-    public func getEvents() -> spine_event_data * {
-        return spine_skeleton_data_get_events(data)
+    public func getEvents() -> [spine_event_data] {
+        let num = Int(spine_skeleton_data_get_num_events(data))
+        let native = spine_skeleton_data_get_events(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumAnimations() -> Int32 {
         return spine_skeleton_data_get_num_animations(data)
     }
 
-    public func getAnimations() -> spine_animation * {
-        return spine_skeleton_data_get_animations(data)
+    public func getAnimations() -> [spine_animation] {
+        let num = Int(spine_skeleton_data_get_num_animations(data))
+        let native = spine_skeleton_data_get_animations(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumIkConstraints() -> Int32 {
         return spine_skeleton_data_get_num_ik_constraints(data)
     }
 
-    public func getIkConstraints() -> spine_ik_constraint_data * {
-        return spine_skeleton_data_get_ik_constraints(data)
+    public func getIkConstraints() -> [spine_ik_constraint_data] {
+        let num = Int(spine_skeleton_data_get_num_ik_constraints(data))
+        let native = spine_skeleton_data_get_ik_constraints(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumTransformConstraints() -> Int32 {
         return spine_skeleton_data_get_num_transform_constraints(data)
     }
 
-    public func getTransformConstraints() -> spine_transform_constraint_data * {
-        return spine_skeleton_data_get_transform_constraints(data)
+    public func getTransformConstraints() -> [spine_transform_constraint_data] {
+        let num = Int(spine_skeleton_data_get_num_transform_constraints(data))
+        let native = spine_skeleton_data_get_transform_constraints(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumPathConstraints() -> Int32 {
         return spine_skeleton_data_get_num_path_constraints(data)
     }
 
-    public func getPathConstraints() -> spine_path_constraint_data * {
-        return spine_skeleton_data_get_path_constraints(data)
+    public func getPathConstraints() -> [spine_path_constraint_data] {
+        let num = Int(spine_skeleton_data_get_num_path_constraints(data))
+        let native = spine_skeleton_data_get_path_constraints(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumPhysicsConstraints() -> Int32 {
         return spine_skeleton_data_get_num_physics_constraints(data)
     }
 
-    public func getPhysicsConstraints() -> spine_physics_constraint_data * {
-        return spine_skeleton_data_get_physics_constraints(data)
+    public func getPhysicsConstraints() -> [spine_physics_constraint_data] {
+        let num = Int(spine_skeleton_data_get_num_physics_constraints(data))
+        let native = spine_skeleton_data_get_physics_constraints(data)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getX() -> Float {
@@ -1915,8 +1943,10 @@ public final class SpineIkConstraint {
         return spine_ik_constraint_get_num_bones(constraint)
     }
 
-    public func getBones() -> spine_bone * {
-        return spine_ik_constraint_get_bones(constraint)
+    public func getBones() -> [spine_bone] {
+        let num = Int(spine_ik_constraint_get_num_bones(constraint))
+        let native = spine_ik_constraint_get_bones(constraint)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getTarget() -> spine_bone {
@@ -2615,56 +2645,70 @@ public final class SpineSkeleton {
         return spine_skeleton_get_num_bones(skeleton)
     }
 
-    public func getBones() -> spine_bone * {
-        return spine_skeleton_get_bones(skeleton)
+    public func getBones() -> [spine_bone] {
+        let num = Int(spine_skeleton_get_num_bones(skeleton))
+        let native = spine_skeleton_get_bones(skeleton)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumSlots() -> Int32 {
         return spine_skeleton_get_num_slots(skeleton)
     }
 
-    public func getSlots() -> spine_slot * {
-        return spine_skeleton_get_slots(skeleton)
+    public func getSlots() -> [spine_slot] {
+        let num = Int(spine_skeleton_get_num_slots(skeleton))
+        let native = spine_skeleton_get_slots(skeleton)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumDrawOrder() -> Int32 {
         return spine_skeleton_get_num_draw_order(skeleton)
     }
 
-    public func getDrawOrder() -> spine_slot * {
-        return spine_skeleton_get_draw_order(skeleton)
+    public func getDrawOrder() -> [spine_slot] {
+        let num = Int(spine_skeleton_get_num_draw_order(skeleton))
+        let native = spine_skeleton_get_draw_order(skeleton)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumIkConstraints() -> Int32 {
         return spine_skeleton_get_num_ik_constraints(skeleton)
     }
 
-    public func getIkConstraints() -> spine_ik_constraint * {
-        return spine_skeleton_get_ik_constraints(skeleton)
+    public func getIkConstraints() -> [spine_ik_constraint] {
+        let num = Int(spine_skeleton_get_num_ik_constraints(skeleton))
+        let native = spine_skeleton_get_ik_constraints(skeleton)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumTransformConstraints() -> Int32 {
         return spine_skeleton_get_num_transform_constraints(skeleton)
     }
 
-    public func getTransformConstraints() -> spine_transform_constraint * {
-        return spine_skeleton_get_transform_constraints(skeleton)
+    public func getTransformConstraints() -> [spine_transform_constraint] {
+        let num = Int(spine_skeleton_get_num_transform_constraints(skeleton))
+        let native = spine_skeleton_get_transform_constraints(skeleton)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumPathConstraints() -> Int32 {
         return spine_skeleton_get_num_path_constraints(skeleton)
     }
 
-    public func getPathConstraints() -> spine_path_constraint * {
-        return spine_skeleton_get_path_constraints(skeleton)
+    public func getPathConstraints() -> [spine_path_constraint] {
+        let num = Int(spine_skeleton_get_num_path_constraints(skeleton))
+        let native = spine_skeleton_get_path_constraints(skeleton)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumPhysicsConstraints() -> Int32 {
         return spine_skeleton_get_num_physics_constraints(skeleton)
     }
 
-    public func getPhysicsConstraints() -> spine_physics_constraint * {
-        return spine_skeleton_get_physics_constraints(skeleton)
+    public func getPhysicsConstraints() -> [spine_physics_constraint] {
+        let num = Int(spine_skeleton_get_num_physics_constraints(skeleton))
+        let native = spine_skeleton_get_physics_constraints(skeleton)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getSkin() -> spine_skin {
@@ -2781,8 +2825,10 @@ public final class SpineSequence {
         return spine_sequence_get_num_regions(sequence)
     }
 
-    public func getRegions() -> spine_texture_region * {
-        return spine_sequence_get_regions(sequence)
+    public func getRegions() -> [spine_texture_region] {
+        let num = Int(spine_sequence_get_num_regions(sequence))
+        let native = spine_sequence_get_regions(sequence)
+        return (0..<num).compactMap { native?[$0] }
     }
 
 }
@@ -3033,8 +3079,10 @@ public final class SpineBone {
         return spine_bone_get_num_children(bone)
     }
 
-    public func getChildren() -> spine_bone * {
-        return spine_bone_get_children(bone)
+    public func getChildren() -> [spine_bone] {
+        let num = Int(spine_bone_get_num_children(bone))
+        let native = spine_bone_get_children(bone)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getX() -> Float {
@@ -3333,16 +3381,20 @@ public final class SpineSkin {
         return spine_skin_get_num_bones(skin)
     }
 
-    public func getBones() -> spine_bone_data * {
-        return spine_skin_get_bones(skin)
+    public func getBones() -> [spine_bone_data] {
+        let num = Int(spine_skin_get_num_bones(skin))
+        let native = spine_skin_get_bones(skin)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func getNumConstraints() -> Int32 {
         return spine_skin_get_num_constraints(skin)
     }
 
-    public func getConstraints() -> spine_constraint_data * {
-        return spine_skin_get_constraints(skin)
+    public func getConstraints() -> [spine_constraint_data] {
+        let num = Int(spine_skin_get_num_constraints(skin))
+        let native = spine_skin_get_constraints(skin)
+        return (0..<num).compactMap { native?[$0] }
     }
 
     public func create(name: UnsafeMutablePointer<utf8>) -> spine_skin {
