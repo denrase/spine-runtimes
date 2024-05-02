@@ -400,3 +400,5 @@ for object in objects:
 
 # TODO: Getter/Setter as var computed property
 # TODO: get/set booleans as -1/1
+
+# TODO: Subclasses & generics?
