@@ -67,10 +67,10 @@ class SpineObject:
         self.name = name
         self.functions = functions
         self.function_names = {function.name for function in functions}
-        self.var_name = name.split("_")[-1]
+        self.var_name = "wrappee"
 
     def __str__(self):
-        return f"SpineObject: name: {self.name}, var_name: {self.var_name}, functions: {self.functions}"
+        return f"SpineObject: name: {self.name}, functions: {self.functions}"
     
 class SpineFunction:
     def __init__(self, return_type, name, parameters):
@@ -185,7 +185,7 @@ class SwiftTypeWriter:
     def write(self, as_array):
         parameter_type = supported_types_to_swift_types.get(self.type)
         if parameter_type is None:
-          parameter_type = self.type
+          parameter_type = snake_to_title(self.type)
         
         if as_array:
             if parameter_type.endswith(" *"):
@@ -256,8 +256,8 @@ class SwiftFunctionWriter:
           spine_params_with_ivar_name[0].name = self.spine_object.var_name
         
         swift_param_names = [
-            spine_param.name
-            for spine_param in spine_params_with_ivar_name
+            f"{spine_param.name}.wrappee" if spine_param.type.startswith("spine_") and idx > 0 else spine_param.name
+            for idx, spine_param in enumerate(spine_params_with_ivar_name)
         ]
 
         function_call += ", ".join(swift_param_names)
@@ -268,14 +268,32 @@ class SwiftFunctionWriter:
           function_string += f"let num = Int({num_function_name}({self.spine_object.var_name}))"
           function_string += "\n"
           function_string += inset + inset
-          function_string += f"let native = {function_call}"
+          function_string += f"let ptr = {function_call}"
           function_string += "\n"
           function_string += inset + inset
-          function_string += "return (0..<num).compactMap { native?[$0] }"
+          function_string += "return (0..<num).compactMap {"
+          function_string += "\n"
+          function_string += inset + inset + inset
+
+          if self.spine_function.return_type.startswith("spine_"):
+            function_string += "ptr?[$0].flatMap { .init($0) }"
+          else:
+            function_string += "ptr?[$0]"
+
+          function_string += "\n"
+          function_string += inset + inset
+          function_string += "}"
         else:
           if not self.spine_function.return_type == "void":
               function_string += "return "
-          function_string += function_call
+
+          if self.spine_function.return_type.startswith("spine_"):
+            function_string += ".init("
+            function_string += function_call
+            function_string += ")"
+          else:
+            function_string += function_call
+          
           if self.spine_function.return_type == "const utf8 *" or self.spine_function.return_type == "utf8 *":
             function_string += ".flatMap { String(cString: $0) }"
           if self.spine_function.return_type == "int32_t *" or self.spine_function.return_type == "float *":
