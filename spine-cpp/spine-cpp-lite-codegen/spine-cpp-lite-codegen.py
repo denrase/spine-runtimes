@@ -230,7 +230,7 @@ class SwiftFunctionWriter:
         function_string += inset + inset
 
         spine_params = self.spine_function.parameters;
-        function_call = self.write_function_call(spine_params)
+        function_call = self.write_c_function_call(spine_params)
 
         if swift_return_type_is_array:
           function_string += self.write_array_call(num_function_name, function_call)
@@ -296,7 +296,7 @@ class SwiftFunctionWriter:
 
       return function_string
 
-    def write_function_call(self, spine_params):
+    def write_c_function_call(self, spine_params):
       function_call = ""
       function_call += f"{self.spine_function.name}"
       function_call += "("
@@ -399,5 +399,4 @@ for object in objects:
 # Must Have
 
 # TODO: Getter/Setter as var computed property
-# TODO: Don't expose num methods
 # TODO: get/set booleans as -1/1
