@@ -4666,7 +4666,7 @@ float spine_physics_constraint_get_last_time(spine_physics_constraint constraint
 	return _constraint->getLastTime();
 }
 
-void spine_physics_constraint_reset(spine_physics_constraint constraint) {
+void spine_physics_constraint_reset_fully(spine_physics_constraint constraint) {
 	if (constraint == nullptr) return;
 	PhysicsConstraint *_constraint = (PhysicsConstraint *) constraint;
 	_constraint->reset();

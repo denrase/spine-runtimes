@@ -972,6 +972,10 @@ public final class SpinePhysicsConstraint {
         return spine_physics_constraint_get_last_time(wrappee)
     }
 
+    public func resetFully() {
+        spine_physics_constraint_reset_fully(wrappee)
+    }
+
     public func update(physics: SpinePhysics) {
         spine_physics_constraint_update(wrappee, physics)
     }
