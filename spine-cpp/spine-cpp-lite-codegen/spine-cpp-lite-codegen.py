@@ -264,12 +264,7 @@ class SwiftFunctionWriter:
     
     def write_computed_property_signature(self, function_name, swift_return_type):
       property_name = snake_to_camel(function_name.replace("get_", ""))
-
-      property_string = f"public var {property_name}"
-
-      if swift_return_type:
-        property_string += f": {swift_return_type}"
-
+      property_string = f"public var {property_name}: {swift_return_type}"
       property_string += " {"
       return property_string
 
