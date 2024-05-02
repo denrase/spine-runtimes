@@ -41,9 +41,10 @@ class SpineObject:
     def __init__(self, name, functions):
         self.name = name
         self.functions = functions
+        self.var_name = name.split("_")[-1]
 
     def __str__(self):
-        return f"SpineObject: name: {self.name}, functions: {self.functions}"
+        return f"SpineObject: name: {self.name}, var_name: {self.var_name}, functions: {self.functions}"
     
 class SpineFunction:
     def __init__(self, return_type, name, parameters):
@@ -58,12 +59,12 @@ class SpineFunction:
         return self.__str__()
 
 class SpineParam:
-    def __init__(self, parameter_type, name):
-        self.parameter_type = parameter_type
+    def __init__(self, type, name):
+        self.type = type
         self.name = name
 
     def __str__(self):
-        return f"SpineParam(parameter_type: {self.parameter_type}, name: {self.name})"
+        return f"SpineParam(type: {self.type}, name: {self.name})"
     
     def __repr__(self):
         return self.__str__()
@@ -98,7 +99,7 @@ def parse_function_declaration(declaration):
             else: # Assuming type and name are separated by space and taking the last space as the separator
               param_parts = param.rsplit(' ', 1)
             param_type, param_name = param_parts
-            spine_param = SpineParam(parameter_type = param_type.strip(), name = param_name.strip())
+            spine_param = SpineParam(type = param_type.strip(), name = param_name.strip())
             parameters.append(spine_param)
     
     return SpineFunction(
@@ -174,26 +175,37 @@ class SwiftParamWriter:
         self.param = param
         
     def write(self):
-        parameter_type = SwiftTypeWriter(type = self.param.parameter_type).write()
-        return f"{snake_to_camel(self.param.name)}: {parameter_type}"
+        type = SwiftTypeWriter(type = self.param.type).write()
+        return f"{snake_to_camel(self.param.name)}: {type}"
     
 class SwiftFunctionWriter:
-    def __init__(self, spine_object_name, spine_function):
-        self.spine_object_name = spine_object_name
+    def __init__(self, spine_object, spine_function):
+        self.spine_object = spine_object
         self.spine_function = spine_function
 
     def write(self):
-        function_prefix = f"{self.spine_object_name}_"
+        function_prefix = f"{self.spine_object.name}_"
         function_name = self.spine_function.name.replace(function_prefix, "", 1)
 
         function_string = inset;
         function_string += f"public func {snake_to_camel(function_name)}"
         function_string += "("
 
+        spine_params = self.spine_function.parameters;
+
+        # Filter out ivar
+        if spine_params and spine_params[0].type == self.spine_object.name:
+          spine_params_without_ivar = spine_params[1:] 
+        else:
+          spine_params_without_ivar = spine_params
+
+        
+
         swift_params = [
             SwiftParamWriter(param = spine_param).write()
-            for spine_param in self.spine_function.parameters
+            for spine_param in spine_params_without_ivar
         ]
+
         function_string += ", ".join(swift_params)
         function_string += ")"
 
@@ -211,9 +223,14 @@ class SwiftFunctionWriter:
         function_string += f"{self.spine_function.name}"
         function_string += "("
 
+        # Replace nae with ivar name
+        spine_params_with_ivar_name = spine_params
+        if spine_params_with_ivar_name and spine_params_with_ivar_name[0].type == self.spine_object.name:
+          spine_params_with_ivar_name[0].name = self.spine_object.var_name
+        
         swift_param_names = [
             spine_param.name
-            for spine_param in self.spine_function.parameters
+            for spine_param in spine_params_with_ivar_name
         ]
 
         function_string += ", ".join(swift_param_names)
@@ -231,14 +248,32 @@ class SwiftObjectWriter:
         self.spine_object = spine_object
 
     def write(self):
+        ivar_type = self.spine_object.name
+        ivar_name = self.spine_object.var_name
+        
         object_string = f"public final class {snake_to_title(self.spine_object.name)}"
-
         object_string += " {"
+        object_string += "\n"
+        object_string += "\n"
+        object_string += inset
+        object_string += f"internal let {ivar_name}: {ivar_type}"
+        object_string += "\n"
+        object_string += "\n"
+
+        object_string += inset
+        object_string += f"internal init({ivar_name}: {ivar_type})"
+        object_string += " {"
+        object_string += "\n"
+        object_string += inset + inset
+        object_string += f"self.{ivar_name} = {ivar_name}"
+        object_string += "\n"
+        object_string += inset
+        object_string += "}"
         object_string += "\n"
         object_string += "\n"
 
         for spine_function in self.spine_object.functions:
-            object_string += SwiftFunctionWriter(spine_object_name = self.spine_object.name, spine_function = spine_function).write()
+            object_string += SwiftFunctionWriter(spine_object = self.spine_object, spine_function = spine_function).write()
             object_string += "\n"
 
         object_string += "}"
@@ -253,10 +288,14 @@ for object in objects:
     print(SwiftObjectWriter(spine_object = object).write())
     print("")
 
-# TODO: Hold instanve variable if object name and first arg type match
-# TODO: Getter/Setter as var computed property
+# Must Have
+
 # TODO: Handle arrays (pointer pointer)
 # TODO: Handle char* string return
 # TODO: Handle char* arguments as string
-# TODO: ctor invocations for spine return type
+# TODO: only return wrapper objects, not spine c types (invoke ctor)
 # TODO: get/set booleans as -1/1
+
+# Nice To Have
+
+# TODO: Getter/Setter as var computed property
