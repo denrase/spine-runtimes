@@ -20,10 +20,6 @@ public final class SpineTransformConstraintData {
         self.wrappee = wrappee
     }
 
-    public var numBones: Int32 {
-        return spine_transform_constraint_data_get_num_bones(wrappee)
-    }
-
     public var bones: [SpineBoneData] {
         let num = Int(spine_transform_constraint_data_get_num_bones(wrappee))
         let ptr = spine_transform_constraint_data_get_bones(wrappee)
@@ -366,10 +362,6 @@ public final class SpineAnimationStateEvents {
         self.wrappee = wrappee
     }
 
-    public var numEvents: Int32 {
-        return spine_animation_state_events_get_num_events(wrappee)
-    }
-
     public func getEventType(index: Int32) -> SpineEventType {
         return .init(spine_animation_state_events_get_event_type(wrappee, index).rawValue)
     }
@@ -406,10 +398,6 @@ public final class SpineTransformConstraint {
 
     public var data: SpineTransformConstraintData {
         return .init(spine_transform_constraint_get_data(wrappee))
-    }
-
-    public var numBones: Int32 {
-        return spine_transform_constraint_get_num_bones(wrappee)
     }
 
     public var bones: [SpineBone] {
@@ -492,10 +480,6 @@ public final class SpinePathConstraintData {
 
     internal init(_ wrappee: spine_path_constraint_data) {
         self.wrappee = wrappee
-    }
-
-    public var numBones: Int32 {
-        return spine_path_constraint_data_get_num_bones(wrappee)
     }
 
     public var bones: [SpineBoneData] {
@@ -684,10 +668,6 @@ public final class SpineIkConstraintData {
 
     internal init(_ wrappee: spine_ik_constraint_data) {
         self.wrappee = wrappee
-    }
-
-    public var numBones: Int32 {
-        return spine_ik_constraint_data_get_num_bones(wrappee)
     }
 
     public var bones: [SpineBoneData] {
@@ -1078,20 +1058,12 @@ public final class SpineRegionAttachment {
         return .init(spine_region_attachment_get_sequence(wrappee))
     }
 
-    public var numOffset: Int32 {
-        return spine_region_attachment_get_num_offset(wrappee)
-    }
-
     public var offset: [Float?] {
         let num = Int(spine_region_attachment_get_num_offset(wrappee))
         let ptr = spine_region_attachment_get_offset(wrappee)
         return (0..<num).compactMap {
             ptr?[$0]
         }
-    }
-
-    public var numUvs: Int32 {
-        return spine_region_attachment_get_num_uvs(wrappee)
     }
 
     public var uvs: [Float?] {
@@ -1116,20 +1088,12 @@ public final class SpineVertexAttachment {
         return spine_vertex_attachment_get_world_vertices_length(wrappee)
     }
 
-    public var numBones: Int32 {
-        return spine_vertex_attachment_get_num_bones(wrappee)
-    }
-
     public var bones: [Int32?] {
         let num = Int(spine_vertex_attachment_get_num_bones(wrappee))
         let ptr = spine_vertex_attachment_get_bones(wrappee)
         return (0..<num).compactMap {
             ptr?[$0]
         }
-    }
-
-    public var numVertices: Int32 {
-        return spine_vertex_attachment_get_num_vertices(wrappee)
     }
 
     public var vertices: [Float?] {
@@ -1254,10 +1218,6 @@ public final class SpineMeshAttachment {
         spine_mesh_attachment_set_hull_length(wrappee, hullLength)
     }
 
-    public var numRegionUvs: Int32 {
-        return spine_mesh_attachment_get_num_region_uvs(wrappee)
-    }
-
     public var regionUvs: [Float?] {
         let num = Int(spine_mesh_attachment_get_num_region_uvs(wrappee))
         let ptr = spine_mesh_attachment_get_region_uvs(wrappee)
@@ -1266,20 +1226,12 @@ public final class SpineMeshAttachment {
         }
     }
 
-    public var numUvs: Int32 {
-        return spine_mesh_attachment_get_num_uvs(wrappee)
-    }
-
     public var uvs: [Float?] {
         let num = Int(spine_mesh_attachment_get_num_uvs(wrappee))
         let ptr = spine_mesh_attachment_get_uvs(wrappee)
         return (0..<num).compactMap {
             ptr?[$0]
         }
-    }
-
-    public var numTriangles: Int32 {
-        return spine_mesh_attachment_get_num_triangles(wrappee)
     }
 
     public var triangles: [UInt16] {
@@ -1318,10 +1270,6 @@ public final class SpineMeshAttachment {
         spine_mesh_attachment_set_parent_mesh(wrappee, parentMesh.wrappee)
     }
 
-    public var numEdges: Int32 {
-        return spine_mesh_attachment_get_num_edges(wrappee)
-    }
-
     public var edges: [UInt16] {
         let num = Int(spine_mesh_attachment_get_num_edges(wrappee))
         let ptr = spine_mesh_attachment_get_edges(wrappee)
@@ -1354,10 +1302,6 @@ public final class SpinePathAttachment {
 
     internal init(_ wrappee: spine_path_attachment) {
         self.wrappee = wrappee
-    }
-
-    public var numLengths: Int32 {
-        return spine_path_attachment_get_num_lengths(wrappee)
     }
 
     public var lengths: [Float?] {
@@ -1448,10 +1392,6 @@ public final class SpinePathConstraint {
         return .init(spine_path_constraint_get_data(wrappee))
     }
 
-    public var numBones: Int32 {
-        return spine_path_constraint_get_num_bones(wrappee)
-    }
-
     public var bones: [SpineBone] {
         let num = Int(spine_path_constraint_get_num_bones(wrappee))
         let ptr = spine_path_constraint_get_bones(wrappee)
@@ -1540,10 +1480,6 @@ public final class SpineAnimationState {
 
     public func clearTrack(trackIndex: Int32) {
         spine_animation_state_clear_track(wrappee, trackIndex)
-    }
-
-    public var numTracks: Int32 {
-        return spine_animation_state_get_num_tracks(wrappee)
     }
 
     public func setAnimationByName(trackIndex: Int32, animationName: String?, loop: Int32) -> SpineTrackEntry {
@@ -1722,20 +1658,12 @@ public final class SpineRenderCommand {
         return spine_render_command_get_colors(wrappee).flatMap { $0.pointee }
     }
 
-    public var numVertices: Int32 {
-        return spine_render_command_get_num_vertices(wrappee)
-    }
-
     public var indices: [UInt16] {
         let num = Int(spine_render_command_get_num_indices(wrappee))
         let ptr = spine_render_command_get_indices(wrappee)
         return (0..<num).compactMap {
             ptr?[$0]
         }
-    }
-
-    public var numIndices: Int32 {
-        return spine_render_command_get_num_indices(wrappee)
     }
 
     public var atlasPage: Int32 {
@@ -1800,10 +1728,6 @@ public final class SpineSkeletonData {
         return spine_skeleton_data_get_name(wrappee).flatMap { String(cString: $0) }
     }
 
-    public var numBones: Int32 {
-        return spine_skeleton_data_get_num_bones(wrappee)
-    }
-
     public var bones: [SpineBoneData] {
         let num = Int(spine_skeleton_data_get_num_bones(wrappee))
         let ptr = spine_skeleton_data_get_bones(wrappee)
@@ -1812,20 +1736,12 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var numSlots: Int32 {
-        return spine_skeleton_data_get_num_slots(wrappee)
-    }
-
     public var slots: [SpineSlotData] {
         let num = Int(spine_skeleton_data_get_num_slots(wrappee))
         let ptr = spine_skeleton_data_get_slots(wrappee)
         return (0..<num).compactMap {
             ptr?[$0].flatMap { .init($0) }
         }
-    }
-
-    public var numSkins: Int32 {
-        return spine_skeleton_data_get_num_skins(wrappee)
     }
 
     public var skins: [SpineSkin] {
@@ -1844,20 +1760,12 @@ public final class SpineSkeletonData {
         spine_skeleton_data_set_default_skin(wrappee, skin.wrappee)
     }
 
-    public var numEvents: Int32 {
-        return spine_skeleton_data_get_num_events(wrappee)
-    }
-
     public var events: [SpineEventData] {
         let num = Int(spine_skeleton_data_get_num_events(wrappee))
         let ptr = spine_skeleton_data_get_events(wrappee)
         return (0..<num).compactMap {
             ptr?[$0].flatMap { .init($0) }
         }
-    }
-
-    public var numAnimations: Int32 {
-        return spine_skeleton_data_get_num_animations(wrappee)
     }
 
     public var animations: [SpineAnimation] {
@@ -1868,20 +1776,12 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var numIkConstraints: Int32 {
-        return spine_skeleton_data_get_num_ik_constraints(wrappee)
-    }
-
     public var ikConstraints: [SpineIkConstraintData] {
         let num = Int(spine_skeleton_data_get_num_ik_constraints(wrappee))
         let ptr = spine_skeleton_data_get_ik_constraints(wrappee)
         return (0..<num).compactMap {
             ptr?[$0].flatMap { .init($0) }
         }
-    }
-
-    public var numTransformConstraints: Int32 {
-        return spine_skeleton_data_get_num_transform_constraints(wrappee)
     }
 
     public var transformConstraints: [SpineTransformConstraintData] {
@@ -1892,20 +1792,12 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var numPathConstraints: Int32 {
-        return spine_skeleton_data_get_num_path_constraints(wrappee)
-    }
-
     public var pathConstraints: [SpinePathConstraintData] {
         let num = Int(spine_skeleton_data_get_num_path_constraints(wrappee))
         let ptr = spine_skeleton_data_get_path_constraints(wrappee)
         return (0..<num).compactMap {
             ptr?[$0].flatMap { .init($0) }
         }
-    }
-
-    public var numPhysicsConstraints: Int32 {
-        return spine_skeleton_data_get_num_physics_constraints(wrappee)
     }
 
     public var physicsConstraints: [SpinePhysicsConstraintData] {
@@ -1998,10 +1890,6 @@ public final class SpineIkConstraint {
         return .init(spine_ik_constraint_get_data(wrappee))
     }
 
-    public var numBones: Int32 {
-        return spine_ik_constraint_get_num_bones(wrappee)
-    }
-
     public var bones: [SpineBone] {
         let num = Int(spine_ik_constraint_get_num_bones(wrappee))
         let ptr = spine_ik_constraint_get_bones(wrappee)
@@ -2074,10 +1962,6 @@ public final class SpineSkinEntries {
 
     internal init(_ wrappee: spine_skin_entries) {
         self.wrappee = wrappee
-    }
-
-    public var numEntries: Int32 {
-        return spine_skin_entries_get_num_entries(wrappee)
     }
 
     public func getEntry(index: Int32) -> SpineSkinEntry {
@@ -2702,20 +2586,12 @@ public final class SpineSkeleton {
         return .init(spine_skeleton_get_data(wrappee))
     }
 
-    public var numBones: Int32 {
-        return spine_skeleton_get_num_bones(wrappee)
-    }
-
     public var bones: [SpineBone] {
         let num = Int(spine_skeleton_get_num_bones(wrappee))
         let ptr = spine_skeleton_get_bones(wrappee)
         return (0..<num).compactMap {
             ptr?[$0].flatMap { .init($0) }
         }
-    }
-
-    public var numSlots: Int32 {
-        return spine_skeleton_get_num_slots(wrappee)
     }
 
     public var slots: [SpineSlot] {
@@ -2726,20 +2602,12 @@ public final class SpineSkeleton {
         }
     }
 
-    public var numDrawOrder: Int32 {
-        return spine_skeleton_get_num_draw_order(wrappee)
-    }
-
     public var drawOrder: [SpineSlot] {
         let num = Int(spine_skeleton_get_num_draw_order(wrappee))
         let ptr = spine_skeleton_get_draw_order(wrappee)
         return (0..<num).compactMap {
             ptr?[$0].flatMap { .init($0) }
         }
-    }
-
-    public var numIkConstraints: Int32 {
-        return spine_skeleton_get_num_ik_constraints(wrappee)
     }
 
     public var ikConstraints: [SpineIkConstraint] {
@@ -2750,10 +2618,6 @@ public final class SpineSkeleton {
         }
     }
 
-    public var numTransformConstraints: Int32 {
-        return spine_skeleton_get_num_transform_constraints(wrappee)
-    }
-
     public var transformConstraints: [SpineTransformConstraint] {
         let num = Int(spine_skeleton_get_num_transform_constraints(wrappee))
         let ptr = spine_skeleton_get_transform_constraints(wrappee)
@@ -2762,20 +2626,12 @@ public final class SpineSkeleton {
         }
     }
 
-    public var numPathConstraints: Int32 {
-        return spine_skeleton_get_num_path_constraints(wrappee)
-    }
-
     public var pathConstraints: [SpinePathConstraint] {
         let num = Int(spine_skeleton_get_num_path_constraints(wrappee))
         let ptr = spine_skeleton_get_path_constraints(wrappee)
         return (0..<num).compactMap {
             ptr?[$0].flatMap { .init($0) }
         }
-    }
-
-    public var numPhysicsConstraints: Int32 {
-        return spine_skeleton_get_num_physics_constraints(wrappee)
     }
 
     public var physicsConstraints: [SpinePhysicsConstraint] {
@@ -2894,10 +2750,6 @@ public final class SpineSequence {
 
     public func setSetupIndex(setupIndex: Int32) {
         spine_sequence_set_setup_index(wrappee, setupIndex)
-    }
-
-    public var numRegions: Int32 {
-        return spine_sequence_get_num_regions(wrappee)
     }
 
     public var regions: [SpineTextureRegion] {
@@ -3024,10 +2876,6 @@ public final class SpineAtlas {
         return .init(spine_atlas_load(atlasData))
     }
 
-    public var numImagePaths: Int32 {
-        return spine_atlas_get_num_image_paths(wrappee)
-    }
-
     public func getImagePath(index: Int32) -> String? {
         return spine_atlas_get_image_path(wrappee, index).flatMap { String(cString: $0) }
     }
@@ -3150,10 +2998,6 @@ public final class SpineBone {
 
     public var parent: SpineBone {
         return .init(spine_bone_get_parent(wrappee))
-    }
-
-    public var numChildren: Int32 {
-        return spine_bone_get_num_children(wrappee)
     }
 
     public var children: [SpineBone] {
@@ -3456,20 +3300,12 @@ public final class SpineSkin {
         return .init(spine_skin_get_entries(wrappee))
     }
 
-    public var numBones: Int32 {
-        return spine_skin_get_num_bones(wrappee)
-    }
-
     public var bones: [SpineBoneData] {
         let num = Int(spine_skin_get_num_bones(wrappee))
         let ptr = spine_skin_get_bones(wrappee)
         return (0..<num).compactMap {
             ptr?[$0].flatMap { .init($0) }
         }
-    }
-
-    public var numConstraints: Int32 {
-        return spine_skin_get_num_constraints(wrappee)
     }
 
     public var constraints: [SpineConstraintData] {

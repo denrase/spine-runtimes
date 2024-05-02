@@ -365,8 +365,10 @@ class SwiftObjectWriter:
         object_string += "}"
         object_string += "\n"
         object_string += "\n"
+        
+        filtered_spine_functions = [spine_function for spine_function in self.spine_object.functions if not "_get_num_" in spine_function.name]
 
-        for spine_function in self.spine_object.functions:
+        for spine_function in filtered_spine_functions:
           object_string += SwiftFunctionWriter(spine_object = self.spine_object, spine_function = spine_function).write()
           object_string += "\n"
 
@@ -397,4 +399,5 @@ for object in objects:
 # Must Have
 
 # TODO: Getter/Setter as var computed property
+# TODO: Don't expose num methods
 # TODO: get/set booleans as -1/1
