@@ -191,34 +191,6 @@ public final class SpinePhysicsConstraintData {
         self.wrappee = wrappee
     }
 
-    public var isInertiaGlobal: Int32 {
-        return spine_physics_constraint_data_is_inertia_global(wrappee)
-    }
-
-    public var isStrengthGlobal: Int32 {
-        return spine_physics_constraint_data_is_strength_global(wrappee)
-    }
-
-    public var isDampingGlobal: Int32 {
-        return spine_physics_constraint_data_is_damping_global(wrappee)
-    }
-
-    public var isMassGlobal: Int32 {
-        return spine_physics_constraint_data_is_mass_global(wrappee)
-    }
-
-    public var isWindGlobal: Int32 {
-        return spine_physics_constraint_data_is_wind_global(wrappee)
-    }
-
-    public var isGravityGlobal: Int32 {
-        return spine_physics_constraint_data_is_gravity_global(wrappee)
-    }
-
-    public var isMixGlobal: Int32 {
-        return spine_physics_constraint_data_is_mix_global(wrappee)
-    }
-
     public var bone: SpineBoneData {
         get {
             return .init(spine_physics_constraint_data_get_bone(wrappee))
@@ -351,6 +323,69 @@ public final class SpinePhysicsConstraintData {
         }
         set {
             spine_physics_constraint_data_set_mix(wrappee, newValue)
+        }
+    }
+
+    public var isInertiaGlobal: Int32 {
+        get {
+            return spine_physics_constraint_data_is_inertia_global(wrappee)
+        }
+        set {
+            spine_physics_constraint_data_set_inertia_global(wrappee, newValue)
+        }
+    }
+
+    public var isStrengthGlobal: Int32 {
+        get {
+            return spine_physics_constraint_data_is_strength_global(wrappee)
+        }
+        set {
+            spine_physics_constraint_data_set_strength_global(wrappee, newValue)
+        }
+    }
+
+    public var isDampingGlobal: Int32 {
+        get {
+            return spine_physics_constraint_data_is_damping_global(wrappee)
+        }
+        set {
+            spine_physics_constraint_data_set_damping_global(wrappee, newValue)
+        }
+    }
+
+    public var isMassGlobal: Int32 {
+        get {
+            return spine_physics_constraint_data_is_mass_global(wrappee)
+        }
+        set {
+            spine_physics_constraint_data_set_mass_global(wrappee, newValue)
+        }
+    }
+
+    public var isWindGlobal: Int32 {
+        get {
+            return spine_physics_constraint_data_is_wind_global(wrappee)
+        }
+        set {
+            spine_physics_constraint_data_set_wind_global(wrappee, newValue)
+        }
+    }
+
+    public var isGravityGlobal: Int32 {
+        get {
+            return spine_physics_constraint_data_is_gravity_global(wrappee)
+        }
+        set {
+            spine_physics_constraint_data_set_gravity_global(wrappee, newValue)
+        }
+    }
+
+    public var isMixGlobal: Int32 {
+        get {
+            return spine_physics_constraint_data_is_mix_global(wrappee)
+        }
+        set {
+            spine_physics_constraint_data_set_mix_global(wrappee, newValue)
         }
     }
 
@@ -773,10 +808,6 @@ public final class SpinePhysicsConstraint {
         self.wrappee = wrappee
     }
 
-    public var isActive: Int32 {
-        return spine_physics_constraint_is_active(wrappee)
-    }
-
     public var bone: SpineBone {
         get {
             return .init(spine_physics_constraint_get_bone(wrappee))
@@ -981,6 +1012,15 @@ public final class SpinePhysicsConstraint {
         }
         set {
             spine_physics_constraint_set_scale_velocity(wrappee, newValue)
+        }
+    }
+
+    public var isActive: Int32 {
+        get {
+            return spine_physics_constraint_is_active(wrappee)
+        }
+        set {
+            spine_physics_constraint_set_active(wrappee, newValue)
         }
     }
 
@@ -2441,10 +2481,6 @@ public final class SpineBoneData {
         return .init(spine_bone_data_get_color(wrappee))
     }
 
-    public var isVisible: Int32 {
-        return spine_bone_data_is_visible(wrappee)
-    }
-
     public var length: Float {
         get {
             return spine_bone_data_get_length(wrappee)
@@ -2526,6 +2562,15 @@ public final class SpineBoneData {
         }
     }
 
+    public var isVisible: Int32 {
+        get {
+            return spine_bone_data_is_visible(wrappee)
+        }
+        set {
+            spine_bone_data_set_visible(wrappee, newValue)
+        }
+    }
+
     public func setColor(r: Float, g: Float, b: Float, a: Float) {
         spine_bone_data_set_color(wrappee, r, g, b, a)
     }
@@ -2560,10 +2605,6 @@ public final class SpineSlotData {
         return .init(spine_slot_data_get_dark_color(wrappee))
     }
 
-    public var isVisible: Int32 {
-        return spine_slot_data_is_visible(wrappee)
-    }
-
     public var attachmentName: String? {
         get {
             return spine_slot_data_get_attachment_name(wrappee).flatMap { String(cString: $0) }
@@ -2579,6 +2620,15 @@ public final class SpineSlotData {
         }
         set {
             spine_slot_data_set_blend_mode(wrappee, newValue)
+        }
+    }
+
+    public var isVisible: Int32 {
+        get {
+            return spine_slot_data_is_visible(wrappee)
+        }
+        set {
+            spine_slot_data_set_visible(wrappee, newValue)
         }
     }
 

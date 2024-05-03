@@ -343,8 +343,6 @@ class SwiftFunctionWriter:
         function_string += inset + "}"
         function_string += "\n"
 
-        
-
         return function_string
     
     def write_computed_property_signature(self, function_name, swift_return_type):
@@ -427,10 +425,16 @@ class SwiftObjectWriter:
         get_set_pairs = []
 
         for setter_name in setter_names:
-          getter_name = setter_name.replace("_set_", "_get_")
-          if getter_name in getter_names:
-            getter_names.remove(getter_name)
-            get_set_pairs.append((getter_name, setter_name))
+          getter_name_get = setter_name.replace("_set_", "_get_")
+          getter_name_is = setter_name.replace("_set_", "_is_")
+          if getter_name_get in getter_names:
+            getter_names.remove(getter_name_get)
+            get_set_pairs.append((getter_name_get, setter_name))
+          if getter_name_is in getter_names:
+            getter_names.remove(getter_name_is)
+            get_set_pairs.append((getter_name_is, setter_name))
+          # else:
+          #   method_names.append(setter_name) # Coul not find getter by name. Move to methods
         
         # print(get_set_pairs)
 
