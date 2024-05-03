@@ -355,8 +355,6 @@ class SwiftFunctionWriter:
         if self.spine_setter_function:
            function_string += "\n"
            function_string += inset + inset + "}"
-
-        if self.spine_setter_function:
            function_string += "\n"
            function_string += inset + inset + "set {"
            function_string += "\n"
