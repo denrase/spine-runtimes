@@ -1905,7 +1905,7 @@ void spine_slot_data_set_dark_color(spine_slot_data slot, float r, float g, floa
 	_slot->getDarkColor().set(r, g, b, a);
 }
 
-int32_t spine_slot_data_has_dark_color(spine_slot_data slot) {
+int32_t spine_slot_data_get_has_dark_color(spine_slot_data slot) {
 	if (slot == nullptr) return 0;
 	SlotData *_slot = (SlotData *) slot;
 	return _slot->hasDarkColor() ? -1 : 0;
@@ -2159,7 +2159,7 @@ void spine_bone_data_set_inherit(spine_bone_data data, spine_inherit inherit) {
 	_data->setInherit((Inherit) inherit);
 }
 
-int32_t spine_bone_data_is_skin_required(spine_bone_data data) {
+int32_t spine_bone_data_get_is_skin_required(spine_bone_data data) {
 	if (data == nullptr) return 0;
 	BoneData *_data = (BoneData *) data;
 	return _data->isSkinRequired() ? -1 : 0;

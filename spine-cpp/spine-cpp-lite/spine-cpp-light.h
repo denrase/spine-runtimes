@@ -471,7 +471,7 @@ SPINE_CPP_LITE_EXPORT spine_color spine_slot_data_get_color(spine_slot_data slot
 SPINE_CPP_LITE_EXPORT void spine_slot_data_set_color(spine_slot_data slot, float r, float g, float b, float a);
 SPINE_CPP_LITE_EXPORT spine_color spine_slot_data_get_dark_color(spine_slot_data slot);
 SPINE_CPP_LITE_EXPORT void spine_slot_data_set_dark_color(spine_slot_data slot, float r, float g, float b, float a);
-SPINE_CPP_LITE_EXPORT int32_t spine_slot_data_has_dark_color(spine_slot_data slot);
+SPINE_CPP_LITE_EXPORT int32_t spine_slot_data_get_has_dark_color(spine_slot_data slot);
 SPINE_CPP_LITE_EXPORT void spine_slot_data_set_has_dark_color(spine_slot_data slot, int32_t hasDarkColor);
 SPINE_CPP_LITE_EXPORT const utf8 *spine_slot_data_get_attachment_name(spine_slot_data slot);
 SPINE_CPP_LITE_EXPORT void spine_slot_data_set_attachment_name(spine_slot_data slot, const utf8 *attachmentName);
@@ -517,7 +517,7 @@ SPINE_CPP_LITE_EXPORT float spine_bone_data_get_shear_y(spine_bone_data data);
 SPINE_CPP_LITE_EXPORT void spine_bone_data_set_shear_y(spine_bone_data data, float shearY);
 SPINE_CPP_LITE_EXPORT spine_inherit spine_bone_data_get_inherit(spine_bone_data data);
 SPINE_CPP_LITE_EXPORT void spine_bone_data_set_inherit(spine_bone_data data, spine_inherit inherit);
-SPINE_CPP_LITE_EXPORT int32_t spine_bone_data_is_skin_required(spine_bone_data data);
+SPINE_CPP_LITE_EXPORT int32_t spine_bone_data_get_is_skin_required(spine_bone_data data);
 SPINE_CPP_LITE_EXPORT void spine_bone_data_set_is_skin_required(spine_bone_data data, int32_t isSkinRequired);
 SPINE_CPP_LITE_EXPORT spine_color spine_bone_data_get_color(spine_bone_data data);
 SPINE_CPP_LITE_EXPORT void spine_bone_data_set_color(spine_bone_data data, float r, float g, float b, float a);

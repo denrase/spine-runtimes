@@ -1643,6 +1643,10 @@ public final class SpineAnimationState {
         spine_animation_state_dispose_track_entry(wrappee, entry.wrappee)
     }
 
+    public func setEmptyAnimations(mixDuration: Float) {
+        spine_animation_state_set_empty_animations(wrappee, mixDuration)
+    }
+
 }
 
 public final class SpineTextureRegion {
@@ -2473,10 +2477,6 @@ public final class SpineBoneData {
         return .init(spine_bone_data_get_parent(wrappee))
     }
 
-    public var isSkinRequired: Int32 {
-        return spine_bone_data_is_skin_required(wrappee)
-    }
-
     public var color: SpineColor {
         return .init(spine_bone_data_get_color(wrappee))
     }
@@ -2562,6 +2562,15 @@ public final class SpineBoneData {
         }
     }
 
+    public var isSkinRequired: Int32 {
+        get {
+            return spine_bone_data_get_is_skin_required(wrappee)
+        }
+        set {
+            spine_bone_data_set_is_skin_required(wrappee, newValue)
+        }
+    }
+
     public var isVisible: Int32 {
         get {
             return spine_bone_data_is_visible(wrappee)
@@ -2605,6 +2614,15 @@ public final class SpineSlotData {
         return .init(spine_slot_data_get_dark_color(wrappee))
     }
 
+    public var hasDarkColor: Int32 {
+        get {
+            return spine_slot_data_get_has_dark_color(wrappee)
+        }
+        set {
+            spine_slot_data_set_has_dark_color(wrappee, newValue)
+        }
+    }
+
     public var attachmentName: String? {
         get {
             return spine_slot_data_get_attachment_name(wrappee).flatMap { String(cString: $0) }
@@ -2638,10 +2656,6 @@ public final class SpineSlotData {
 
     public func setDarkColor(r: Float, g: Float, b: Float, a: Float) {
         spine_slot_data_set_dark_color(wrappee, r, g, b, a)
-    }
-
-    public func hasDarkColor() -> Int32 {
-        return spine_slot_data_has_dark_color(wrappee)
     }
 
 }
@@ -2868,6 +2882,10 @@ public final class SpineSkeleton {
 
     public func update(delta: Float) {
         spine_skeleton_update(wrappee, delta)
+    }
+
+    public func setSkinByName(skinName: String?) {
+        spine_skeleton_set_skin_by_name(wrappee, skinName)
     }
 
 }

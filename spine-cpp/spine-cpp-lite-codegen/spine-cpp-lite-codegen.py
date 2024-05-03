@@ -430,11 +430,11 @@ class SwiftObjectWriter:
           if getter_name_get in getter_names:
             getter_names.remove(getter_name_get)
             get_set_pairs.append((getter_name_get, setter_name))
-          if getter_name_is in getter_names:
+          elif getter_name_is in getter_names:
             getter_names.remove(getter_name_is)
             get_set_pairs.append((getter_name_is, setter_name))
-          # else:
-          #   method_names.append(setter_name) # Coul not find getter by name. Move to methods
+          else:
+            method_names.append(setter_name) # Coul not find getter by name. Move to methods
         
         # print(get_set_pairs)
 
