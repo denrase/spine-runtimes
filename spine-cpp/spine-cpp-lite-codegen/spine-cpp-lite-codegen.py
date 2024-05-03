@@ -17,7 +17,7 @@ supported_types_to_swift_types = {
     'utf8 *': 'String?',
     'int32_t *': 'Int32?',
     'uint16_t *': 'UInt16',
-    'spine_bool': 'Int32' # Update after merging
+    'spine_bool': 'Bool'
 }
 
 def read_spine_types(data):
@@ -78,7 +78,7 @@ class SpineFunction:
         self.parameters = parameters
 
     def isReturningSpineClass(self):
-       return self.return_type.startswith("spine_") and self.return_type != "spine_bool"
+       return self.return_type.startswith("spine_") and self.return_type != "spine_bool"  and self.return_type not in enums
 
     def __str__(self):
         return f"SpineFunction(return_type: {self.return_type}, name: {self.name}, parameters: {self.parameters})"
@@ -92,7 +92,7 @@ class SpineParam:
         self.name = name
 
     def isSpineClass(self):
-       return self.type.startswith("spine_") and self.type != "spine_bool"
+       return self.type.startswith("spine_") and self.type != "spine_bool" and self.type not in enums
 
     def __str__(self):
         return f"SpineParam(type: {self.type}, name: {self.name})"
@@ -258,14 +258,23 @@ class SwiftFunctionBodyWriter:
       
       if self.is_setter and len(spine_params_with_ivar_name) == 2:
         spine_params_with_ivar_name[1].name = "newValue"
-
-      swift_param_names = [
-          f"{spine_param.name}.wrappee" if spine_param.isSpineClass() and spine_param.type not in enums and idx > 0 else spine_param.name
-          for idx, spine_param in enumerate(spine_params_with_ivar_name)
-      ]
+      
+      swift_param_names = []
+      for idx, spine_param in enumerate(spine_params_with_ivar_name):
+        if spine_param.isSpineClass() and idx > 0:
+            swift_param_names.append(f"{spine_param.name}.wrappee")
+        elif spine_param.type == "spine_bool":
+           swift_param_names.append(f"{spine_param.name} ? -1 : 0")
+        else:
+           swift_param_names.append(spine_param.name)
+         
 
       function_call += ", ".join(swift_param_names)
       function_call += ")"
+
+      if self.spine_function.return_type == "spine_bool":
+         function_call += " != 0"
+
       return function_call
     
   def write_array_call(self, num_function_name, function_call):
@@ -279,10 +288,7 @@ class SwiftFunctionBodyWriter:
     array_call += "\n"
     array_call += inset + inset + inset
 
-    if self.spine_function.return_type not in supported_types_to_swift_types:
-      if self.spine_function.return_type in enums:
-        array_call += "ptr?[$0].flatMap { .init($0.rawValue) }"
-      else:
+    if self.spine_function.isReturningSpineClass():
         array_call += "ptr?[$0].flatMap { .init($0) }" 
     else:
       array_call += "ptr?[$0]"

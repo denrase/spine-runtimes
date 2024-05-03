@@ -145,21 +145,21 @@ public final class SpineTransformConstraintData {
         }
     }
 
-    public var isRelative: Int32 {
+    public var isRelative: Bool {
         get {
-            return spine_transform_constraint_data_get_is_relative(wrappee)
+            return spine_transform_constraint_data_get_is_relative(wrappee) != 0
         }
         set {
-            spine_transform_constraint_data_set_is_relative(wrappee, newValue)
+            spine_transform_constraint_data_set_is_relative(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var isLocal: Int32 {
+    public var isLocal: Bool {
         get {
-            return spine_transform_constraint_data_get_is_local(wrappee)
+            return spine_transform_constraint_data_get_is_local(wrappee) != 0
         }
         set {
-            spine_transform_constraint_data_set_is_local(wrappee, newValue)
+            spine_transform_constraint_data_set_is_local(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -326,66 +326,66 @@ public final class SpinePhysicsConstraintData {
         }
     }
 
-    public var isInertiaGlobal: Int32 {
+    public var isInertiaGlobal: Bool {
         get {
-            return spine_physics_constraint_data_is_inertia_global(wrappee)
+            return spine_physics_constraint_data_is_inertia_global(wrappee) != 0
         }
         set {
-            spine_physics_constraint_data_set_inertia_global(wrappee, newValue)
+            spine_physics_constraint_data_set_inertia_global(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var isStrengthGlobal: Int32 {
+    public var isStrengthGlobal: Bool {
         get {
-            return spine_physics_constraint_data_is_strength_global(wrappee)
+            return spine_physics_constraint_data_is_strength_global(wrappee) != 0
         }
         set {
-            spine_physics_constraint_data_set_strength_global(wrappee, newValue)
+            spine_physics_constraint_data_set_strength_global(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var isDampingGlobal: Int32 {
+    public var isDampingGlobal: Bool {
         get {
-            return spine_physics_constraint_data_is_damping_global(wrappee)
+            return spine_physics_constraint_data_is_damping_global(wrappee) != 0
         }
         set {
-            spine_physics_constraint_data_set_damping_global(wrappee, newValue)
+            spine_physics_constraint_data_set_damping_global(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var isMassGlobal: Int32 {
+    public var isMassGlobal: Bool {
         get {
-            return spine_physics_constraint_data_is_mass_global(wrappee)
+            return spine_physics_constraint_data_is_mass_global(wrappee) != 0
         }
         set {
-            spine_physics_constraint_data_set_mass_global(wrappee, newValue)
+            spine_physics_constraint_data_set_mass_global(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var isWindGlobal: Int32 {
+    public var isWindGlobal: Bool {
         get {
-            return spine_physics_constraint_data_is_wind_global(wrappee)
+            return spine_physics_constraint_data_is_wind_global(wrappee) != 0
         }
         set {
-            spine_physics_constraint_data_set_wind_global(wrappee, newValue)
+            spine_physics_constraint_data_set_wind_global(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var isGravityGlobal: Int32 {
+    public var isGravityGlobal: Bool {
         get {
-            return spine_physics_constraint_data_is_gravity_global(wrappee)
+            return spine_physics_constraint_data_is_gravity_global(wrappee) != 0
         }
         set {
-            spine_physics_constraint_data_set_gravity_global(wrappee, newValue)
+            spine_physics_constraint_data_set_gravity_global(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var isMixGlobal: Int32 {
+    public var isMixGlobal: Bool {
         get {
-            return spine_physics_constraint_data_is_mix_global(wrappee)
+            return spine_physics_constraint_data_is_mix_global(wrappee) != 0
         }
         set {
-            spine_physics_constraint_data_set_mix_global(wrappee, newValue)
+            spine_physics_constraint_data_set_mix_global(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -400,7 +400,7 @@ public final class SpineAnimationStateEvents {
     }
 
     public func getEventType(index: Int32) -> SpineEventType {
-        return .init(spine_animation_state_events_get_event_type(wrappee, index).rawValue)
+        return spine_animation_state_events_get_event_type(wrappee, index)
     }
 
     public func getTrackEntry(index: Int32) -> SpineTrackEntry {
@@ -504,12 +504,12 @@ public final class SpineTransformConstraint {
         }
     }
 
-    public var isActive: Int32 {
+    public var isActive: Bool {
         get {
-            return spine_transform_constraint_get_is_active(wrappee)
+            return spine_transform_constraint_get_is_active(wrappee) != 0
         }
         set {
-            spine_transform_constraint_set_is_active(wrappee, newValue)
+            spine_transform_constraint_set_is_active(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -546,7 +546,7 @@ public final class SpinePathConstraintData {
 
     public var positionMode: SpinePositionMode {
         get {
-            return .init(spine_path_constraint_data_get_position_mode(wrappee).rawValue)
+            return spine_path_constraint_data_get_position_mode(wrappee)
         }
         set {
             spine_path_constraint_data_set_position_mode(wrappee, newValue)
@@ -555,7 +555,7 @@ public final class SpinePathConstraintData {
 
     public var spacingMode: SpineSpacingMode {
         get {
-            return .init(spine_path_constraint_data_get_spacing_mode(wrappee).rawValue)
+            return spine_path_constraint_data_get_spacing_mode(wrappee)
         }
         set {
             spine_path_constraint_data_set_spacing_mode(wrappee, newValue)
@@ -564,7 +564,7 @@ public final class SpinePathConstraintData {
 
     public var rotateMode: SpineRotateMode {
         get {
-            return .init(spine_path_constraint_data_get_rotate_mode(wrappee).rawValue)
+            return spine_path_constraint_data_get_rotate_mode(wrappee)
         }
         set {
             spine_path_constraint_data_set_rotate_mode(wrappee, newValue)
@@ -753,30 +753,30 @@ public final class SpineIkConstraintData {
         }
     }
 
-    public var compress: Int32 {
+    public var compress: Bool {
         get {
-            return spine_ik_constraint_data_get_compress(wrappee)
+            return spine_ik_constraint_data_get_compress(wrappee) != 0
         }
         set {
-            spine_ik_constraint_data_set_compress(wrappee, newValue)
+            spine_ik_constraint_data_set_compress(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var stretch: Int32 {
+    public var stretch: Bool {
         get {
-            return spine_ik_constraint_data_get_stretch(wrappee)
+            return spine_ik_constraint_data_get_stretch(wrappee) != 0
         }
         set {
-            spine_ik_constraint_data_set_stretch(wrappee, newValue)
+            spine_ik_constraint_data_set_stretch(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var uniform: Int32 {
+    public var uniform: Bool {
         get {
-            return spine_ik_constraint_data_get_uniform(wrappee)
+            return spine_ik_constraint_data_get_uniform(wrappee) != 0
         }
         set {
-            spine_ik_constraint_data_set_uniform(wrappee, newValue)
+            spine_ik_constraint_data_set_uniform(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -880,12 +880,12 @@ public final class SpinePhysicsConstraint {
         }
     }
 
-    public var reset: Int32 {
+    public var reset: Bool {
         get {
-            return spine_physics_constraint_get_reset(wrappee)
+            return spine_physics_constraint_get_reset(wrappee) != 0
         }
         set {
-            spine_physics_constraint_set_reset(wrappee, newValue)
+            spine_physics_constraint_set_reset(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -1015,12 +1015,12 @@ public final class SpinePhysicsConstraint {
         }
     }
 
-    public var isActive: Int32 {
+    public var isActive: Bool {
         get {
-            return spine_physics_constraint_is_active(wrappee)
+            return spine_physics_constraint_is_active(wrappee) != 0
         }
         set {
-            spine_physics_constraint_set_active(wrappee, newValue)
+            spine_physics_constraint_set_active(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -1421,21 +1421,21 @@ public final class SpinePathAttachment {
         return .init(spine_path_attachment_get_color(wrappee))
     }
 
-    public var isClosed: Int32 {
+    public var isClosed: Bool {
         get {
-            return spine_path_attachment_get_is_closed(wrappee)
+            return spine_path_attachment_get_is_closed(wrappee) != 0
         }
         set {
-            spine_path_attachment_set_is_closed(wrappee, newValue)
+            spine_path_attachment_set_is_closed(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var isConstantSpeed: Int32 {
+    public var isConstantSpeed: Bool {
         get {
-            return spine_path_attachment_get_is_constant_speed(wrappee)
+            return spine_path_attachment_get_is_constant_speed(wrappee) != 0
         }
         set {
-            spine_path_attachment_set_is_constant_speed(wrappee, newValue)
+            spine_path_attachment_set_is_constant_speed(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -1454,7 +1454,7 @@ public final class SpineConstraintData {
     }
 
     public var type: SpineConstraintType {
-        return .init(spine_constraint_data_get_type(wrappee).rawValue)
+        return spine_constraint_data_get_type(wrappee)
     }
 
     public var name: String? {
@@ -1470,12 +1470,12 @@ public final class SpineConstraintData {
         }
     }
 
-    public var isSkinRequired: Int32 {
+    public var isSkinRequired: Bool {
         get {
-            return spine_constraint_data_get_is_skin_required(wrappee)
+            return spine_constraint_data_get_is_skin_required(wrappee) != 0
         }
         set {
-            spine_constraint_data_set_is_skin_required(wrappee, newValue)
+            spine_constraint_data_set_is_skin_required(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -1559,12 +1559,12 @@ public final class SpinePathConstraint {
         }
     }
 
-    public var isActive: Int32 {
+    public var isActive: Bool {
         get {
-            return spine_path_constraint_get_is_active(wrappee)
+            return spine_path_constraint_get_is_active(wrappee) != 0
         }
         set {
-            spine_path_constraint_set_is_active(wrappee, newValue)
+            spine_path_constraint_set_is_active(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -1611,20 +1611,20 @@ public final class SpineAnimationState {
         spine_animation_state_clear_track(wrappee, trackIndex)
     }
 
-    public func setAnimationByName(trackIndex: Int32, animationName: String?, loop: Int32) -> SpineTrackEntry {
-        return .init(spine_animation_state_set_animation_by_name(wrappee, trackIndex, animationName, loop))
+    public func setAnimationByName(trackIndex: Int32, animationName: String?, loop: Bool) -> SpineTrackEntry {
+        return .init(spine_animation_state_set_animation_by_name(wrappee, trackIndex, animationName, loop ? -1 : 0))
     }
 
-    public func setAnimation(trackIndex: Int32, animation: SpineAnimation, loop: Int32) -> SpineTrackEntry {
-        return .init(spine_animation_state_set_animation(wrappee, trackIndex, animation.wrappee, loop))
+    public func setAnimation(trackIndex: Int32, animation: SpineAnimation, loop: Bool) -> SpineTrackEntry {
+        return .init(spine_animation_state_set_animation(wrappee, trackIndex, animation.wrappee, loop ? -1 : 0))
     }
 
-    public func addAnimationByName(trackIndex: Int32, animationName: String?, loop: Int32, delay: Float) -> SpineTrackEntry {
-        return .init(spine_animation_state_add_animation_by_name(wrappee, trackIndex, animationName, loop, delay))
+    public func addAnimationByName(trackIndex: Int32, animationName: String?, loop: Bool, delay: Float) -> SpineTrackEntry {
+        return .init(spine_animation_state_add_animation_by_name(wrappee, trackIndex, animationName, loop ? -1 : 0, delay))
     }
 
-    public func addAnimation(trackIndex: Int32, animation: SpineAnimation, loop: Int32, delay: Float) -> SpineTrackEntry {
-        return .init(spine_animation_state_add_animation(wrappee, trackIndex, animation.wrappee, loop, delay))
+    public func addAnimation(trackIndex: Int32, animation: SpineAnimation, loop: Bool, delay: Float) -> SpineTrackEntry {
+        return .init(spine_animation_state_add_animation(wrappee, trackIndex, animation.wrappee, loop ? -1 : 0, delay))
     }
 
     public func setEmptyAnimation(trackIndex: Int32, mixDuration: Float) -> SpineTrackEntry {
@@ -1800,7 +1800,7 @@ public final class SpineRenderCommand {
     }
 
     public var blendMode: SpineBlendMode {
-        return .init(spine_render_command_get_blend_mode(wrappee).rawValue)
+        return spine_render_command_get_blend_mode(wrappee)
     }
 
     public var next: SpineRenderCommand {
@@ -2046,21 +2046,21 @@ public final class SpineIkConstraint {
         }
     }
 
-    public var compress: Int32 {
+    public var compress: Bool {
         get {
-            return spine_ik_constraint_get_compress(wrappee)
+            return spine_ik_constraint_get_compress(wrappee) != 0
         }
         set {
-            spine_ik_constraint_set_compress(wrappee, newValue)
+            spine_ik_constraint_set_compress(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var stretch: Int32 {
+    public var stretch: Bool {
         get {
-            return spine_ik_constraint_get_stretch(wrappee)
+            return spine_ik_constraint_get_stretch(wrappee) != 0
         }
         set {
-            spine_ik_constraint_set_stretch(wrappee, newValue)
+            spine_ik_constraint_set_stretch(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -2082,12 +2082,12 @@ public final class SpineIkConstraint {
         }
     }
 
-    public var isActive: Int32 {
+    public var isActive: Bool {
         get {
-            return spine_ik_constraint_get_is_active(wrappee)
+            return spine_ik_constraint_get_is_active(wrappee) != 0
         }
         set {
-            spine_ik_constraint_set_is_active(wrappee, newValue)
+            spine_ik_constraint_set_is_active(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -2143,8 +2143,8 @@ public final class SpineTrackEntry {
         return .init(spine_track_entry_get_next(wrappee))
     }
 
-    public var isComplete: Int32 {
-        return spine_track_entry_is_complete(wrappee)
+    public var isComplete: Bool {
+        return spine_track_entry_is_complete(wrappee) != 0
     }
 
     public var mixingFrom: SpineTrackEntry {
@@ -2159,39 +2159,39 @@ public final class SpineTrackEntry {
         return spine_track_entry_get_track_complete(wrappee)
     }
 
-    public var loop: Int32 {
+    public var loop: Bool {
         get {
-            return spine_track_entry_get_loop(wrappee)
+            return spine_track_entry_get_loop(wrappee) != 0
         }
         set {
-            spine_track_entry_set_loop(wrappee, newValue)
+            spine_track_entry_set_loop(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var holdPrevious: Int32 {
+    public var holdPrevious: Bool {
         get {
-            return spine_track_entry_get_hold_previous(wrappee)
+            return spine_track_entry_get_hold_previous(wrappee) != 0
         }
         set {
-            spine_track_entry_set_hold_previous(wrappee, newValue)
+            spine_track_entry_set_hold_previous(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var reverse: Int32 {
+    public var reverse: Bool {
         get {
-            return spine_track_entry_get_reverse(wrappee)
+            return spine_track_entry_get_reverse(wrappee) != 0
         }
         set {
-            spine_track_entry_set_reverse(wrappee, newValue)
+            spine_track_entry_set_reverse(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var shortestRotation: Int32 {
+    public var shortestRotation: Bool {
         get {
-            return spine_track_entry_get_shortest_rotation(wrappee)
+            return spine_track_entry_get_shortest_rotation(wrappee) != 0
         }
         set {
-            spine_track_entry_set_shortest_rotation(wrappee, newValue)
+            spine_track_entry_set_shortest_rotation(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -2323,7 +2323,7 @@ public final class SpineTrackEntry {
 
     public var mixBlend: SpineMixBlend {
         get {
-            return .init(spine_track_entry_get_mix_blend(wrappee).rawValue)
+            return spine_track_entry_get_mix_blend(wrappee)
         }
         set {
             spine_track_entry_set_mix_blend(wrappee, newValue)
@@ -2349,7 +2349,7 @@ public final class SpineAttachment {
     }
 
     public var type: SpineAttachmentType {
-        return .init(spine_attachment_get_type(wrappee).rawValue)
+        return spine_attachment_get_type(wrappee)
     }
 
     public func copy() -> SpineAttachment {
@@ -2555,28 +2555,28 @@ public final class SpineBoneData {
 
     public var inherit: SpineInherit {
         get {
-            return .init(spine_bone_data_get_inherit(wrappee).rawValue)
+            return spine_bone_data_get_inherit(wrappee)
         }
         set {
             spine_bone_data_set_inherit(wrappee, newValue)
         }
     }
 
-    public var isSkinRequired: Int32 {
+    public var isSkinRequired: Bool {
         get {
-            return spine_bone_data_get_is_skin_required(wrappee)
+            return spine_bone_data_get_is_skin_required(wrappee) != 0
         }
         set {
-            spine_bone_data_set_is_skin_required(wrappee, newValue)
+            spine_bone_data_set_is_skin_required(wrappee, newValue ? -1 : 0)
         }
     }
 
-    public var isVisible: Int32 {
+    public var isVisible: Bool {
         get {
-            return spine_bone_data_is_visible(wrappee)
+            return spine_bone_data_is_visible(wrappee) != 0
         }
         set {
-            spine_bone_data_set_visible(wrappee, newValue)
+            spine_bone_data_set_visible(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -2614,12 +2614,12 @@ public final class SpineSlotData {
         return .init(spine_slot_data_get_dark_color(wrappee))
     }
 
-    public var hasDarkColor: Int32 {
+    public var hasDarkColor: Bool {
         get {
-            return spine_slot_data_get_has_dark_color(wrappee)
+            return spine_slot_data_get_has_dark_color(wrappee) != 0
         }
         set {
-            spine_slot_data_set_has_dark_color(wrappee, newValue)
+            spine_slot_data_set_has_dark_color(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -2634,19 +2634,19 @@ public final class SpineSlotData {
 
     public var blendMode: SpineBlendMode {
         get {
-            return .init(spine_slot_data_get_blend_mode(wrappee).rawValue)
+            return spine_slot_data_get_blend_mode(wrappee)
         }
         set {
             spine_slot_data_set_blend_mode(wrappee, newValue)
         }
     }
 
-    public var isVisible: Int32 {
+    public var isVisible: Bool {
         get {
-            return spine_slot_data_is_visible(wrappee)
+            return spine_slot_data_is_visible(wrappee) != 0
         }
         set {
-            spine_slot_data_set_visible(wrappee, newValue)
+            spine_slot_data_set_visible(wrappee, newValue ? -1 : 0)
         }
     }
 
@@ -3119,8 +3119,8 @@ public final class SpineBone {
         self.wrappee = wrappee
     }
 
-    public func setIsYDown(yDown: Int32) {
-        spine_bone_set_is_y_down(yDown)
+    public func setIsYDown(yDown: Bool) {
+        spine_bone_set_is_y_down(yDown ? -1 : 0)
     }
 
     public var worldToLocalRotationX: Float {
@@ -3347,26 +3347,26 @@ public final class SpineBone {
         }
     }
 
-    public var isActive: Int32 {
+    public var isActive: Bool {
         get {
-            return spine_bone_get_is_active(wrappee)
+            return spine_bone_get_is_active(wrappee) != 0
         }
         set {
-            spine_bone_set_is_active(wrappee, newValue)
+            spine_bone_set_is_active(wrappee, newValue ? -1 : 0)
         }
     }
 
     public var inherit: SpineInherit {
         get {
-            return .init(spine_bone_get_inherit(wrappee).rawValue)
+            return spine_bone_get_inherit(wrappee)
         }
         set {
             spine_bone_set_inherit(wrappee, newValue)
         }
     }
 
-    public var isYDown: Int32 {
-        return spine_bone_get_is_y_down()
+    public var isYDown: Bool {
+        return spine_bone_get_is_y_down() != 0
     }
 
     public func update() {
@@ -3477,8 +3477,8 @@ public final class SpineSlot {
         spine_slot_set_dark_color(wrappee, r, g, b, a)
     }
 
-    public func hasDarkColor() -> Int32 {
-        return spine_slot_has_dark_color(wrappee)
+    public func hasDarkColor() -> Bool {
+        return spine_slot_has_dark_color(wrappee) != 0
     }
 
 }
