@@ -3375,7 +3375,7 @@ spine_bool spine_ik_constraint_data_get_uniform(spine_ik_constraint_data data) {
 	return _data->getUniform() ? -1 : 0;
 }
 
-void spine_ik_constraint_data_set_uniform(spine_ik_constraint_data data, int32_t uniform) {
+void spine_ik_constraint_data_set_uniform(spine_ik_constraint_data data, spine_bool uniform) {
 	if (data == nullptr) return;
 	IkConstraintData *_data = (IkConstraintData *) data;
 	_data->setUniform(uniform);
