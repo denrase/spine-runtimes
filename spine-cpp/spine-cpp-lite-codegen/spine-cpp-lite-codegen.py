@@ -219,6 +219,11 @@ class SwiftFunctionBodyWriter:
     swift_return_type_is_array = "get_" in self.spine_function.name and num_function_name in self.spine_object.function_names
     
     spine_params = self.spine_function.parameters;
+
+    body = ""
+    if "dispose" in self.spine_function.name:
+       body += self.write_dispose_call()
+    
     function_call = self.write_c_function_call(spine_params)
 
     if swift_return_type_is_array:
@@ -295,7 +300,15 @@ class SwiftFunctionBodyWriter:
 
     array_call += "\n"
     return array_call
-
+  
+  def write_dispose_call(self):
+     dispose_body = "if disposed { return }"
+     dispose_body += "\n"
+     dispose_body += inset + inset
+     dispose_body += "disposed = true"
+     dispose_body += "\n"
+     dispose_body += inset + inset
+     return dispose_body
 
 class SwiftFunctionWriter:
     def __init__(self, spine_object, spine_function, spine_setter_function):
@@ -404,6 +417,12 @@ class SwiftObjectWriter:
         object_string += inset
         object_string += f"internal let {ivar_name}: {ivar_type}"
         object_string += "\n"
+
+        if any("dispose" in function_name for function_name in self.spine_object.function_names):
+          object_string += inset
+          object_string += f"internal var disposed = false"
+          object_string += "\n"
+
         object_string += "\n"
 
         object_string += inset
@@ -491,8 +510,6 @@ for object in objects:
     print(SwiftObjectWriter(spine_object = object).write())
     print("")
 
-# Must Have
-
-# TODO: support spine_bool
+# TODOs
+# TODO: Generate swift enums?
 # TODO: Subclasses & generics?
-# TODO: Guard dispose

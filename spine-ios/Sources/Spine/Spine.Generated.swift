@@ -673,6 +673,7 @@ public final class SpineAnimationStateData {
 public final class SpineSkeletonDataResult {
 
     internal let wrappee: spine_skeleton_data_result
+    internal var disposed = false
 
     internal init(_ wrappee: spine_skeleton_data_result) {
         self.wrappee = wrappee
@@ -687,6 +688,8 @@ public final class SpineSkeletonDataResult {
     }
 
     public func dispose() {
+        if disposed { return }
+        disposed = true
         spine_skeleton_data_result_dispose(wrappee)
     }
 
@@ -1215,6 +1218,7 @@ public final class SpineVertexAttachment {
 public final class SpineSkeletonDrawable {
 
     internal let wrappee: spine_skeleton_drawable
+    internal var disposed = false
 
     internal init(_ wrappee: spine_skeleton_drawable) {
         self.wrappee = wrappee
@@ -1241,6 +1245,8 @@ public final class SpineSkeletonDrawable {
     }
 
     public func dispose() {
+        if disposed { return }
+        disposed = true
         spine_skeleton_drawable_dispose(wrappee)
     }
 
@@ -1577,6 +1583,7 @@ public final class SpinePathConstraint {
 public final class SpineAnimationState {
 
     internal let wrappee: spine_animation_state
+    internal var disposed = false
 
     internal init(_ wrappee: spine_animation_state) {
         self.wrappee = wrappee
@@ -1640,6 +1647,8 @@ public final class SpineAnimationState {
     }
 
     public func disposeTrackEntry(entry: SpineTrackEntry) {
+        if disposed { return }
+        disposed = true
         spine_animation_state_dispose_track_entry(wrappee, entry.wrappee)
     }
 
@@ -1812,6 +1821,7 @@ public final class SpineRenderCommand {
 public final class SpineSkeletonData {
 
     internal let wrappee: spine_skeleton_data
+    internal var disposed = false
 
     internal init(_ wrappee: spine_skeleton_data) {
         self.wrappee = wrappee
@@ -1999,6 +2009,8 @@ public final class SpineSkeletonData {
     }
 
     public func dispose() {
+        if disposed { return }
+        disposed = true
         spine_skeleton_data_dispose(wrappee)
     }
 
@@ -2100,6 +2112,7 @@ public final class SpineIkConstraint {
 public final class SpineSkinEntries {
 
     internal let wrappee: spine_skin_entries
+    internal var disposed = false
 
     internal init(_ wrappee: spine_skin_entries) {
         self.wrappee = wrappee
@@ -2110,6 +2123,8 @@ public final class SpineSkinEntries {
     }
 
     public func dispose() {
+        if disposed { return }
+        disposed = true
         spine_skin_entries_dispose(wrappee)
     }
 
@@ -2339,6 +2354,7 @@ public final class SpineTrackEntry {
 public final class SpineAttachment {
 
     internal let wrappee: spine_attachment
+    internal var disposed = false
 
     internal init(_ wrappee: spine_attachment) {
         self.wrappee = wrappee
@@ -2357,6 +2373,8 @@ public final class SpineAttachment {
     }
 
     public func dispose() {
+        if disposed { return }
+        disposed = true
         spine_attachment_dispose(wrappee)
     }
 
@@ -3062,6 +3080,7 @@ public final class SpineEvent {
 public final class SpineAtlas {
 
     internal let wrappee: spine_atlas
+    internal var disposed = false
 
     internal init(_ wrappee: spine_atlas) {
         self.wrappee = wrappee
@@ -3080,6 +3099,8 @@ public final class SpineAtlas {
     }
 
     public func dispose() {
+        if disposed { return }
+        disposed = true
         spine_atlas_dispose(wrappee)
     }
 
@@ -3486,6 +3507,7 @@ public final class SpineSlot {
 public final class SpineSkin {
 
     internal let wrappee: spine_skin
+    internal var disposed = false
 
     internal init(_ wrappee: spine_skin) {
         self.wrappee = wrappee
@@ -3540,6 +3562,8 @@ public final class SpineSkin {
     }
 
     public func dispose() {
+        if disposed { return }
+        disposed = true
         spine_skin_dispose(wrappee)
     }
 
