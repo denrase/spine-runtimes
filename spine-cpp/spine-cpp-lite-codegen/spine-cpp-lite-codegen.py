@@ -2,7 +2,7 @@ import re
 import os
 
 script_directory = os.path.dirname(os.path.abspath(__file__))
-input_path = os.path.join(script_directory, '../spine-cpp-lite/spine-cpp-light.h')
+input_path = os.path.join(script_directory, '../spine-cpp-lite/spine-cpp-lite.h')
 
 with open(input_path, 'r') as file:
     file_contents = file.read()
@@ -16,7 +16,8 @@ supported_types_to_swift_types = {
     'int32_t': 'Int32',
     'utf8 *': 'String?',
     'int32_t *': 'Int32?',
-    'uint16_t *': 'UInt16'
+    'uint16_t *': 'UInt16',
+    'spine_bool': 'Int32' # Update after merging
 }
 
 def read_spine_types(data):
@@ -76,6 +77,9 @@ class SpineFunction:
         self.name = name
         self.parameters = parameters
 
+    def isReturningSpineClass(self):
+       return self.return_type.startswith("spine_") and self.return_type != "spine_bool"
+
     def __str__(self):
         return f"SpineFunction(return_type: {self.return_type}, name: {self.name}, parameters: {self.parameters})"
     
@@ -86,6 +90,9 @@ class SpineParam:
     def __init__(self, type, name):
         self.type = type
         self.name = name
+
+    def isSpineClass(self):
+       return self.type.startswith("spine_") and self.type != "spine_bool"
 
     def __str__(self):
         return f"SpineParam(type: {self.type}, name: {self.name})"
@@ -222,7 +229,7 @@ class SwiftFunctionBodyWriter:
       if not self.spine_function.return_type == "void":
         body += "return "
 
-      if self.spine_function.return_type.startswith("spine_"):
+      if self.spine_function.isReturningSpineClass():
         body += ".init("
         body += function_call
         if self.spine_function.return_type in enums:
@@ -253,7 +260,7 @@ class SwiftFunctionBodyWriter:
         spine_params_with_ivar_name[1].name = "newValue"
 
       swift_param_names = [
-          f"{spine_param.name}.wrappee" if spine_param.type.startswith("spine_") and spine_param.type not in enums and idx > 0 else spine_param.name
+          f"{spine_param.name}.wrappee" if spine_param.isSpineClass() and spine_param.type not in enums and idx > 0 else spine_param.name
           for idx, spine_param in enumerate(spine_params_with_ivar_name)
       ]
 
@@ -272,7 +279,7 @@ class SwiftFunctionBodyWriter:
     array_call += "\n"
     array_call += inset + inset + inset
 
-    if self.spine_function.return_type.startswith("spine_"):
+    if self.spine_function.return_type not in supported_types_to_swift_types:
       if self.spine_function.return_type in enums:
         array_call += "ptr?[$0].flatMap { .init($0.rawValue) }"
       else:
