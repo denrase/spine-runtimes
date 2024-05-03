@@ -181,16 +181,13 @@ class SwiftTypeWriter:
     def __init__(self, type):
         self.type = type
         
-    def write(self, as_array):
+    def write(self):
         parameter_type = supported_types_to_swift_types.get(self.type)
         if parameter_type is None:
           parameter_type = snake_to_title(self.type)
         
-        if as_array:
-            if parameter_type.endswith(" *"):
-              parameter_type = f"[{parameter_type[:-2]}]"
-            else:
-              parameter_type = f"[{parameter_type}]"
+        if parameter_type.endswith(" *"):
+            parameter_type = f"{parameter_type[:-2]}"
 
         return parameter_type
         
@@ -199,7 +196,7 @@ class SwiftParamWriter:
         self.param = param
         
     def write(self):
-        type = SwiftTypeWriter(type = self.param.type).write(as_array=False)
+        type = SwiftTypeWriter(type = self.param.type).write()
         return f"{snake_to_camel(self.param.name)}: {type}"
 
 class SwiftFunctionBodyWriter:
@@ -302,7 +299,9 @@ class SwiftFunctionWriter:
         swift_return_type_is_array = "get_" in self.spine_function.name and num_function_name in self.spine_object.function_names
 
         swift_return_type_writer = SwiftTypeWriter(type = self.spine_function.return_type)
-        swift_return_type = swift_return_type_writer.write(as_array = swift_return_type_is_array)
+        swift_return_type = swift_return_type_writer.write()
+        if swift_return_type_is_array:
+           swift_return_type = f"[{swift_return_type}]"
 
         function_string = inset
 
@@ -479,3 +478,4 @@ for object in objects:
 
 # TODO: get/set booleans as -1/1
 # TODO: Subclasses & generics?
+# TODO: Guard dispose
