@@ -2,7 +2,7 @@ import re
 import os
 
 script_directory = os.path.dirname(os.path.abspath(__file__))
-input_path = os.path.join(script_directory, '../spine-cpp-lite/spine-cpp-lite.h')
+input_path = os.path.join(script_directory, 'spine-cpp-lite.h')
 
 with open(input_path, 'r') as file:
     file_contents = file.read()
