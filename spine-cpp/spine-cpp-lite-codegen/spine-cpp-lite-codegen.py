@@ -509,7 +509,3 @@ print("")
 for object in objects:
     print(SwiftObjectWriter(spine_object = object).write())
     print("")
-
-# TODOs
-# TODO: Generate swift enums?
-# TODO: Subclasses & generics?
