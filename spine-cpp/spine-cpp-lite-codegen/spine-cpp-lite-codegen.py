@@ -487,6 +487,6 @@ for object in objects:
 
 # Must Have
 
-# TODO: get/set booleans as -1/1
+# TODO: support spine_bool
 # TODO: Subclasses & generics?
 # TODO: Guard dispose
