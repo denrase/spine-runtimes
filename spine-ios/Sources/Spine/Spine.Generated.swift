@@ -1,18 +1,18 @@
 import Foundation
 import SpineWrapper
 
-public typealias SpineBlendMode = spine_blend_mode
-public typealias SpineMixBlend = spine_mix_blend
-public typealias SpineEventType = spine_event_type
-public typealias SpineAttachmentType = spine_attachment_type
-public typealias SpineConstraintType = spine_constraint_type
-public typealias SpineInherit = spine_inherit
-public typealias SpinePositionMode = spine_position_mode
-public typealias SpineSpacingMode = spine_spacing_mode
-public typealias SpineRotateMode = spine_rotate_mode
-public typealias SpinePhysics = spine_physics
+public typealias BlendMode = spine_blend_mode
+public typealias MixBlend = spine_mix_blend
+public typealias EventType = spine_event_type
+public typealias AttachmentType = spine_attachment_type
+public typealias ConstraintType = spine_constraint_type
+public typealias Inherit = spine_inherit
+public typealias PositionMode = spine_position_mode
+public typealias SpacingMode = spine_spacing_mode
+public typealias RotateMode = spine_rotate_mode
+public typealias Physics = spine_physics
 
-public final class SpineTransformConstraintData {
+public final class TransformConstraintData {
 
     internal let wrappee: spine_transform_constraint_data
 
@@ -20,7 +20,7 @@ public final class SpineTransformConstraintData {
         self.wrappee = wrappee
     }
 
-    public var bones: [SpineBoneData] {
+    public var bones: [BoneData] {
         let num = Int(spine_transform_constraint_data_get_num_bones(wrappee))
         let ptr = spine_transform_constraint_data_get_bones(wrappee)
         return (0..<num).compactMap {
@@ -28,7 +28,7 @@ public final class SpineTransformConstraintData {
         }
     }
 
-    public var target: SpineBoneData {
+    public var target: BoneData {
         get {
             return .init(spine_transform_constraint_data_get_target(wrappee))
         }
@@ -165,7 +165,7 @@ public final class SpineTransformConstraintData {
 
 }
 
-public final class SpineBoundingBoxAttachment {
+public final class BoundingBoxAttachment {
 
     internal let wrappee: spine_bounding_box_attachment
 
@@ -173,7 +173,7 @@ public final class SpineBoundingBoxAttachment {
         self.wrappee = wrappee
     }
 
-    public var color: SpineColor {
+    public var color: Color {
         return .init(spine_bounding_box_attachment_get_color(wrappee))
     }
 
@@ -183,7 +183,7 @@ public final class SpineBoundingBoxAttachment {
 
 }
 
-public final class SpinePhysicsConstraintData {
+public final class PhysicsConstraintData {
 
     internal let wrappee: spine_physics_constraint_data
 
@@ -191,7 +191,7 @@ public final class SpinePhysicsConstraintData {
         self.wrappee = wrappee
     }
 
-    public var bone: SpineBoneData {
+    public var bone: BoneData {
         get {
             return .init(spine_physics_constraint_data_get_bone(wrappee))
         }
@@ -391,7 +391,7 @@ public final class SpinePhysicsConstraintData {
 
 }
 
-public final class SpineAnimationStateEvents {
+public final class AnimationStateEvents {
 
     internal let wrappee: spine_animation_state_events
 
@@ -399,15 +399,15 @@ public final class SpineAnimationStateEvents {
         self.wrappee = wrappee
     }
 
-    public func getEventType(index: Int32) -> SpineEventType {
+    public func getEventType(index: Int32) -> EventType {
         return spine_animation_state_events_get_event_type(wrappee, index)
     }
 
-    public func getTrackEntry(index: Int32) -> SpineTrackEntry {
+    public func getTrackEntry(index: Int32) -> TrackEntry {
         return .init(spine_animation_state_events_get_track_entry(wrappee, index))
     }
 
-    public func getEvent(index: Int32) -> SpineEvent {
+    public func getEvent(index: Int32) -> Event {
         return .init(spine_animation_state_events_get_event(wrappee, index))
     }
 
@@ -417,7 +417,7 @@ public final class SpineAnimationStateEvents {
 
 }
 
-public final class SpineTransformConstraint {
+public final class TransformConstraint {
 
     internal let wrappee: spine_transform_constraint
 
@@ -429,11 +429,11 @@ public final class SpineTransformConstraint {
         return spine_transform_constraint_get_order(wrappee)
     }
 
-    public var data: SpineTransformConstraintData {
+    public var data: TransformConstraintData {
         return .init(spine_transform_constraint_get_data(wrappee))
     }
 
-    public var bones: [SpineBone] {
+    public var bones: [Bone] {
         let num = Int(spine_transform_constraint_get_num_bones(wrappee))
         let ptr = spine_transform_constraint_get_bones(wrappee)
         return (0..<num).compactMap {
@@ -441,7 +441,7 @@ public final class SpineTransformConstraint {
         }
     }
 
-    public var target: SpineBone {
+    public var target: Bone {
         get {
             return .init(spine_transform_constraint_get_target(wrappee))
         }
@@ -519,7 +519,7 @@ public final class SpineTransformConstraint {
 
 }
 
-public final class SpinePathConstraintData {
+public final class PathConstraintData {
 
     internal let wrappee: spine_path_constraint_data
 
@@ -527,7 +527,7 @@ public final class SpinePathConstraintData {
         self.wrappee = wrappee
     }
 
-    public var bones: [SpineBoneData] {
+    public var bones: [BoneData] {
         let num = Int(spine_path_constraint_data_get_num_bones(wrappee))
         let ptr = spine_path_constraint_data_get_bones(wrappee)
         return (0..<num).compactMap {
@@ -535,7 +535,7 @@ public final class SpinePathConstraintData {
         }
     }
 
-    public var target: SpineSlotData {
+    public var target: SlotData {
         get {
             return .init(spine_path_constraint_data_get_target(wrappee))
         }
@@ -544,7 +544,7 @@ public final class SpinePathConstraintData {
         }
     }
 
-    public var positionMode: SpinePositionMode {
+    public var positionMode: PositionMode {
         get {
             return spine_path_constraint_data_get_position_mode(wrappee)
         }
@@ -553,7 +553,7 @@ public final class SpinePathConstraintData {
         }
     }
 
-    public var spacingMode: SpineSpacingMode {
+    public var spacingMode: SpacingMode {
         get {
             return spine_path_constraint_data_get_spacing_mode(wrappee)
         }
@@ -562,7 +562,7 @@ public final class SpinePathConstraintData {
         }
     }
 
-    public var rotateMode: SpineRotateMode {
+    public var rotateMode: RotateMode {
         get {
             return spine_path_constraint_data_get_rotate_mode(wrappee)
         }
@@ -627,7 +627,7 @@ public final class SpinePathConstraintData {
 
 }
 
-public final class SpineAnimationStateData {
+public final class AnimationStateData {
 
     internal let wrappee: spine_animation_state_data
 
@@ -635,7 +635,7 @@ public final class SpineAnimationStateData {
         self.wrappee = wrappee
     }
 
-    public var skeletonData: SpineSkeletonData {
+    public var skeletonData: SkeletonData {
         return .init(spine_animation_state_data_get_skeleton_data(wrappee))
     }
 
@@ -648,11 +648,11 @@ public final class SpineAnimationStateData {
         }
     }
 
-    public func setMix(from: SpineAnimation, to: SpineAnimation, duration: Float) {
+    public func setMix(from: Animation, to: Animation, duration: Float) {
         spine_animation_state_data_set_mix(wrappee, from.wrappee, to.wrappee, duration)
     }
 
-    public func getMix(from: SpineAnimation, to: SpineAnimation) -> Float {
+    public func getMix(from: Animation, to: Animation) -> Float {
         return spine_animation_state_data_get_mix(wrappee, from.wrappee, to.wrappee)
     }
 
@@ -670,7 +670,7 @@ public final class SpineAnimationStateData {
 
 }
 
-public final class SpineSkeletonDataResult {
+public final class SkeletonDataResult {
 
     internal let wrappee: spine_skeleton_data_result
     internal var disposed = false
@@ -683,7 +683,7 @@ public final class SpineSkeletonDataResult {
         return spine_skeleton_data_result_get_error(wrappee).flatMap { String(cString: $0) }
     }
 
-    public var data: SpineSkeletonData {
+    public var data: SkeletonData {
         return .init(spine_skeleton_data_result_get_data(wrappee))
     }
 
@@ -695,7 +695,7 @@ public final class SpineSkeletonDataResult {
 
 }
 
-public final class SpineClippingAttachment {
+public final class ClippingAttachment {
 
     internal let wrappee: spine_clipping_attachment
 
@@ -703,11 +703,11 @@ public final class SpineClippingAttachment {
         self.wrappee = wrappee
     }
 
-    public var color: SpineColor {
+    public var color: Color {
         return .init(spine_clipping_attachment_get_color(wrappee))
     }
 
-    public var endSlot: SpineSlotData {
+    public var endSlot: SlotData {
         get {
             return .init(spine_clipping_attachment_get_end_slot(wrappee))
         }
@@ -722,7 +722,7 @@ public final class SpineClippingAttachment {
 
 }
 
-public final class SpineIkConstraintData {
+public final class IkConstraintData {
 
     internal let wrappee: spine_ik_constraint_data
 
@@ -730,7 +730,7 @@ public final class SpineIkConstraintData {
         self.wrappee = wrappee
     }
 
-    public var bones: [SpineBoneData] {
+    public var bones: [BoneData] {
         let num = Int(spine_ik_constraint_data_get_num_bones(wrappee))
         let ptr = spine_ik_constraint_data_get_bones(wrappee)
         return (0..<num).compactMap {
@@ -738,7 +738,7 @@ public final class SpineIkConstraintData {
         }
     }
 
-    public var target: SpineBoneData {
+    public var target: BoneData {
         get {
             return .init(spine_ik_constraint_data_get_target(wrappee))
         }
@@ -803,7 +803,7 @@ public final class SpineIkConstraintData {
 
 }
 
-public final class SpinePhysicsConstraint {
+public final class PhysicsConstraint {
 
     internal let wrappee: spine_physics_constraint
 
@@ -811,7 +811,7 @@ public final class SpinePhysicsConstraint {
         self.wrappee = wrappee
     }
 
-    public var bone: SpineBone {
+    public var bone: Bone {
         get {
             return .init(spine_physics_constraint_get_bone(wrappee))
         }
@@ -1049,7 +1049,7 @@ public final class SpinePhysicsConstraint {
         spine_physics_constraint_reset_fully(wrappee)
     }
 
-    public func update(physics: SpinePhysics) {
+    public func update(physics: Physics) {
         spine_physics_constraint_update(wrappee, physics)
     }
 
@@ -1063,7 +1063,7 @@ public final class SpinePhysicsConstraint {
 
 }
 
-public final class SpineRegionAttachment {
+public final class RegionAttachment {
 
     internal let wrappee: spine_region_attachment
 
@@ -1071,7 +1071,7 @@ public final class SpineRegionAttachment {
         self.wrappee = wrappee
     }
 
-    public var color: SpineColor {
+    public var color: Color {
         return .init(spine_region_attachment_get_color(wrappee))
     }
 
@@ -1079,11 +1079,11 @@ public final class SpineRegionAttachment {
         return spine_region_attachment_get_path(wrappee).flatMap { String(cString: $0) }
     }
 
-    public var region: SpineTextureRegion {
+    public var region: TextureRegion {
         return .init(spine_region_attachment_get_region(wrappee))
     }
 
-    public var sequence: SpineSequence {
+    public var sequence: Sequence {
         return .init(spine_region_attachment_get_sequence(wrappee))
     }
 
@@ -1176,7 +1176,7 @@ public final class SpineRegionAttachment {
 
 }
 
-public final class SpineVertexAttachment {
+public final class VertexAttachment {
 
     internal let wrappee: spine_vertex_attachment
 
@@ -1204,7 +1204,7 @@ public final class SpineVertexAttachment {
         }
     }
 
-    public var timelineAttachment: SpineAttachment {
+    public var timelineAttachment: Attachment {
         get {
             return .init(spine_vertex_attachment_get_timeline_attachment(wrappee))
         }
@@ -1215,7 +1215,7 @@ public final class SpineVertexAttachment {
 
 }
 
-public final class SpineSkeletonDrawable {
+public final class SkeletonDrawable {
 
     internal let wrappee: spine_skeleton_drawable
     internal var disposed = false
@@ -1224,23 +1224,23 @@ public final class SpineSkeletonDrawable {
         self.wrappee = wrappee
     }
 
-    public var skeleton: SpineSkeleton {
+    public var skeleton: Skeleton {
         return .init(spine_skeleton_drawable_get_skeleton(wrappee))
     }
 
-    public var animationState: SpineAnimationState {
+    public var animationState: AnimationState {
         return .init(spine_skeleton_drawable_get_animation_state(wrappee))
     }
 
-    public var animationStateData: SpineAnimationStateData {
+    public var animationStateData: AnimationStateData {
         return .init(spine_skeleton_drawable_get_animation_state_data(wrappee))
     }
 
-    public var animationStateEvents: SpineAnimationStateEvents {
+    public var animationStateEvents: AnimationStateEvents {
         return .init(spine_skeleton_drawable_get_animation_state_events(wrappee))
     }
 
-    public func render() -> SpineRenderCommand {
+    public func render() -> RenderCommand {
         return .init(spine_skeleton_drawable_render(wrappee))
     }
 
@@ -1252,7 +1252,7 @@ public final class SpineSkeletonDrawable {
 
 }
 
-public final class SpinePointAttachment {
+public final class PointAttachment {
 
     internal let wrappee: spine_point_attachment
 
@@ -1260,7 +1260,7 @@ public final class SpinePointAttachment {
         self.wrappee = wrappee
     }
 
-    public var color: SpineColor {
+    public var color: Color {
         return .init(spine_point_attachment_get_color(wrappee))
     }
 
@@ -1291,11 +1291,11 @@ public final class SpinePointAttachment {
         }
     }
 
-    public func computeWorldPosition(bone: SpineBone) -> SpineVector {
+    public func computeWorldPosition(bone: Bone) -> Vector {
         return .init(spine_point_attachment_compute_world_position(wrappee, bone.wrappee))
     }
 
-    public func computeWorldRotation(bone: SpineBone) -> Float {
+    public func computeWorldRotation(bone: Bone) -> Float {
         return spine_point_attachment_compute_world_rotation(wrappee, bone.wrappee)
     }
 
@@ -1305,7 +1305,7 @@ public final class SpinePointAttachment {
 
 }
 
-public final class SpineMeshAttachment {
+public final class MeshAttachment {
 
     internal let wrappee: spine_mesh_attachment
 
@@ -1337,7 +1337,7 @@ public final class SpineMeshAttachment {
         }
     }
 
-    public var color: SpineColor {
+    public var color: Color {
         return .init(spine_mesh_attachment_get_color(wrappee))
     }
 
@@ -1345,11 +1345,11 @@ public final class SpineMeshAttachment {
         return spine_mesh_attachment_get_path(wrappee).flatMap { String(cString: $0) }
     }
 
-    public var region: SpineTextureRegion {
+    public var region: TextureRegion {
         return .init(spine_mesh_attachment_get_region(wrappee))
     }
 
-    public var sequence: SpineSequence {
+    public var sequence: Sequence {
         return .init(spine_mesh_attachment_get_sequence(wrappee))
     }
 
@@ -1370,7 +1370,7 @@ public final class SpineMeshAttachment {
         }
     }
 
-    public var parentMesh: SpineMeshAttachment {
+    public var parentMesh: MeshAttachment {
         get {
             return .init(spine_mesh_attachment_get_parent_mesh(wrappee))
         }
@@ -1407,7 +1407,7 @@ public final class SpineMeshAttachment {
 
 }
 
-public final class SpinePathAttachment {
+public final class PathAttachment {
 
     internal let wrappee: spine_path_attachment
 
@@ -1423,7 +1423,7 @@ public final class SpinePathAttachment {
         }
     }
 
-    public var color: SpineColor {
+    public var color: Color {
         return .init(spine_path_attachment_get_color(wrappee))
     }
 
@@ -1451,7 +1451,7 @@ public final class SpinePathAttachment {
 
 }
 
-public final class SpineConstraintData {
+public final class ConstraintData {
 
     internal let wrappee: spine_constraint_data
 
@@ -1459,7 +1459,7 @@ public final class SpineConstraintData {
         self.wrappee = wrappee
     }
 
-    public var type: SpineConstraintType {
+    public var type: ConstraintType {
         return spine_constraint_data_get_type(wrappee)
     }
 
@@ -1487,7 +1487,7 @@ public final class SpineConstraintData {
 
 }
 
-public final class SpinePathConstraint {
+public final class PathConstraint {
 
     internal let wrappee: spine_path_constraint
 
@@ -1499,11 +1499,11 @@ public final class SpinePathConstraint {
         return spine_path_constraint_get_order(wrappee)
     }
 
-    public var data: SpinePathConstraintData {
+    public var data: PathConstraintData {
         return .init(spine_path_constraint_get_data(wrappee))
     }
 
-    public var bones: [SpineBone] {
+    public var bones: [Bone] {
         let num = Int(spine_path_constraint_get_num_bones(wrappee))
         let ptr = spine_path_constraint_get_bones(wrappee)
         return (0..<num).compactMap {
@@ -1511,7 +1511,7 @@ public final class SpinePathConstraint {
         }
     }
 
-    public var target: SpineSlot {
+    public var target: Slot {
         get {
             return .init(spine_path_constraint_get_target(wrappee))
         }
@@ -1580,7 +1580,7 @@ public final class SpinePathConstraint {
 
 }
 
-public final class SpineAnimationState {
+public final class AnimationState {
 
     internal let wrappee: spine_animation_state
     internal var disposed = false
@@ -1589,7 +1589,7 @@ public final class SpineAnimationState {
         self.wrappee = wrappee
     }
 
-    public var data: SpineAnimationStateData {
+    public var data: AnimationStateData {
         return .init(spine_animation_state_get_data(wrappee))
     }
 
@@ -1606,7 +1606,7 @@ public final class SpineAnimationState {
         spine_animation_state_update(wrappee, delta)
     }
 
-    public func apply(skeleton: SpineSkeleton) {
+    public func apply(skeleton: Skeleton) {
         spine_animation_state_apply(wrappee, skeleton.wrappee)
     }
 
@@ -1618,35 +1618,35 @@ public final class SpineAnimationState {
         spine_animation_state_clear_track(wrappee, trackIndex)
     }
 
-    public func setAnimationByName(trackIndex: Int32, animationName: String?, loop: Bool) -> SpineTrackEntry {
+    public func setAnimationByName(trackIndex: Int32, animationName: String?, loop: Bool) -> TrackEntry {
         return .init(spine_animation_state_set_animation_by_name(wrappee, trackIndex, animationName, loop ? -1 : 0))
     }
 
-    public func setAnimation(trackIndex: Int32, animation: SpineAnimation, loop: Bool) -> SpineTrackEntry {
+    public func setAnimation(trackIndex: Int32, animation: Animation, loop: Bool) -> TrackEntry {
         return .init(spine_animation_state_set_animation(wrappee, trackIndex, animation.wrappee, loop ? -1 : 0))
     }
 
-    public func addAnimationByName(trackIndex: Int32, animationName: String?, loop: Bool, delay: Float) -> SpineTrackEntry {
+    public func addAnimationByName(trackIndex: Int32, animationName: String?, loop: Bool, delay: Float) -> TrackEntry {
         return .init(spine_animation_state_add_animation_by_name(wrappee, trackIndex, animationName, loop ? -1 : 0, delay))
     }
 
-    public func addAnimation(trackIndex: Int32, animation: SpineAnimation, loop: Bool, delay: Float) -> SpineTrackEntry {
+    public func addAnimation(trackIndex: Int32, animation: Animation, loop: Bool, delay: Float) -> TrackEntry {
         return .init(spine_animation_state_add_animation(wrappee, trackIndex, animation.wrappee, loop ? -1 : 0, delay))
     }
 
-    public func setEmptyAnimation(trackIndex: Int32, mixDuration: Float) -> SpineTrackEntry {
+    public func setEmptyAnimation(trackIndex: Int32, mixDuration: Float) -> TrackEntry {
         return .init(spine_animation_state_set_empty_animation(wrappee, trackIndex, mixDuration))
     }
 
-    public func addEmptyAnimation(trackIndex: Int32, mixDuration: Float, delay: Float) -> SpineTrackEntry {
+    public func addEmptyAnimation(trackIndex: Int32, mixDuration: Float, delay: Float) -> TrackEntry {
         return .init(spine_animation_state_add_empty_animation(wrappee, trackIndex, mixDuration, delay))
     }
 
-    public func getCurrent(trackIndex: Int32) -> SpineTrackEntry {
+    public func getCurrent(trackIndex: Int32) -> TrackEntry {
         return .init(spine_animation_state_get_current(wrappee, trackIndex))
     }
 
-    public func disposeTrackEntry(entry: SpineTrackEntry) {
+    public func disposeTrackEntry(entry: TrackEntry) {
         if disposed { return }
         disposed = true
         spine_animation_state_dispose_track_entry(wrappee, entry.wrappee)
@@ -1658,7 +1658,7 @@ public final class SpineAnimationState {
 
 }
 
-public final class SpineTextureRegion {
+public final class TextureRegion {
 
     internal let wrappee: spine_texture_region
 
@@ -1776,7 +1776,7 @@ public final class SpineTextureRegion {
 
 }
 
-public final class SpineRenderCommand {
+public final class RenderCommand {
 
     internal let wrappee: spine_render_command
 
@@ -1808,17 +1808,17 @@ public final class SpineRenderCommand {
         return spine_render_command_get_atlas_page(wrappee)
     }
 
-    public var blendMode: SpineBlendMode {
+    public var blendMode: BlendMode {
         return spine_render_command_get_blend_mode(wrappee)
     }
 
-    public var next: SpineRenderCommand {
+    public var next: RenderCommand {
         return .init(spine_render_command_get_next(wrappee))
     }
 
 }
 
-public final class SpineSkeletonData {
+public final class SkeletonData {
 
     internal let wrappee: spine_skeleton_data
     internal var disposed = false
@@ -1831,7 +1831,7 @@ public final class SpineSkeletonData {
         return spine_skeleton_data_get_name(wrappee).flatMap { String(cString: $0) }
     }
 
-    public var bones: [SpineBoneData] {
+    public var bones: [BoneData] {
         let num = Int(spine_skeleton_data_get_num_bones(wrappee))
         let ptr = spine_skeleton_data_get_bones(wrappee)
         return (0..<num).compactMap {
@@ -1839,7 +1839,7 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var slots: [SpineSlotData] {
+    public var slots: [SlotData] {
         let num = Int(spine_skeleton_data_get_num_slots(wrappee))
         let ptr = spine_skeleton_data_get_slots(wrappee)
         return (0..<num).compactMap {
@@ -1847,7 +1847,7 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var skins: [SpineSkin] {
+    public var skins: [Skin] {
         let num = Int(spine_skeleton_data_get_num_skins(wrappee))
         let ptr = spine_skeleton_data_get_skins(wrappee)
         return (0..<num).compactMap {
@@ -1855,7 +1855,7 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var events: [SpineEventData] {
+    public var events: [EventData] {
         let num = Int(spine_skeleton_data_get_num_events(wrappee))
         let ptr = spine_skeleton_data_get_events(wrappee)
         return (0..<num).compactMap {
@@ -1863,7 +1863,7 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var animations: [SpineAnimation] {
+    public var animations: [Animation] {
         let num = Int(spine_skeleton_data_get_num_animations(wrappee))
         let ptr = spine_skeleton_data_get_animations(wrappee)
         return (0..<num).compactMap {
@@ -1871,7 +1871,7 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var ikConstraints: [SpineIkConstraintData] {
+    public var ikConstraints: [IkConstraintData] {
         let num = Int(spine_skeleton_data_get_num_ik_constraints(wrappee))
         let ptr = spine_skeleton_data_get_ik_constraints(wrappee)
         return (0..<num).compactMap {
@@ -1879,7 +1879,7 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var transformConstraints: [SpineTransformConstraintData] {
+    public var transformConstraints: [TransformConstraintData] {
         let num = Int(spine_skeleton_data_get_num_transform_constraints(wrappee))
         let ptr = spine_skeleton_data_get_transform_constraints(wrappee)
         return (0..<num).compactMap {
@@ -1887,7 +1887,7 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var pathConstraints: [SpinePathConstraintData] {
+    public var pathConstraints: [PathConstraintData] {
         let num = Int(spine_skeleton_data_get_num_path_constraints(wrappee))
         let ptr = spine_skeleton_data_get_path_constraints(wrappee)
         return (0..<num).compactMap {
@@ -1895,7 +1895,7 @@ public final class SpineSkeletonData {
         }
     }
 
-    public var physicsConstraints: [SpinePhysicsConstraintData] {
+    public var physicsConstraints: [PhysicsConstraintData] {
         let num = Int(spine_skeleton_data_get_num_physics_constraints(wrappee))
         let ptr = spine_skeleton_data_get_physics_constraints(wrappee)
         return (0..<num).compactMap {
@@ -1927,7 +1927,7 @@ public final class SpineSkeletonData {
         return spine_skeleton_data_get_reference_scale(wrappee)
     }
 
-    public var defaultSkin: SpineSkin {
+    public var defaultSkin: Skin {
         get {
             return .init(spine_skeleton_data_get_default_skin(wrappee))
         }
@@ -1972,39 +1972,39 @@ public final class SpineSkeletonData {
         }
     }
 
-    public func findBone(name: String?) -> SpineBoneData {
+    public func findBone(name: String?) -> BoneData {
         return .init(spine_skeleton_data_find_bone(wrappee, name))
     }
 
-    public func findSlot(name: String?) -> SpineSlotData {
+    public func findSlot(name: String?) -> SlotData {
         return .init(spine_skeleton_data_find_slot(wrappee, name))
     }
 
-    public func findSkin(name: String?) -> SpineSkin {
+    public func findSkin(name: String?) -> Skin {
         return .init(spine_skeleton_data_find_skin(wrappee, name))
     }
 
-    public func findEvent(name: String?) -> SpineEventData {
+    public func findEvent(name: String?) -> EventData {
         return .init(spine_skeleton_data_find_event(wrappee, name))
     }
 
-    public func findAnimation(name: String?) -> SpineAnimation {
+    public func findAnimation(name: String?) -> Animation {
         return .init(spine_skeleton_data_find_animation(wrappee, name))
     }
 
-    public func findIkConstraint(name: String?) -> SpineIkConstraintData {
+    public func findIkConstraint(name: String?) -> IkConstraintData {
         return .init(spine_skeleton_data_find_ik_constraint(wrappee, name))
     }
 
-    public func findTransformConstraint(name: String?) -> SpineTransformConstraintData {
+    public func findTransformConstraint(name: String?) -> TransformConstraintData {
         return .init(spine_skeleton_data_find_transform_constraint(wrappee, name))
     }
 
-    public func findPathConstraint(name: String?) -> SpinePathConstraintData {
+    public func findPathConstraint(name: String?) -> PathConstraintData {
         return .init(spine_skeleton_data_find_path_constraint(wrappee, name))
     }
 
-    public func findPhysicsConstraint(name: String?) -> SpinePhysicsConstraintData {
+    public func findPhysicsConstraint(name: String?) -> PhysicsConstraintData {
         return .init(spine_skeleton_data_find_physics_constraint(wrappee, name))
     }
 
@@ -2016,7 +2016,7 @@ public final class SpineSkeletonData {
 
 }
 
-public final class SpineIkConstraint {
+public final class IkConstraint {
 
     internal let wrappee: spine_ik_constraint
 
@@ -2028,11 +2028,11 @@ public final class SpineIkConstraint {
         return spine_ik_constraint_get_order(wrappee)
     }
 
-    public var data: SpineIkConstraintData {
+    public var data: IkConstraintData {
         return .init(spine_ik_constraint_get_data(wrappee))
     }
 
-    public var bones: [SpineBone] {
+    public var bones: [Bone] {
         let num = Int(spine_ik_constraint_get_num_bones(wrappee))
         let ptr = spine_ik_constraint_get_bones(wrappee)
         return (0..<num).compactMap {
@@ -2040,7 +2040,7 @@ public final class SpineIkConstraint {
         }
     }
 
-    public var target: SpineBone {
+    public var target: Bone {
         get {
             return .init(spine_ik_constraint_get_target(wrappee))
         }
@@ -2109,7 +2109,7 @@ public final class SpineIkConstraint {
 
 }
 
-public final class SpineSkinEntries {
+public final class SkinEntries {
 
     internal let wrappee: spine_skin_entries
     internal var disposed = false
@@ -2118,7 +2118,7 @@ public final class SpineSkinEntries {
         self.wrappee = wrappee
     }
 
-    public func getEntry(index: Int32) -> SpineSkinEntry {
+    public func getEntry(index: Int32) -> SkinEntry {
         return .init(spine_skin_entries_get_entry(wrappee, index))
     }
 
@@ -2130,7 +2130,7 @@ public final class SpineSkinEntries {
 
 }
 
-public final class SpineTrackEntry {
+public final class TrackEntry {
 
     internal let wrappee: spine_track_entry
 
@@ -2142,11 +2142,11 @@ public final class SpineTrackEntry {
         return spine_track_entry_get_track_index(wrappee)
     }
 
-    public var animation: SpineAnimation {
+    public var animation: Animation {
         return .init(spine_track_entry_get_animation(wrappee))
     }
 
-    public var previous: SpineTrackEntry {
+    public var previous: TrackEntry {
         return .init(spine_track_entry_get_previous(wrappee))
     }
 
@@ -2154,7 +2154,7 @@ public final class SpineTrackEntry {
         return spine_track_entry_get_animation_time(wrappee)
     }
 
-    public var next: SpineTrackEntry {
+    public var next: TrackEntry {
         return .init(spine_track_entry_get_next(wrappee))
     }
 
@@ -2162,11 +2162,11 @@ public final class SpineTrackEntry {
         return spine_track_entry_is_complete(wrappee) != 0
     }
 
-    public var mixingFrom: SpineTrackEntry {
+    public var mixingFrom: TrackEntry {
         return .init(spine_track_entry_get_mixing_from(wrappee))
     }
 
-    public var mixingTo: SpineTrackEntry {
+    public var mixingTo: TrackEntry {
         return .init(spine_track_entry_get_mixing_to(wrappee))
     }
 
@@ -2336,7 +2336,7 @@ public final class SpineTrackEntry {
         }
     }
 
-    public var mixBlend: SpineMixBlend {
+    public var mixBlend: MixBlend {
         get {
             return spine_track_entry_get_mix_blend(wrappee)
         }
@@ -2351,7 +2351,7 @@ public final class SpineTrackEntry {
 
 }
 
-public final class SpineAttachment {
+public final class Attachment {
 
     internal let wrappee: spine_attachment
     internal var disposed = false
@@ -2364,11 +2364,11 @@ public final class SpineAttachment {
         return spine_attachment_get_name(wrappee).flatMap { String(cString: $0) }
     }
 
-    public var type: SpineAttachmentType {
+    public var type: AttachmentType {
         return spine_attachment_get_type(wrappee)
     }
 
-    public func copy() -> SpineAttachment {
+    public func copy() -> Attachment {
         return .init(spine_attachment_copy(wrappee))
     }
 
@@ -2380,7 +2380,7 @@ public final class SpineAttachment {
 
 }
 
-public final class SpineConstraint {
+public final class Constraint {
 
     internal let wrappee: spine_constraint
 
@@ -2390,7 +2390,7 @@ public final class SpineConstraint {
 
 }
 
-public final class SpineEventData {
+public final class EventData {
 
     internal let wrappee: spine_event_data
 
@@ -2453,7 +2453,7 @@ public final class SpineEventData {
 
 }
 
-public final class SpineSkinEntry {
+public final class SkinEntry {
 
     internal let wrappee: spine_skin_entry
 
@@ -2469,13 +2469,13 @@ public final class SpineSkinEntry {
         return spine_skin_entry_get_name(wrappee).flatMap { String(cString: $0) }
     }
 
-    public var attachment: SpineAttachment {
+    public var attachment: Attachment {
         return .init(spine_skin_entry_get_attachment(wrappee))
     }
 
 }
 
-public final class SpineBoneData {
+public final class BoneData {
 
     internal let wrappee: spine_bone_data
 
@@ -2491,11 +2491,11 @@ public final class SpineBoneData {
         return spine_bone_data_get_name(wrappee).flatMap { String(cString: $0) }
     }
 
-    public var parent: SpineBoneData {
+    public var parent: BoneData {
         return .init(spine_bone_data_get_parent(wrappee))
     }
 
-    public var color: SpineColor {
+    public var color: Color {
         return .init(spine_bone_data_get_color(wrappee))
     }
 
@@ -2571,7 +2571,7 @@ public final class SpineBoneData {
         }
     }
 
-    public var inherit: SpineInherit {
+    public var inherit: Inherit {
         get {
             return spine_bone_data_get_inherit(wrappee)
         }
@@ -2604,7 +2604,7 @@ public final class SpineBoneData {
 
 }
 
-public final class SpineSlotData {
+public final class SlotData {
 
     internal let wrappee: spine_slot_data
 
@@ -2620,15 +2620,15 @@ public final class SpineSlotData {
         return spine_slot_data_get_name(wrappee).flatMap { String(cString: $0) }
     }
 
-    public var boneData: SpineBoneData {
+    public var boneData: BoneData {
         return .init(spine_slot_data_get_bone_data(wrappee))
     }
 
-    public var color: SpineColor {
+    public var color: Color {
         return .init(spine_slot_data_get_color(wrappee))
     }
 
-    public var darkColor: SpineColor {
+    public var darkColor: Color {
         return .init(spine_slot_data_get_dark_color(wrappee))
     }
 
@@ -2650,7 +2650,7 @@ public final class SpineSlotData {
         }
     }
 
-    public var blendMode: SpineBlendMode {
+    public var blendMode: BlendMode {
         get {
             return spine_slot_data_get_blend_mode(wrappee)
         }
@@ -2678,7 +2678,7 @@ public final class SpineSlotData {
 
 }
 
-public final class SpineAnimation {
+public final class Animation {
 
     internal let wrappee: spine_animation
 
@@ -2696,7 +2696,7 @@ public final class SpineAnimation {
 
 }
 
-public final class SpineSkeleton {
+public final class Skeleton {
 
     internal let wrappee: spine_skeleton
 
@@ -2704,19 +2704,19 @@ public final class SpineSkeleton {
         self.wrappee = wrappee
     }
 
-    public var bounds: SpineBounds {
+    public var bounds: Bounds {
         return .init(spine_skeleton_get_bounds(wrappee))
     }
 
-    public var rootBone: SpineBone {
+    public var rootBone: Bone {
         return .init(spine_skeleton_get_root_bone(wrappee))
     }
 
-    public var data: SpineSkeletonData {
+    public var data: SkeletonData {
         return .init(spine_skeleton_get_data(wrappee))
     }
 
-    public var bones: [SpineBone] {
+    public var bones: [Bone] {
         let num = Int(spine_skeleton_get_num_bones(wrappee))
         let ptr = spine_skeleton_get_bones(wrappee)
         return (0..<num).compactMap {
@@ -2724,7 +2724,7 @@ public final class SpineSkeleton {
         }
     }
 
-    public var slots: [SpineSlot] {
+    public var slots: [Slot] {
         let num = Int(spine_skeleton_get_num_slots(wrappee))
         let ptr = spine_skeleton_get_slots(wrappee)
         return (0..<num).compactMap {
@@ -2732,7 +2732,7 @@ public final class SpineSkeleton {
         }
     }
 
-    public var drawOrder: [SpineSlot] {
+    public var drawOrder: [Slot] {
         let num = Int(spine_skeleton_get_num_draw_order(wrappee))
         let ptr = spine_skeleton_get_draw_order(wrappee)
         return (0..<num).compactMap {
@@ -2740,7 +2740,7 @@ public final class SpineSkeleton {
         }
     }
 
-    public var ikConstraints: [SpineIkConstraint] {
+    public var ikConstraints: [IkConstraint] {
         let num = Int(spine_skeleton_get_num_ik_constraints(wrappee))
         let ptr = spine_skeleton_get_ik_constraints(wrappee)
         return (0..<num).compactMap {
@@ -2748,7 +2748,7 @@ public final class SpineSkeleton {
         }
     }
 
-    public var transformConstraints: [SpineTransformConstraint] {
+    public var transformConstraints: [TransformConstraint] {
         let num = Int(spine_skeleton_get_num_transform_constraints(wrappee))
         let ptr = spine_skeleton_get_transform_constraints(wrappee)
         return (0..<num).compactMap {
@@ -2756,7 +2756,7 @@ public final class SpineSkeleton {
         }
     }
 
-    public var pathConstraints: [SpinePathConstraint] {
+    public var pathConstraints: [PathConstraint] {
         let num = Int(spine_skeleton_get_num_path_constraints(wrappee))
         let ptr = spine_skeleton_get_path_constraints(wrappee)
         return (0..<num).compactMap {
@@ -2764,7 +2764,7 @@ public final class SpineSkeleton {
         }
     }
 
-    public var physicsConstraints: [SpinePhysicsConstraint] {
+    public var physicsConstraints: [PhysicsConstraint] {
         let num = Int(spine_skeleton_get_num_physics_constraints(wrappee))
         let ptr = spine_skeleton_get_physics_constraints(wrappee)
         return (0..<num).compactMap {
@@ -2772,11 +2772,11 @@ public final class SpineSkeleton {
         }
     }
 
-    public var color: SpineColor {
+    public var color: Color {
         return .init(spine_skeleton_get_color(wrappee))
     }
 
-    public var skin: SpineSkin {
+    public var skin: Skin {
         get {
             return .init(spine_skeleton_get_skin(wrappee))
         }
@@ -2834,11 +2834,11 @@ public final class SpineSkeleton {
         spine_skeleton_update_cache(wrappee)
     }
 
-    public func updateWorldTransform(physics: SpinePhysics) {
+    public func updateWorldTransform(physics: Physics) {
         spine_skeleton_update_world_transform(wrappee, physics)
     }
 
-    public func updateWorldTransformBone(physics: SpinePhysics, parent: SpineBone) {
+    public func updateWorldTransformBone(physics: Physics, parent: Bone) {
         spine_skeleton_update_world_transform_bone(wrappee, physics, parent.wrappee)
     }
 
@@ -2854,19 +2854,19 @@ public final class SpineSkeleton {
         spine_skeleton_set_slots_to_setup_pose(wrappee)
     }
 
-    public func findBone(boneName: String?) -> SpineBone {
+    public func findBone(boneName: String?) -> Bone {
         return .init(spine_skeleton_find_bone(wrappee, boneName))
     }
 
-    public func findSlot(slotName: String?) -> SpineSlot {
+    public func findSlot(slotName: String?) -> Slot {
         return .init(spine_skeleton_find_slot(wrappee, slotName))
     }
 
-    public func getAttachmentByName(slotName: String?, attachmentName: String?) -> SpineAttachment {
+    public func getAttachmentByName(slotName: String?, attachmentName: String?) -> Attachment {
         return .init(spine_skeleton_get_attachment_by_name(wrappee, slotName, attachmentName))
     }
 
-    public func getAttachment(slotIndex: Int32, attachmentName: String?) -> SpineAttachment {
+    public func getAttachment(slotIndex: Int32, attachmentName: String?) -> Attachment {
         return .init(spine_skeleton_get_attachment(wrappee, slotIndex, attachmentName))
     }
 
@@ -2874,19 +2874,19 @@ public final class SpineSkeleton {
         spine_skeleton_set_attachment(wrappee, slotName, attachmentName)
     }
 
-    public func findIkConstraint(constraintName: String?) -> SpineIkConstraint {
+    public func findIkConstraint(constraintName: String?) -> IkConstraint {
         return .init(spine_skeleton_find_ik_constraint(wrappee, constraintName))
     }
 
-    public func findTransformConstraint(constraintName: String?) -> SpineTransformConstraint {
+    public func findTransformConstraint(constraintName: String?) -> TransformConstraint {
         return .init(spine_skeleton_find_transform_constraint(wrappee, constraintName))
     }
 
-    public func findPathConstraint(constraintName: String?) -> SpinePathConstraint {
+    public func findPathConstraint(constraintName: String?) -> PathConstraint {
         return .init(spine_skeleton_find_path_constraint(wrappee, constraintName))
     }
 
-    public func findPhysicsConstraint(constraintName: String?) -> SpinePhysicsConstraint {
+    public func findPhysicsConstraint(constraintName: String?) -> PhysicsConstraint {
         return .init(spine_skeleton_find_physics_constraint(wrappee, constraintName))
     }
 
@@ -2908,7 +2908,7 @@ public final class SpineSkeleton {
 
 }
 
-public final class SpineSequence {
+public final class Sequence {
 
     internal let wrappee: spine_sequence
 
@@ -2916,7 +2916,7 @@ public final class SpineSequence {
         self.wrappee = wrappee
     }
 
-    public var regions: [SpineTextureRegion] {
+    public var regions: [TextureRegion] {
         let num = Int(spine_sequence_get_num_regions(wrappee))
         let ptr = spine_sequence_get_regions(wrappee)
         return (0..<num).compactMap {
@@ -2960,7 +2960,7 @@ public final class SpineSequence {
         }
     }
 
-    public func apply(slot: SpineSlot, attachment: SpineAttachment) {
+    public func apply(slot: Slot, attachment: Attachment) {
         spine_sequence_apply(wrappee, slot.wrappee, attachment.wrappee)
     }
 
@@ -2970,7 +2970,7 @@ public final class SpineSequence {
 
 }
 
-public final class SpineBounds {
+public final class Bounds {
 
     internal let wrappee: spine_bounds
 
@@ -2996,7 +2996,7 @@ public final class SpineBounds {
 
 }
 
-public final class SpineVector {
+public final class Vector {
 
     internal let wrappee: spine_vector
 
@@ -3014,7 +3014,7 @@ public final class SpineVector {
 
 }
 
-public final class SpineEvent {
+public final class Event {
 
     internal let wrappee: spine_event
 
@@ -3022,7 +3022,7 @@ public final class SpineEvent {
         self.wrappee = wrappee
     }
 
-    public var data: SpineEventData {
+    public var data: EventData {
         return .init(spine_event_get_data(wrappee))
     }
 
@@ -3077,7 +3077,7 @@ public final class SpineEvent {
 
 }
 
-public final class SpineAtlas {
+public final class Atlas {
 
     internal let wrappee: spine_atlas
     internal var disposed = false
@@ -3090,7 +3090,7 @@ public final class SpineAtlas {
         return spine_atlas_get_error(wrappee).flatMap { String(cString: $0) }
     }
 
-    public func load(atlasData: String?) -> SpineAtlas {
+    public func load(atlasData: String?) -> Atlas {
         return .init(spine_atlas_load(atlasData))
     }
 
@@ -3106,7 +3106,7 @@ public final class SpineAtlas {
 
 }
 
-public final class SpineColor {
+public final class Color {
 
     internal let wrappee: spine_color
 
@@ -3132,7 +3132,7 @@ public final class SpineColor {
 
 }
 
-public final class SpineBone {
+public final class Bone {
 
     internal let wrappee: spine_bone
 
@@ -3152,19 +3152,19 @@ public final class SpineBone {
         return spine_bone_get_world_to_local_rotation_y(wrappee)
     }
 
-    public var data: SpineBoneData {
+    public var data: BoneData {
         return .init(spine_bone_get_data(wrappee))
     }
 
-    public var skeleton: SpineSkeleton {
+    public var skeleton: Skeleton {
         return .init(spine_bone_get_skeleton(wrappee))
     }
 
-    public var parent: SpineBone {
+    public var parent: Bone {
         return .init(spine_bone_get_parent(wrappee))
     }
 
-    public var children: [SpineBone] {
+    public var children: [Bone] {
         let num = Int(spine_bone_get_num_children(wrappee))
         let ptr = spine_bone_get_children(wrappee)
         return (0..<num).compactMap {
@@ -3377,7 +3377,7 @@ public final class SpineBone {
         }
     }
 
-    public var inherit: SpineInherit {
+    public var inherit: Inherit {
         get {
             return spine_bone_get_inherit(wrappee)
         }
@@ -3410,19 +3410,19 @@ public final class SpineBone {
         spine_bone_set_to_setup_pose(wrappee)
     }
 
-    public func worldToLocal(worldX: Float, worldY: Float) -> SpineVector {
+    public func worldToLocal(worldX: Float, worldY: Float) -> Vector {
         return .init(spine_bone_world_to_local(wrappee, worldX, worldY))
     }
 
-    public func worldToParent(worldX: Float, worldY: Float) -> SpineVector {
+    public func worldToParent(worldX: Float, worldY: Float) -> Vector {
         return .init(spine_bone_world_to_parent(wrappee, worldX, worldY))
     }
 
-    public func localToWorld(localX: Float, localY: Float) -> SpineVector {
+    public func localToWorld(localX: Float, localY: Float) -> Vector {
         return .init(spine_bone_local_to_world(wrappee, localX, localY))
     }
 
-    public func parentToWorld(localX: Float, localY: Float) -> SpineVector {
+    public func parentToWorld(localX: Float, localY: Float) -> Vector {
         return .init(spine_bone_parent_to_world(wrappee, localX, localY))
     }
 
@@ -3440,7 +3440,7 @@ public final class SpineBone {
 
 }
 
-public final class SpineSlot {
+public final class Slot {
 
     internal let wrappee: spine_slot
 
@@ -3448,27 +3448,27 @@ public final class SpineSlot {
         self.wrappee = wrappee
     }
 
-    public var data: SpineSlotData {
+    public var data: SlotData {
         return .init(spine_slot_get_data(wrappee))
     }
 
-    public var bone: SpineBone {
+    public var bone: Bone {
         return .init(spine_slot_get_bone(wrappee))
     }
 
-    public var skeleton: SpineSkeleton {
+    public var skeleton: Skeleton {
         return .init(spine_slot_get_skeleton(wrappee))
     }
 
-    public var color: SpineColor {
+    public var color: Color {
         return .init(spine_slot_get_color(wrappee))
     }
 
-    public var darkColor: SpineColor {
+    public var darkColor: Color {
         return .init(spine_slot_get_dark_color(wrappee))
     }
 
-    public var attachment: SpineAttachment {
+    public var attachment: Attachment {
         get {
             return .init(spine_slot_get_attachment(wrappee))
         }
@@ -3504,7 +3504,7 @@ public final class SpineSlot {
 
 }
 
-public final class SpineSkin {
+public final class Skin {
 
     internal let wrappee: spine_skin
     internal var disposed = false
@@ -3517,11 +3517,11 @@ public final class SpineSkin {
         return spine_skin_get_name(wrappee).flatMap { String(cString: $0) }
     }
 
-    public var entries: SpineSkinEntries {
+    public var entries: SkinEntries {
         return .init(spine_skin_get_entries(wrappee))
     }
 
-    public var bones: [SpineBoneData] {
+    public var bones: [BoneData] {
         let num = Int(spine_skin_get_num_bones(wrappee))
         let ptr = spine_skin_get_bones(wrappee)
         return (0..<num).compactMap {
@@ -3529,7 +3529,7 @@ public final class SpineSkin {
         }
     }
 
-    public var constraints: [SpineConstraintData] {
+    public var constraints: [ConstraintData] {
         let num = Int(spine_skin_get_num_constraints(wrappee))
         let ptr = spine_skin_get_constraints(wrappee)
         return (0..<num).compactMap {
@@ -3537,11 +3537,11 @@ public final class SpineSkin {
         }
     }
 
-    public func setAttachment(slotIndex: Int32, name: String?, attachment: SpineAttachment) {
+    public func setAttachment(slotIndex: Int32, name: String?, attachment: Attachment) {
         spine_skin_set_attachment(wrappee, slotIndex, name, attachment.wrappee)
     }
 
-    public func getAttachment(slotIndex: Int32, name: String?) -> SpineAttachment {
+    public func getAttachment(slotIndex: Int32, name: String?) -> Attachment {
         return .init(spine_skin_get_attachment(wrappee, slotIndex, name))
     }
 
@@ -3549,15 +3549,15 @@ public final class SpineSkin {
         spine_skin_remove_attachment(wrappee, slotIndex, name)
     }
 
-    public func addSkin(other: SpineSkin) {
+    public func addSkin(other: Skin) {
         spine_skin_add_skin(wrappee, other.wrappee)
     }
 
-    public func copySkin(other: SpineSkin) {
+    public func copySkin(other: Skin) {
         spine_skin_copy_skin(wrappee, other.wrappee)
     }
 
-    public func create(name: String?) -> SpineSkin {
+    public func create(name: String?) -> Skin {
         return .init(spine_skin_create(name))
     }
 

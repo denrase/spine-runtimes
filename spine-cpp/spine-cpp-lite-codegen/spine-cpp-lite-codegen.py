@@ -191,11 +191,11 @@ class SwiftTypeWriter:
     def write(self):
         parameter_type = supported_types_to_swift_types.get(self.type)
         if parameter_type is None:
-          parameter_type = snake_to_title(self.type)
+          parameter_type = snake_to_title(self.type.replace("spine_", ""))
         
         if parameter_type.endswith(" *"):
             parameter_type = f"{parameter_type[:-2]}"
-
+        
         return parameter_type
         
 class SwiftParamWriter:
@@ -407,8 +407,10 @@ class SwiftObjectWriter:
     def write(self):
         ivar_type = self.spine_object.name
         ivar_name = self.spine_object.var_name
+
+        class_name = snake_to_title(self.spine_object.name.replace("spine_", ""))
         
-        object_string = f"public final class {snake_to_title(self.spine_object.name)}"
+        object_string = f"public final class {class_name}"
         object_string += " {"
         object_string += "\n"
         object_string += "\n"
@@ -493,7 +495,7 @@ class SwiftEnumWriter:
         self.spine_enum = spine_enum
 
     def write(self):
-       return f"public typealias {snake_to_title(self.spine_enum)} = {self.spine_enum}"
+       return f"public typealias {snake_to_title(self.spine_enum.replace("spine_", ""))} = {self.spine_enum}"
 
 print("import Foundation")
 print("import SpineWrapper")
