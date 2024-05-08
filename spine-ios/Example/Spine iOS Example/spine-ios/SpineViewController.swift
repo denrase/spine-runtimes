@@ -54,6 +54,7 @@ public final class SpineViewController: UIViewController {
         do {
             renderer = try SpineRenderer(mtkView: mtkView, atlasPages: atlasPages)
             renderer?.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
+            renderer?.delegate = viewModel
             renderer?.dataSource = viewModel
             
             mtkView.delegate = renderer

@@ -2738,7 +2738,6 @@ public final class Animation: NSObject {
     public var duration: Float {
         return spine_animation_get_duration(wrappee)
     }
-
 }
 
 @objc(SpineSkeleton)
@@ -2762,7 +2761,7 @@ public final class Skeleton: NSObject {
     public var data: SkeletonData {
         return .init(spine_skeleton_get_data(wrappee))
     }
-
+    
     public var bones: [Bone] {
         let num = Int(spine_skeleton_get_num_bones(wrappee))
         let ptr = spine_skeleton_get_bones(wrappee)

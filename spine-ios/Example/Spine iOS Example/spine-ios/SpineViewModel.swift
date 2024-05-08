@@ -20,13 +20,7 @@ final class SpineViewModel: ObservableObject {
     private var displayLinkStart: CFTimeInterval = 0
     private var displayLinkElapsed: Double = 0
     
-    init() {
-        startDisplayLink()
-    }
-    
     deinit {
-        stopDisplayLink()
-        
         atlas?.dispose()
         skeletonData?.dispose()
         skeletonDrawableWrapper?.dispose()
@@ -58,42 +52,18 @@ final class SpineViewModel: ObservableObject {
             
             self.skeletonDrawableWrapper = skeletonDrawableWrapper
         }
-        
         return atlasAndPages
     }
-    
-    func update(delta: TimeInterval) {
+}
+
+extension SpineViewModel: SpineRendererDelegate {
+    func spineRenderer(_ spineRenderer: SpineRenderer, needsUpdate delta: TimeInterval) {
         skeletonDrawableWrapper?.update(delta: Float(delta))
     }
 }
 
-extension SpineViewModel {
-    func startDisplayLink() {
-        displayLink = CADisplayLink(target: self, selector: #selector(displayLinkUpdate))
-//        displayLink?.preferredFramesPerSecond = 60 // Match the screen refresh rate
-
-        // Add to the main run loop
-        displayLink?.add(to: .main, forMode: .default)
-
-        // Record the start time
-        displayLinkStart = CACurrentMediaTime()
-    }
-    
-    func stopDisplayLink() {
-        // Invalidate the display link to stop updates
-        displayLink?.invalidate()
-        displayLink = nil
-    }
-    
-    @objc func displayLinkUpdate() {
-        let displayLinkElapsed = CACurrentMediaTime() - displayLinkStart
-        update(delta: displayLinkElapsed)
-        displayLinkStart = CACurrentMediaTime()
-    }
-}
-
 extension SpineViewModel: SpineRendererDataSource {
-    func renderCommands(in spineRenderer: SpineRenderer) -> [RenderCommand] {
+    func renderCommands(_ spineRenderer: SpineRenderer) -> [RenderCommand] {
         return skeletonDrawableWrapper?.skeletonDrawable.render() ?? []
     }
 }

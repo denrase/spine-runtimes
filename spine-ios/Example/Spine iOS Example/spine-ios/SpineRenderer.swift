@@ -11,8 +11,12 @@ import SpineSharedStructs
 import Spine
 import SpineWrapper
 
+protocol SpineRendererDelegate: AnyObject {
+    func spineRenderer(_ spineRenderer: SpineRenderer, needsUpdate delta: TimeInterval)
+}
+
 protocol SpineRendererDataSource: AnyObject {
-    func renderCommands(in spineRenderer: SpineRenderer) -> [RenderCommand]
+    func renderCommands(_ spineRenderer: SpineRenderer) -> [RenderCommand]
 }
 
 final class SpineRenderer: NSObject, MTKViewDelegate {
@@ -25,7 +29,10 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     
     var viewPortSize = vector_uint2(0, 0)
     
+    private var lastDraw: CFTimeInterval = 0
+    
     weak var dataSource: SpineRendererDataSource?
+    weak var delegate: SpineRendererDelegate?
     
     init(mtkView: MTKView, atlasPages: [CGImage]) throws {
         self.mtkView = mtkView
@@ -64,7 +71,14 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     }
     
     func draw(in view: MTKView) {
-        let renderCommands = dataSource?.renderCommands(in: self) ?? []
+        if lastDraw == 0 {
+            lastDraw = CACurrentMediaTime()
+        }
+        let delta = CACurrentMediaTime() - lastDraw
+        delegate?.spineRenderer(self, needsUpdate: delta)
+        lastDraw = CACurrentMediaTime()
+        
+        let renderCommands = dataSource?.renderCommands(self) ?? []
         for renderCommand in renderCommands {
             
             let vertices = Array(renderCommand.getVertices())
