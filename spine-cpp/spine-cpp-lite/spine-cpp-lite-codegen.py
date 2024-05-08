@@ -500,6 +500,7 @@ class SwiftEnumWriter:
         self.spine_enum = spine_enum
 
     def write(self):
+       # TODO: Consider leaving spine prefix (objc) or map whole c enum to swift/objc compatible enum
        return f"public typealias {snake_to_title(self.spine_enum.replace("spine_", ""))} = {self.spine_enum}"
 
 print("import Foundation")
