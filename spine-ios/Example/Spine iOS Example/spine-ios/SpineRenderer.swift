@@ -21,7 +21,6 @@ protocol SpineRendererDataSource: AnyObject {
 
 final class SpineRenderer: NSObject, MTKViewDelegate {
     
-    let mtkView: MTKView
     let device: MTLDevice
     let textures: [MTLTexture]
     let pipelineState: MTLRenderPipelineState
@@ -35,7 +34,6 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     weak var delegate: SpineRendererDelegate?
     
     init(mtkView: MTKView, atlasPages: [CGImage]) throws {
-        self.mtkView = mtkView
         
         let device = mtkView.device!
         self.device = device
@@ -71,84 +69,90 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     }
     
     func draw(in view: MTKView) {
+        callNeedsUpdate()
+        let renderCommands = dataSource?.renderCommands(self) ?? []
+        for renderCommand in renderCommands {
+            draw(renderCommand: renderCommand, in: view)
+        }
+    }
+    
+    private func callNeedsUpdate() {
         if lastDraw == 0 {
             lastDraw = CACurrentMediaTime()
         }
         let delta = CACurrentMediaTime() - lastDraw
         delegate?.spineRenderer(self, needsUpdate: delta)
         lastDraw = CACurrentMediaTime()
+    }
+    
+    private func draw(renderCommand: RenderCommand, in view: MTKView) {
+        let vertices = Array(renderCommand.getVertices())
         
-        let renderCommands = dataSource?.renderCommands(self) ?? []
-        for renderCommand in renderCommands {
-            
-            let vertices = Array(renderCommand.getVertices())
-            
-            guard !vertices.isEmpty else {
-                return
-            }
-            let verticesBufferSize = MemoryLayout<AAPLVertex>.stride * vertices.count
-            
-            guard let commandBuffer = commandQueue.makeCommandBuffer() else {
-                return
-            }
-            
-            guard let renderPassDescriptor = view.currentRenderPassDescriptor else {
-                return
-            }
-            
-            guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
-                return
-            }
-            
-            guard let vertexBuffer = device.makeBuffer(length: verticesBufferSize, options: .storageModeShared) else {
-                return
-            }
-            
-            renderEncoder.setViewport(
-                MTLViewport(
-                    originX: 0.0,
-                    originY: 0.0,
-                    width: Double(viewPortSize.x),
-                    height: Double(viewPortSize.y),
-                    znear: 0.0,
-                    zfar: 1.0
-                )
-            )
-            renderEncoder.setRenderPipelineState(pipelineState)
-            
-            memcpy(vertexBuffer.contents(), vertices, verticesBufferSize)
-            
-            renderEncoder.setVertexBuffer(
-                vertexBuffer,
-                offset: 0,
-                index: Int(AAPLVertexInputIndexVertices.rawValue)
-            )
-            renderEncoder.setVertexBytes(
-                &viewPortSize,
-                length: MemoryLayout.size(ofValue: viewPortSize),
-                index: Int(AAPLVertexInputIndexViewportSize.rawValue)
-            )
-            
-            let textureIndex = Int(renderCommand.atlasPage)
-            if textures.indices.contains(textureIndex) {
-                renderEncoder.setFragmentTexture(
-                    textures[textureIndex],
-                    index: Int(AAPLTextureIndexBaseColor.rawValue)
-                )
-            }
-            
-            renderEncoder.drawPrimitives(
-                type: .triangle,
-                vertexStart: 0,
-                vertexCount: vertices.count
-            )
-
-            renderEncoder.endEncoding()
-            view.currentDrawable.flatMap {
-                commandBuffer.present($0)
-            }
-            commandBuffer.commit()
+        guard !vertices.isEmpty else {
+            return
         }
+        let verticesBufferSize = MemoryLayout<AAPLVertex>.stride * vertices.count
+        
+        guard let commandBuffer = commandQueue.makeCommandBuffer() else {
+            return
+        }
+        
+        guard let renderPassDescriptor = view.currentRenderPassDescriptor else {
+            return
+        }
+        
+        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
+            return
+        }
+        
+        guard let vertexBuffer = device.makeBuffer(length: verticesBufferSize, options: .storageModeShared) else {
+            return
+        }
+        
+        renderEncoder.setViewport(
+            MTLViewport(
+                originX: 0.0,
+                originY: 0.0,
+                width: Double(viewPortSize.x),
+                height: Double(viewPortSize.y),
+                znear: 0.0,
+                zfar: 1.0
+            )
+        )
+        renderEncoder.setRenderPipelineState(pipelineState)
+        
+        memcpy(vertexBuffer.contents(), vertices, verticesBufferSize)
+        
+        renderEncoder.setVertexBuffer(
+            vertexBuffer,
+            offset: 0,
+            index: Int(AAPLVertexInputIndexVertices.rawValue)
+        )
+        renderEncoder.setVertexBytes(
+            &viewPortSize,
+            length: MemoryLayout.size(ofValue: viewPortSize),
+            index: Int(AAPLVertexInputIndexViewportSize.rawValue)
+        )
+        
+        let textureIndex = Int(renderCommand.atlasPage)
+        if textures.indices.contains(textureIndex) {
+            renderEncoder.setFragmentTexture(
+                textures[textureIndex],
+                index: Int(AAPLTextureIndexBaseColor.rawValue)
+            )
+        }
+        
+        renderEncoder.drawPrimitives(
+            type: .triangle,
+            vertexStart: 0,
+            vertexCount: vertices.count
+        )
+
+        renderEncoder.endEncoding()
+        view.currentDrawable.flatMap {
+            commandBuffer.present($0)
+        }
+        commandBuffer.commit()
     }
 }
 
