@@ -205,11 +205,6 @@ public final class SkeletonDrawableWrapper {
             throw "Could not load native animation state"
         }
         animationState = AnimationState(nativeAnimationState)
-        
-        skeleton.scaleX = 0.2
-        skeleton.scaleY = 0.2
-        
-        update(delta: 0)
     }
     
     /// Updates the [AnimationState] using the [delta] time given in seconds, applies the

@@ -41,7 +41,6 @@ public final class SpineViewController: UIViewController {
         
         mtkView.device = MTLCreateSystemDefaultDevice()
         mtkView.clearColor = MTLClearColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
-        mtkView.preferredFramesPerSecond = 60
         
         load()
     }

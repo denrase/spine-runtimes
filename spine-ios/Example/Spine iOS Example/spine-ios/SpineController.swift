@@ -16,8 +16,12 @@ public final class SpineController: ObservableObject {
     
     private let onInitialized: (_ controller: SpineController) -> Void
     
-    init(onInitialized: @escaping (_ controller: SpineController) -> Void) {
+    public init(onInitialized: @escaping (_ controller: SpineController) -> Void) {
         self.onInitialized = onInitialized
+    }
+    
+    deinit {
+        drawable?.dispose()
     }
     
     public var atlas: Atlas {
@@ -38,10 +42,6 @@ public final class SpineController: ObservableObject {
     
     public var animationState: AnimationState {
         drawable.animationState
-    }
-    
-    deinit {
-        drawable?.dispose()
     }
     
     internal func initialize(atlasFile: String, skeletonFile: String) async throws {

@@ -56,8 +56,8 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         pipelineStateDescriptor.fragmentFunction = defaultLibrary?.makeFunction(name: "fragmentShader")
         pipelineStateDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
         pipelineStateDescriptor.colorAttachments[0].apply(
-            blendMode: SPINE_BLEND_MODE_NORMAL,//renderCommand.blendMode,
-            with: true //renderCommand.premultipliedAlpha
+            blendMode: SPINE_BLEND_MODE_NORMAL, // TODO: renderCommand.blendMode ?,
+            with: true // TODO Use renderCommand.premultipliedAlpha ?
         )
         
         pipelineState = try device.makeRenderPipelineState(descriptor: pipelineStateDescriptor)
