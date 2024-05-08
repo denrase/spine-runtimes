@@ -283,8 +283,11 @@ SPINE_CPP_LITE_EXPORT spine_animation_state spine_skeleton_drawable_get_animatio
 SPINE_CPP_LITE_EXPORT spine_animation_state_data spine_skeleton_drawable_get_animation_state_data(spine_skeleton_drawable drawable);
 SPINE_CPP_LITE_EXPORT spine_animation_state_events spine_skeleton_drawable_get_animation_state_events(spine_skeleton_drawable drawable);
 
+// @ignore
 SPINE_CPP_LITE_EXPORT float *spine_render_command_get_positions(spine_render_command command);
+// @ignore
 SPINE_CPP_LITE_EXPORT float *spine_render_command_get_uvs(spine_render_command command);
+// @ignore
 SPINE_CPP_LITE_EXPORT int32_t *spine_render_command_get_colors(spine_render_command command);
 SPINE_CPP_LITE_EXPORT int32_t spine_render_command_get_num_vertices(spine_render_command command);
 SPINE_CPP_LITE_EXPORT uint16_t *spine_render_command_get_indices(spine_render_command command);

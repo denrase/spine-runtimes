@@ -7,21 +7,19 @@
 
 import UIKit
 import MetalKit
+import Spine
 
 public final class SpineViewController: UIViewController {
     
-    private let meshURL: URL
-    private let imageURL: URL
-    
     private var renderer: SpineRenderer?
+    
     private var mtkView: MTKView {
         return view as! MTKView
     }
     
-    public init(mesh name: String, bundle: Bundle = .main) {
-        meshURL = bundle.url(forResource: name, withExtension: "mesh")!
-        imageURL = bundle.url(forResource: name, withExtension: "png")!
-        
+    private lazy var viewModel = SpineViewModel()
+    
+    public init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,16 +36,27 @@ public final class SpineViewController: UIViewController {
         
         mtkView.device = MTLCreateSystemDefaultDevice()
         mtkView.clearColor = MTLClearColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+        mtkView.preferredFramesPerSecond = 60
         
+        load()
+    }
+    
+    private func load() {
+        Task.detached(priority: .high) {
+            let atlasAndPages = try await self.viewModel.load()
+            await MainActor.run {
+                self.initRenderer(atlasPages: atlasAndPages.1)
+            }
+        }
+    }
+    
+    private func initRenderer(atlasPages: [CGImage]) {
         do {
-            let renderCommand = RenderCommand(
-                mesh: try String(contentsOf: meshURL, encoding: .utf8),
-                blendMode: .normal,
-                premultipliedAlpha: true
-            )
-            renderer = try SpineRenderer(mtkView: mtkView, renderCommand: renderCommand, imageURL: imageURL)
+            renderer = try SpineRenderer(mtkView: mtkView, atlasPages: atlasPages)
             renderer?.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
-            mtkView.delegate = renderer;
+            renderer?.dataSource = viewModel
+            
+            mtkView.delegate = renderer
         } catch {
             print(error)
         }

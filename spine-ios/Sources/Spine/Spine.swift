@@ -25,7 +25,7 @@ public class Spine {
 /// when the atlas is no longer in use to release its resources.
 public extension Atlas {
     
-    private static func load(atlasFileName: String, loadFile: (_ name: String) async throws -> Data) async throws -> (Atlas, [Image]) {
+    private static func load(atlasFileName: String, loadFile: (_ name: String) async throws -> Data) async throws -> (Atlas, [CGImage]) {
         let atlasBytes = try await loadFile(atlasFileName)
         guard let atlasData = String(data: atlasBytes, encoding: .utf8) as? NSString else {
             throw "Couldn't read atlas bytes"
@@ -42,7 +42,7 @@ public extension Atlas {
             throw "Couldn't load atlas: \(message)"
         }
         
-        var atlasPages = [Image]()
+        var atlasPages = [CGImage]()
         let numImagePaths = spine_atlas_get_num_image_paths(atlas);
         
         for i in 0..<numImagePaths {
@@ -51,10 +51,10 @@ public extension Atlas {
             }
             let atlasPageFile = String(cString: atlasPageFilePointer)
             let imageData = try await loadFile(atlasPageFile)
-            guard let image = UIImage(data: imageData) else {
+            guard let image = UIImage(data: imageData)?.cgImage else {
                 continue
             }
-            atlasPages.append(Image(uiImage: image))
+            atlasPages.append(image)
         }
         
         // TODO: Paint in Swift?
@@ -65,7 +65,7 @@ public extension Atlas {
     /// Loads an [Atlas] from the file [atlasFileName] in the main bundle or the optionally provided [bundle].
     ///
     /// Throws an [Exception] in case the atlas could not be loaded.
-    public static func fromAsset(_ atlasFileName: String, bundle: Bundle = .main) async throws -> (Atlas, [Image]) {
+    public static func fromAsset(_ atlasFileName: String, bundle: Bundle = .main) async throws -> (Atlas, [CGImage]) {
         return try await Self.load(atlasFileName: atlasFileName) { name in
             return try bundle.loadAsData(fileName: name)
         }
@@ -171,7 +171,7 @@ public extension SkeletonData {
 public final class SkeletonDrawableWrapper {
     
     public let atlas: Atlas
-    public let atlasPages: [Image]
+    public let atlasPages: [CGImage]
     public let skeletonData: SkeletonData
     
     public let skeletonDrawable: SkeletonDrawable
@@ -181,7 +181,7 @@ public final class SkeletonDrawableWrapper {
     
     internal var disposed = false
     
-    public init(atlas: Atlas, atlasPages: [Image], skeletonData: SkeletonData) throws {
+    public init(atlas: Atlas, atlasPages: [CGImage], skeletonData: SkeletonData) throws {
         self.atlas = atlas
         self.atlasPages = atlasPages
         self.skeletonData = skeletonData
@@ -205,10 +205,24 @@ public final class SkeletonDrawableWrapper {
             throw "Could not load native animation state"
         }
         animationState = AnimationState(nativeAnimationState)
+        
+        skeleton.scaleX = 0.2
+        skeleton.scaleY = 0.2
+        
+        update(delta: 0)
     }
     
-    public func render() -> [RenderCommand] {
-        return skeletonDrawable.render(atlasPages: atlasPages)
+    /// Updates the [AnimationState] using the [delta] time given in seconds, applies the
+    /// animation state to the [Skeleton] and updates the world transforms of the skeleton
+    /// to calculate its current pose.
+    public func update(delta: Float) {
+        if disposed { return }
+        
+        animationState.update(delta: delta)
+        animationState.apply(skeleton: skeleton)
+        
+        skeleton.update(delta: delta)
+        skeleton.updateWorldTransform(physics: SPINE_PHYSICS_UPDATE)
     }
     
     public func dispose() {
@@ -220,14 +234,13 @@ public final class SkeletonDrawableWrapper {
 
 public extension SkeletonDrawable {
     
-    public func render(atlasPages: [Image]) -> [RenderCommand] {
+    public func render() -> [RenderCommand] {
         var commands = [RenderCommand]()
         if disposed { return commands }
         
         var nativeCmd = spine_skeleton_drawable_render(wrappee)
         repeat {
-            let atlasPageIndex = spine_render_command_get_atlas_page(nativeCmd)
-            if let ncmd = nativeCmd, atlasPages.indices.contains(Int(atlasPageIndex)) {
+            if let ncmd = nativeCmd {
                 commands.append(RenderCommand(ncmd))
                 nativeCmd = spine_render_command_get_next(ncmd)
             } else {
@@ -236,6 +249,31 @@ public extension SkeletonDrawable {
         } while (nativeCmd != nil)
         
         return commands
+    }
+}
+
+public extension RenderCommand {
+    
+    internal var numVertices: Int {
+        Int(spine_render_command_get_num_indices(wrappee))
+    }
+    
+    public var positions: [Float] {
+        let num = numVertices * 2
+        let ptr = spine_render_command_get_positions(wrappee)
+        return (0..<num).compactMap { ptr?[$0] }
+    }
+    
+    public var uvs: [Float] {
+        let num = numVertices * 2
+        let ptr = spine_render_command_get_uvs(wrappee)
+        return (0..<num).compactMap { ptr?[$0] }
+    }
+    
+    public var colors: [Int32] {
+        let num = numVertices
+        let ptr = spine_render_command_get_colors(wrappee)
+        return (0..<num).compactMap { ptr?[$0] }
     }
 }
 

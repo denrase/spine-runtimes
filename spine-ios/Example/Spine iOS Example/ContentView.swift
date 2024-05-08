@@ -9,8 +9,9 @@ import SwiftUI
 import Spine
 
 struct ContentView: View {
+    
     var body: some View {
-        SpineView(mesh: "spineboy-mesh")
+        SpineView()
     }
 }
 
