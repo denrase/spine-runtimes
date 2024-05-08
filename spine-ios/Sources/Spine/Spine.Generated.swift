@@ -12,12 +12,14 @@ public typealias SpacingMode = spine_spacing_mode
 public typealias RotateMode = spine_rotate_mode
 public typealias Physics = spine_physics
 
-public final class TransformConstraintData {
+@objc(SpineTransformConstraintData)
+public final class TransformConstraintData: NSObject {
 
     internal let wrappee: spine_transform_constraint_data
 
     internal init(_ wrappee: spine_transform_constraint_data) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var bones: [BoneData] {
@@ -165,12 +167,14 @@ public final class TransformConstraintData {
 
 }
 
-public final class BoundingBoxAttachment {
+@objc(SpineBoundingBoxAttachment)
+public final class BoundingBoxAttachment: NSObject {
 
     internal let wrappee: spine_bounding_box_attachment
 
     internal init(_ wrappee: spine_bounding_box_attachment) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var color: Color {
@@ -183,12 +187,14 @@ public final class BoundingBoxAttachment {
 
 }
 
-public final class PhysicsConstraintData {
+@objc(SpinePhysicsConstraintData)
+public final class PhysicsConstraintData: NSObject {
 
     internal let wrappee: spine_physics_constraint_data
 
     internal init(_ wrappee: spine_physics_constraint_data) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var bone: BoneData {
@@ -391,12 +397,14 @@ public final class PhysicsConstraintData {
 
 }
 
-public final class AnimationStateEvents {
+@objc(SpineAnimationStateEvents)
+public final class AnimationStateEvents: NSObject {
 
     internal let wrappee: spine_animation_state_events
 
     internal init(_ wrappee: spine_animation_state_events) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public func getEventType(index: Int32) -> EventType {
@@ -417,12 +425,14 @@ public final class AnimationStateEvents {
 
 }
 
-public final class TransformConstraint {
+@objc(SpineTransformConstraint)
+public final class TransformConstraint: NSObject {
 
     internal let wrappee: spine_transform_constraint
 
     internal init(_ wrappee: spine_transform_constraint) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var order: Int32 {
@@ -519,12 +529,14 @@ public final class TransformConstraint {
 
 }
 
-public final class PathConstraintData {
+@objc(SpinePathConstraintData)
+public final class PathConstraintData: NSObject {
 
     internal let wrappee: spine_path_constraint_data
 
     internal init(_ wrappee: spine_path_constraint_data) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var bones: [BoneData] {
@@ -627,12 +639,14 @@ public final class PathConstraintData {
 
 }
 
-public final class AnimationStateData {
+@objc(SpineAnimationStateData)
+public final class AnimationStateData: NSObject {
 
     internal let wrappee: spine_animation_state_data
 
     internal init(_ wrappee: spine_animation_state_data) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var skeletonData: SkeletonData {
@@ -670,13 +684,15 @@ public final class AnimationStateData {
 
 }
 
-public final class SkeletonDataResult {
+@objc(SpineSkeletonDataResult)
+public final class SkeletonDataResult: NSObject {
 
     internal let wrappee: spine_skeleton_data_result
     internal var disposed = false
 
     internal init(_ wrappee: spine_skeleton_data_result) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var error: String? {
@@ -695,12 +711,14 @@ public final class SkeletonDataResult {
 
 }
 
-public final class ClippingAttachment {
+@objc(SpineClippingAttachment)
+public final class ClippingAttachment: NSObject {
 
     internal let wrappee: spine_clipping_attachment
 
     internal init(_ wrappee: spine_clipping_attachment) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var color: Color {
@@ -722,12 +740,14 @@ public final class ClippingAttachment {
 
 }
 
-public final class IkConstraintData {
+@objc(SpineIkConstraintData)
+public final class IkConstraintData: NSObject {
 
     internal let wrappee: spine_ik_constraint_data
 
     internal init(_ wrappee: spine_ik_constraint_data) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var bones: [BoneData] {
@@ -803,12 +823,14 @@ public final class IkConstraintData {
 
 }
 
-public final class PhysicsConstraint {
+@objc(SpinePhysicsConstraint)
+public final class PhysicsConstraint: NSObject {
 
     internal let wrappee: spine_physics_constraint
 
     internal init(_ wrappee: spine_physics_constraint) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var bone: Bone {
@@ -1063,12 +1085,14 @@ public final class PhysicsConstraint {
 
 }
 
-public final class RegionAttachment {
+@objc(SpineRegionAttachment)
+public final class RegionAttachment: NSObject {
 
     internal let wrappee: spine_region_attachment
 
     internal init(_ wrappee: spine_region_attachment) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var color: Color {
@@ -1176,12 +1200,14 @@ public final class RegionAttachment {
 
 }
 
-public final class VertexAttachment {
+@objc(SpineVertexAttachment)
+public final class VertexAttachment: NSObject {
 
     internal let wrappee: spine_vertex_attachment
 
     internal init(_ wrappee: spine_vertex_attachment) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var worldVerticesLength: Int32 {
@@ -1215,13 +1241,15 @@ public final class VertexAttachment {
 
 }
 
-public final class SkeletonDrawable {
+@objc(SpineSkeletonDrawable)
+public final class SkeletonDrawable: NSObject {
 
     internal let wrappee: spine_skeleton_drawable
     internal var disposed = false
 
     internal init(_ wrappee: spine_skeleton_drawable) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var skeleton: Skeleton {
@@ -1252,12 +1280,14 @@ public final class SkeletonDrawable {
 
 }
 
-public final class PointAttachment {
+@objc(SpinePointAttachment)
+public final class PointAttachment: NSObject {
 
     internal let wrappee: spine_point_attachment
 
     internal init(_ wrappee: spine_point_attachment) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var color: Color {
@@ -1305,12 +1335,14 @@ public final class PointAttachment {
 
 }
 
-public final class MeshAttachment {
+@objc(SpineMeshAttachment)
+public final class MeshAttachment: NSObject {
 
     internal let wrappee: spine_mesh_attachment
 
     internal init(_ wrappee: spine_mesh_attachment) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var regionUvs: [Float?] {
@@ -1407,12 +1439,14 @@ public final class MeshAttachment {
 
 }
 
-public final class PathAttachment {
+@objc(SpinePathAttachment)
+public final class PathAttachment: NSObject {
 
     internal let wrappee: spine_path_attachment
 
     internal init(_ wrappee: spine_path_attachment) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var lengths: [Float?] {
@@ -1451,12 +1485,14 @@ public final class PathAttachment {
 
 }
 
-public final class ConstraintData {
+@objc(SpineConstraintData)
+public final class ConstraintData: NSObject {
 
     internal let wrappee: spine_constraint_data
 
     internal init(_ wrappee: spine_constraint_data) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var type: ConstraintType {
@@ -1487,12 +1523,14 @@ public final class ConstraintData {
 
 }
 
-public final class PathConstraint {
+@objc(SpinePathConstraint)
+public final class PathConstraint: NSObject {
 
     internal let wrappee: spine_path_constraint
 
     internal init(_ wrappee: spine_path_constraint) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var order: Int32 {
@@ -1580,13 +1618,15 @@ public final class PathConstraint {
 
 }
 
-public final class AnimationState {
+@objc(SpineAnimationState)
+public final class AnimationState: NSObject {
 
     internal let wrappee: spine_animation_state
     internal var disposed = false
 
     internal init(_ wrappee: spine_animation_state) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var data: AnimationStateData {
@@ -1658,12 +1698,14 @@ public final class AnimationState {
 
 }
 
-public final class TextureRegion {
+@objc(SpineTextureRegion)
+public final class TextureRegion: NSObject {
 
     internal let wrappee: spine_texture_region
 
     internal init(_ wrappee: spine_texture_region) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var texture: UnsafeMutableRawPointer {
@@ -1776,12 +1818,14 @@ public final class TextureRegion {
 
 }
 
-public final class RenderCommand {
+@objc(SpineRenderCommand)
+public final class RenderCommand: NSObject {
 
     internal let wrappee: spine_render_command
 
     internal init(_ wrappee: spine_render_command) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var positions: Float? {
@@ -1818,13 +1862,15 @@ public final class RenderCommand {
 
 }
 
-public final class SkeletonData {
+@objc(SpineSkeletonData)
+public final class SkeletonData: NSObject {
 
     internal let wrappee: spine_skeleton_data
     internal var disposed = false
 
     internal init(_ wrappee: spine_skeleton_data) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var name: String? {
@@ -1905,10 +1951,6 @@ public final class SkeletonData {
 
     public var version: String? {
         return spine_skeleton_data_get_version(wrappee).flatMap { String(cString: $0) }
-    }
-
-    public var hash: String? {
-        return spine_skeleton_data_get_hash(wrappee).flatMap { String(cString: $0) }
     }
 
     public var imagesPath: String? {
@@ -2016,12 +2058,14 @@ public final class SkeletonData {
 
 }
 
-public final class IkConstraint {
+@objc(SpineIkConstraint)
+public final class IkConstraint: NSObject {
 
     internal let wrappee: spine_ik_constraint
 
     internal init(_ wrappee: spine_ik_constraint) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var order: Int32 {
@@ -2109,13 +2153,15 @@ public final class IkConstraint {
 
 }
 
-public final class SkinEntries {
+@objc(SpineSkinEntries)
+public final class SkinEntries: NSObject {
 
     internal let wrappee: spine_skin_entries
     internal var disposed = false
 
     internal init(_ wrappee: spine_skin_entries) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public func getEntry(index: Int32) -> SkinEntry {
@@ -2130,12 +2176,14 @@ public final class SkinEntries {
 
 }
 
-public final class TrackEntry {
+@objc(SpineTrackEntry)
+public final class TrackEntry: NSObject {
 
     internal let wrappee: spine_track_entry
 
     internal init(_ wrappee: spine_track_entry) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var trackIndex: Int32 {
@@ -2351,13 +2399,15 @@ public final class TrackEntry {
 
 }
 
-public final class Attachment {
+@objc(SpineAttachment)
+public final class Attachment: NSObject {
 
     internal let wrappee: spine_attachment
     internal var disposed = false
 
     internal init(_ wrappee: spine_attachment) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var name: String? {
@@ -2380,22 +2430,26 @@ public final class Attachment {
 
 }
 
-public final class Constraint {
+@objc(SpineConstraint)
+public final class Constraint: NSObject {
 
     internal let wrappee: spine_constraint
 
     internal init(_ wrappee: spine_constraint) {
         self.wrappee = wrappee
+        super.init()
     }
 
 }
 
-public final class EventData {
+@objc(SpineEventData)
+public final class EventData: NSObject {
 
     internal let wrappee: spine_event_data
 
     internal init(_ wrappee: spine_event_data) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var name: String? {
@@ -2453,12 +2507,14 @@ public final class EventData {
 
 }
 
-public final class SkinEntry {
+@objc(SpineSkinEntry)
+public final class SkinEntry: NSObject {
 
     internal let wrappee: spine_skin_entry
 
     internal init(_ wrappee: spine_skin_entry) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var slotIndex: Int32 {
@@ -2475,12 +2531,14 @@ public final class SkinEntry {
 
 }
 
-public final class BoneData {
+@objc(SpineBoneData)
+public final class BoneData: NSObject {
 
     internal let wrappee: spine_bone_data
 
     internal init(_ wrappee: spine_bone_data) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var index: Int32 {
@@ -2604,12 +2662,14 @@ public final class BoneData {
 
 }
 
-public final class SlotData {
+@objc(SpineSlotData)
+public final class SlotData: NSObject {
 
     internal let wrappee: spine_slot_data
 
     internal init(_ wrappee: spine_slot_data) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var index: Int32 {
@@ -2678,12 +2738,14 @@ public final class SlotData {
 
 }
 
-public final class Animation {
+@objc(SpineAnimation)
+public final class Animation: NSObject {
 
     internal let wrappee: spine_animation
 
     internal init(_ wrappee: spine_animation) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var name: String? {
@@ -2696,12 +2758,14 @@ public final class Animation {
 
 }
 
-public final class Skeleton {
+@objc(SpineSkeleton)
+public final class Skeleton: NSObject {
 
     internal let wrappee: spine_skeleton
 
     internal init(_ wrappee: spine_skeleton) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var bounds: Bounds {
@@ -2908,12 +2972,14 @@ public final class Skeleton {
 
 }
 
-public final class Sequence {
+@objc(SpineSequence)
+public final class Sequence: NSObject {
 
     internal let wrappee: spine_sequence
 
     internal init(_ wrappee: spine_sequence) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var regions: [TextureRegion] {
@@ -2970,12 +3036,14 @@ public final class Sequence {
 
 }
 
-public final class Bounds {
+@objc(SpineBounds)
+public final class Bounds: NSObject {
 
     internal let wrappee: spine_bounds
 
     internal init(_ wrappee: spine_bounds) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var x: Float {
@@ -2996,12 +3064,14 @@ public final class Bounds {
 
 }
 
-public final class Vector {
+@objc(SpineVector)
+public final class Vector: NSObject {
 
     internal let wrappee: spine_vector
 
     internal init(_ wrappee: spine_vector) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var x: Float {
@@ -3014,12 +3084,14 @@ public final class Vector {
 
 }
 
-public final class Event {
+@objc(SpineEvent)
+public final class Event: NSObject {
 
     internal let wrappee: spine_event
 
     internal init(_ wrappee: spine_event) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var data: EventData {
@@ -3077,13 +3149,15 @@ public final class Event {
 
 }
 
-public final class Atlas {
+@objc(SpineAtlas)
+public final class Atlas: NSObject {
 
     internal let wrappee: spine_atlas
     internal var disposed = false
 
     internal init(_ wrappee: spine_atlas) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var error: String? {
@@ -3106,12 +3180,14 @@ public final class Atlas {
 
 }
 
-public final class Color {
+@objc(SpineColor)
+public final class Color: NSObject {
 
     internal let wrappee: spine_color
 
     internal init(_ wrappee: spine_color) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var r: Float {
@@ -3132,12 +3208,14 @@ public final class Color {
 
 }
 
-public final class Bone {
+@objc(SpineBone)
+public final class Bone: NSObject {
 
     internal let wrappee: spine_bone
 
     internal init(_ wrappee: spine_bone) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public func setIsYDown(yDown: Bool) {
@@ -3440,12 +3518,14 @@ public final class Bone {
 
 }
 
-public final class Slot {
+@objc(SpineSlot)
+public final class Slot: NSObject {
 
     internal let wrappee: spine_slot
 
     internal init(_ wrappee: spine_slot) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var data: SlotData {
@@ -3504,13 +3584,15 @@ public final class Slot {
 
 }
 
-public final class Skin {
+@objc(SpineSkin)
+public final class Skin: NSObject {
 
     internal let wrappee: spine_skin
     internal var disposed = false
 
     internal init(_ wrappee: spine_skin) {
         self.wrappee = wrappee
+        super.init()
     }
 
     public var name: String? {

@@ -410,7 +410,9 @@ class SwiftObjectWriter:
 
         class_name = snake_to_title(self.spine_object.name.replace("spine_", ""))
         
-        object_string = f"public final class {class_name}"
+        object_string = f"@objc(Spine{class_name})"
+        object_string += "\n"
+        object_string += f"public final class {class_name}: NSObject"
         object_string += " {"
         object_string += "\n"
         object_string += "\n"
@@ -431,6 +433,9 @@ class SwiftObjectWriter:
         object_string += "\n"
         object_string += inset + inset
         object_string += f"self.{ivar_name} = {ivar_name}"
+        object_string += "\n"
+        object_string += inset + inset
+        object_string += "super.init()"
         object_string += "\n"
         object_string += inset
         object_string += "}"

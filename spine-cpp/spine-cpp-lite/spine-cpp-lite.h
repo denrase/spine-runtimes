@@ -260,7 +260,8 @@ SPINE_CPP_LITE_EXPORT void spine_skeleton_data_set_width(spine_skeleton_data dat
 SPINE_CPP_LITE_EXPORT float spine_skeleton_data_get_height(spine_skeleton_data data);
 SPINE_CPP_LITE_EXPORT void spine_skeleton_data_set_height(spine_skeleton_data data, float height);
 SPINE_CPP_LITE_EXPORT const utf8 *spine_skeleton_data_get_version(spine_skeleton_data data);
-// OMITTED setVersion()
+// OMITTED setVersion() 
+// @ignore
 SPINE_CPP_LITE_EXPORT const utf8 *spine_skeleton_data_get_hash(spine_skeleton_data data);
 // OMITTED setHash()
 SPINE_CPP_LITE_EXPORT const utf8 *spine_skeleton_data_get_images_path(spine_skeleton_data data);
