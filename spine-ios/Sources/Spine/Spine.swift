@@ -228,6 +228,10 @@ public final class SkeletonDrawableWrapper {
     public func dispose() {
         if disposed { return }
         disposed = true
+        
+        atlas.dispose()
+        skeletonData.dispose()
+        
         skeletonDrawable.dispose()
     }
 }

@@ -17,9 +17,14 @@ public final class SpineViewController: UIViewController {
         return view as! MTKView
     }
     
-    private lazy var viewModel = SpineViewModel()
+    private let atlasFile: String
+    private let skeletonFile: String
+    private let controller: SpineController
     
-    public init() {
+    public init(atlasFile: String, skeletonFile: String, controller: SpineController) {
+        self.atlasFile = atlasFile
+        self.skeletonFile = skeletonFile
+        self.controller = controller
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -43,9 +48,14 @@ public final class SpineViewController: UIViewController {
     
     private func load() {
         Task.detached(priority: .high) {
-            let atlasAndPages = try await self.viewModel.load()
+            try await self.controller.initialize(
+                atlasFile: self.atlasFile,
+                skeletonFile: self.skeletonFile
+            )
             await MainActor.run {
-                self.initRenderer(atlasPages: atlasAndPages.1)
+                self.initRenderer(
+                    atlasPages: self.controller.drawable.atlasPages
+                )
             }
         }
     }
@@ -54,8 +64,8 @@ public final class SpineViewController: UIViewController {
         do {
             renderer = try SpineRenderer(mtkView: mtkView, atlasPages: atlasPages)
             renderer?.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
-            renderer?.delegate = viewModel
-            renderer?.dataSource = viewModel
+            renderer?.delegate = controller
+            renderer?.dataSource = controller
             
             mtkView.delegate = renderer
         } catch {
