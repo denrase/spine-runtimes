@@ -71,27 +71,6 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     func draw(in view: MTKView) {
         callNeedsUpdate()
         let renderCommands = dataSource?.renderCommands(self) ?? []
-        for renderCommand in renderCommands {
-            draw(renderCommand: renderCommand, in: view)
-        }
-    }
-    
-    private func callNeedsUpdate() {
-        if lastDraw == 0 {
-            lastDraw = CACurrentMediaTime()
-        }
-        let delta = CACurrentMediaTime() - lastDraw
-        delegate?.spineRenderer(self, needsUpdate: delta)
-        lastDraw = CACurrentMediaTime()
-    }
-    
-    private func draw(renderCommand: RenderCommand, in view: MTKView) {
-        let vertices = Array(renderCommand.getVertices())
-        
-        guard !vertices.isEmpty else {
-            return
-        }
-        let verticesBufferSize = MemoryLayout<AAPLVertex>.stride * vertices.count
         
         guard let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
@@ -104,6 +83,34 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
             return
         }
+        
+        for renderCommand in renderCommands {
+            draw(renderCommand: renderCommand, renderEncoder: renderEncoder, in: view)
+        }
+        
+        renderEncoder.endEncoding()
+        view.currentDrawable.flatMap {
+            commandBuffer.present($0)
+        }
+        commandBuffer.commit()
+    }
+    
+    private func callNeedsUpdate() {
+        if lastDraw == 0 {
+            lastDraw = CACurrentMediaTime()
+        }
+        let delta = CACurrentMediaTime() - lastDraw
+        delegate?.spineRenderer(self, needsUpdate: delta)
+        lastDraw = CACurrentMediaTime()
+    }
+    
+    private func draw(renderCommand: RenderCommand, renderEncoder: MTLRenderCommandEncoder, in view: MTKView) {
+        let vertices = Array(renderCommand.getVertices())
+        
+        guard !vertices.isEmpty else {
+            return
+        }
+        let verticesBufferSize = MemoryLayout<AAPLVertex>.stride * vertices.count
         
         guard let vertexBuffer = device.makeBuffer(length: verticesBufferSize, options: .storageModeShared) else {
             return
@@ -147,12 +154,6 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             vertexStart: 0,
             vertexCount: vertices.count
         )
-
-        renderEncoder.endEncoding()
-        view.currentDrawable.flatMap {
-            commandBuffer.present($0)
-        }
-        commandBuffer.commit()
     }
 }
 

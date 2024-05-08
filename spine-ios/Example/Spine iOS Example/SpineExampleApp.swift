@@ -18,7 +18,9 @@ struct SpineExampleApp: App {
     
     var body: some Scene {
         WindowGroup {
-            SimpleAnimation()
+            NavigationStack {
+                MainView()
+            }
         }
     }
 }

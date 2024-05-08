@@ -1,15 +1,13 @@
 //
-//  ContentView.swift
+//  PlayPause.swift
 //  Spine iOS Example
 //
-//  Created by Denis Andrašec on 17.04.24.
+//  Created by Denis Andrašec on 08.05.24.
 //
 
 import SwiftUI
-import Spine
 
-struct SimpleAnimation: View {
-    
+struct PlayPauseAnimation: View {
     @StateObject
     var controller: SpineController
     
@@ -18,9 +16,10 @@ struct SimpleAnimation: View {
             wrappedValue: SpineController { controller in
                 controller.skeleton.scaleX = 0.2
                 controller.skeleton.scaleY = 0.2
+                
                 _ = controller.animationState.setAnimationByName(
                     trackIndex: 0,
-                    animationName: "walk",
+                    animationName: "flying",
                     loop: true
                 )
             }
@@ -29,15 +28,15 @@ struct SimpleAnimation: View {
     
     var body: some View {
         SpineView(
-            atlasFile: "spineboy.atlas",
-            skeletonFile: "spineboy-pro.skel",
+            atlasFile: "dragon.atlas",
+            skeletonFile: "dragon-ess.skel",
             controller: controller
         )
-        .navigationTitle("Simple Animation")
+        .navigationTitle("Play/Pause")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
-    SimpleAnimation()
+    PlayPauseAnimation()
 }
