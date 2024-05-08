@@ -19,26 +19,35 @@ struct SpineExampleApp: App {
             do {
                 // Load
                 
-                let atlas = try await Atlas.fromAsset("spineboy.atlas")
-                print(atlas)
+                let atlasAndPages = try await Atlas.fromAsset("spineboy.atlas")
+                print(atlasAndPages)
                 
                 let skeletonDataFromJson = try SkeletonData.fromAsset(
-                    atlas: atlas.0,
+                    atlas: atlasAndPages.0,
                     skeletonFile: "spineboy-pro.json"
                 )
                 print(skeletonDataFromJson)
                 
                 let skeletonDataFromBinary = try SkeletonData.fromAsset(
-                    atlas: atlas.0,
+                    atlas: atlasAndPages.0,
                     skeletonFile: "spineboy-pro.skel"
                 )
                 print(skeletonDataFromBinary)
                 
+                let skeletonDrawableWrapper = try SkeletonDrawableWrapper(
+                    atlas: atlasAndPages.0,
+                    atlasPages: atlasAndPages.1,
+                    skeletonData: skeletonDataFromBinary
+                )
+                let renderCommands = skeletonDrawableWrapper.render()
+                print(renderCommands)
+                
                 // Dispose
                 
-                atlas.0.dispose()
+                atlasAndPages.0.dispose()
                 skeletonDataFromJson.dispose()
                 skeletonDataFromBinary.dispose()
+                skeletonDrawableWrapper.dispose()
             } catch {
                 print(error)
             }

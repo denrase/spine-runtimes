@@ -1268,10 +1268,6 @@ public final class SkeletonDrawable: NSObject {
         return .init(spine_skeleton_drawable_get_animation_state_events(wrappee))
     }
 
-    public func render() -> RenderCommand {
-        return .init(spine_skeleton_drawable_render(wrappee))
-    }
-
     public func dispose() {
         if disposed { return }
         disposed = true

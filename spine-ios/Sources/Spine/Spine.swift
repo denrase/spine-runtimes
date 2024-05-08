@@ -67,7 +67,7 @@ public extension Atlas {
     /// Throws an [Exception] in case the atlas could not be loaded.
     public static func fromAsset(_ atlasFileName: String, bundle: Bundle = .main) async throws -> (Atlas, [Image]) {
         return try await Self.load(atlasFileName: atlasFileName) { name in
-            return try bundle.loadAsData(fileName: atlasFileName)
+            return try bundle.loadAsData(fileName: name)
         }
     }
     
@@ -165,6 +165,77 @@ public extension SkeletonData {
     /// Throws an [Exception] in case the skeleton data could not be loaded.
     public static func fromHttp(atlas: Atlas, skeletonURL: URL) throws -> SkeletonData {
         throw "Not implemented"
+    }
+}
+
+public final class SkeletonDrawableWrapper {
+    
+    public let atlas: Atlas
+    public let atlasPages: [Image]
+    public let skeletonData: SkeletonData
+    
+    public let skeletonDrawable: SkeletonDrawable
+    public let skeleton: Skeleton
+    public let animationStateData: AnimationStateData
+    public let animationState: AnimationState
+    
+    internal var disposed = false
+    
+    public init(atlas: Atlas, atlasPages: [Image], skeletonData: SkeletonData) throws {
+        self.atlas = atlas
+        self.atlasPages = atlasPages
+        self.skeletonData = skeletonData
+            
+        guard let nativeSkeletonDrawable = spine_skeleton_drawable_create(skeletonData.wrappee) else {
+            throw "Could not load native skeleton drawable"
+        }
+        skeletonDrawable = SkeletonDrawable(nativeSkeletonDrawable)
+        
+        guard let nativeSkeleton = spine_skeleton_drawable_get_skeleton(skeletonDrawable.wrappee) else {
+            throw "Could not load native skeleton"
+        }
+        skeleton = Skeleton(nativeSkeleton)
+        
+        guard let nativeAnimationStateData = spine_skeleton_drawable_get_animation_state_data(skeletonDrawable.wrappee) else {
+            throw "Could not load native animation state data"
+        }
+        animationStateData = AnimationStateData(nativeAnimationStateData)
+        
+        guard let nativeAnimationState = spine_skeleton_drawable_get_animation_state(skeletonDrawable.wrappee) else {
+            throw "Could not load native animation state"
+        }
+        animationState = AnimationState(nativeAnimationState)
+    }
+    
+    public func render() -> [RenderCommand] {
+        return skeletonDrawable.render(atlasPages: atlasPages)
+    }
+    
+    public func dispose() {
+        if disposed { return }
+        disposed = true
+        skeletonDrawable.dispose()
+    }
+}
+
+public extension SkeletonDrawable {
+    
+    public func render(atlasPages: [Image]) -> [RenderCommand] {
+        var commands = [RenderCommand]()
+        if disposed { return commands }
+        
+        var nativeCmd = spine_skeleton_drawable_render(wrappee)
+        repeat {
+            let atlasPageIndex = spine_render_command_get_atlas_page(nativeCmd)
+            if let ncmd = nativeCmd, atlasPages.indices.contains(Int(atlasPageIndex)) {
+                commands.append(RenderCommand(ncmd))
+                nativeCmd = spine_render_command_get_next(ncmd)
+            } else {
+                nativeCmd = nil
+            }
+        } while (nativeCmd != nil)
+        
+        return commands
     }
 }
 

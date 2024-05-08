@@ -275,6 +275,7 @@ SPINE_CPP_LITE_EXPORT void spine_skeleton_data_dispose(spine_skeleton_data data)
 
 // @ignore
 SPINE_CPP_LITE_EXPORT spine_skeleton_drawable spine_skeleton_drawable_create(spine_skeleton_data skeletonData);
+// @ignore
 SPINE_CPP_LITE_EXPORT spine_render_command spine_skeleton_drawable_render(spine_skeleton_drawable drawable);
 SPINE_CPP_LITE_EXPORT void spine_skeleton_drawable_dispose(spine_skeleton_drawable drawable);
 SPINE_CPP_LITE_EXPORT spine_skeleton spine_skeleton_drawable_get_skeleton(spine_skeleton_drawable drawable);
