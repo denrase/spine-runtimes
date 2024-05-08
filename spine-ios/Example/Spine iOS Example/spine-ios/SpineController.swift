@@ -16,6 +16,9 @@ public final class SpineController: ObservableObject {
     
     private let onInitialized: (_ controller: SpineController) -> Void
     
+    @Published
+    public private(set) var isPlaying: Bool = true
+    
     public init(onInitialized: @escaping (_ controller: SpineController) -> Void) {
         self.onInitialized = onInitialized
     }
@@ -44,6 +47,15 @@ public final class SpineController: ObservableObject {
         drawable.animationState
     }
     
+    public func pause() {
+        isPlaying = false
+    }
+    
+    public func resume() {
+        // TODO: Resume at correct time
+        isPlaying = true
+    }
+    
     internal func initialize(atlasFile: String, skeletonFile: String) async throws {
         let atlasAndPages = try await Atlas.fromAsset(atlasFile)
         try await MainActor.run {
@@ -70,6 +82,11 @@ extension SpineController: SpineRendererDelegate {
 }
 
 extension SpineController: SpineRendererDataSource {
+    
+    func isPlaying(_ spineRenderer: SpineRenderer) -> Bool {
+        return isPlaying
+    }
+    
     func renderCommands(_ spineRenderer: SpineRenderer) -> [RenderCommand] {
         return drawable?.skeletonDrawable.render() ?? []
     }

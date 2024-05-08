@@ -16,6 +16,7 @@ protocol SpineRendererDelegate: AnyObject {
 }
 
 protocol SpineRendererDataSource: AnyObject {
+    func isPlaying(_ spineRenderer: SpineRenderer) -> Bool
     func renderCommands(_ spineRenderer: SpineRenderer) -> [RenderCommand]
 }
 
@@ -69,6 +70,10 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     }
     
     func draw(in view: MTKView) {
+        guard dataSource?.isPlaying(self) ?? false else {
+            return
+        }
+        
         callNeedsUpdate()
         let renderCommands = dataSource?.renderCommands(self) ?? []
         

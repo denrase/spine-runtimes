@@ -34,6 +34,17 @@ struct PlayPauseAnimation: View {
         )
         .navigationTitle("Play/Pause")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            Button(action: {
+                if controller.isPlaying {
+                    controller.pause()
+                } else {
+                    controller.resume()
+                }
+            }) {
+                Image(systemName: controller.isPlaying ? "pause.fill" : "play.fill")
+            }
+        }
     }
 }
 
