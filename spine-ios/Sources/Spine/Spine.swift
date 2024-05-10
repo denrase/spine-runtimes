@@ -205,6 +205,8 @@ public final class SkeletonDrawableWrapper {
             throw "Could not load native animation state"
         }
         animationState = AnimationState(nativeAnimationState)
+        
+        skeleton.updateWorldTransform(physics: SPINE_PHYSICS_NONE)
     }
     
     /// Updates the [AnimationState] using the [delta] time given in seconds, applies the
@@ -276,7 +278,75 @@ public extension RenderCommand {
     }
 }
 
+/// Base class for bounds providers. A bounds provider calculates the axis aligned bounding box
+/// used to scale and fit a skeleton inside the bounds of a [SpineWidget].
+public protocol BoundsProvider {
+    func computeBounds(for drawable: SkeletonDrawable) -> CGRect
+}
+
+/// A [BoundsProvider] that calculates the bounding box of the skeleton based on the visible
+/// attachments in the setup pose.
+public final class SetupPoseBounds: BoundsProvider {
+    
+    public init() {}
+
+    public func computeBounds(for drawable: SkeletonDrawable) -> CGRect {
+        return CGRect(bounds: drawable.skeleton.bounds)
+    }
+}
+
+public enum SpineAlignment {
+    case topLeft
+    case topCenter
+    case topRight
+    case centerLeft
+    case center
+    case centerRight
+    case bottomLeft
+    case bottomCenter
+    case bottomRight
+    
+    public var x: CGFloat {
+        switch self {
+        case .topLeft: return -1.0
+        case .topCenter: return 0.0
+        case .topRight: return 1.0
+        case .centerLeft: return -1.0
+        case .center: return 0.0
+        case .centerRight: return 1.0
+        case .bottomLeft: return -1.0
+        case .bottomCenter: return 0.0
+        case .bottomRight: return 1.0
+        }
+    }
+    
+    public var y: CGFloat {
+        switch self {
+        case .topLeft: return -1.0
+        case .topCenter: return -1.0
+        case .topRight: return -1.0
+        case .centerLeft: return -0.0
+        case .center: return 0.0
+        case .centerRight: return 0.0
+        case .bottomLeft: return -1.0
+        case .bottomCenter: return 1.0
+        case .bottomRight: return 1.0
+        }
+    }
+}
+
 // Helper
+
+extension CGRect {
+    init(bounds: Bounds) {
+        self = CGRect(
+            x: CGFloat(bounds.x),
+            y: CGFloat(bounds.y),
+            width: CGFloat(bounds.width),
+            height: CGFloat(bounds.height)
+        )
+    }
+}
 
 extension Bundle {
     func loadFileUrl(fileName: String) throws -> URL {

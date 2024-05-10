@@ -21,10 +21,14 @@ public final class SpineViewController: UIViewController {
     private let skeletonFile: String
     private let controller: SpineController
     
-    public init(atlasFile: String, skeletonFile: String, controller: SpineController) {
+    private let boundsProvider: BoundsProvider
+    
+    public init(atlasFile: String, skeletonFile: String, controller: SpineController, boundsProvider: BoundsProvider? = nil) {
         self.atlasFile = atlasFile
         self.skeletonFile = skeletonFile
         self.controller = controller
+        
+        self.boundsProvider = boundsProvider ?? SetupPoseBounds()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -61,10 +65,15 @@ public final class SpineViewController: UIViewController {
     
     private func initRenderer(atlasPages: [CGImage]) {
         do {
-            renderer = try SpineRenderer(mtkView: mtkView, atlasPages: atlasPages)
-            renderer?.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
+            renderer = try SpineRenderer(
+                mtkView: mtkView,
+                atlasPages: atlasPages,
+                boundsProvider: boundsProvider
+            )
             renderer?.delegate = controller
             renderer?.dataSource = controller
+            
+            renderer?.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
             
             mtkView.delegate = renderer
         } catch {

@@ -14,9 +14,6 @@ struct PlayPauseAnimation: View {
     init() {
         _controller = StateObject(
             wrappedValue: SpineController { controller in
-                controller.skeleton.scaleX = 0.2
-                controller.skeleton.scaleY = 0.2
-                
                 _ = controller.animationState.setAnimationByName(
                     trackIndex: 0,
                     animationName: "flying",

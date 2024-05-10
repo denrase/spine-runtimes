@@ -87,6 +87,10 @@ extension SpineController: SpineRendererDataSource {
         return isPlaying
     }
     
+    func skeletonDrawable(_ spineRenderer: SpineRenderer) -> SkeletonDrawable {
+        return drawable.skeletonDrawable
+    }
+    
     func renderCommands(_ spineRenderer: SpineRenderer) -> [RenderCommand] {
         return drawable?.skeletonDrawable.render() ?? []
     }

@@ -15,10 +15,13 @@ public struct SpineView: UIViewControllerRepresentable {
     private let skeletonFile: String
     private let controller: SpineController
     
-    public init(atlasFile: String, skeletonFile: String, controller: SpineController) {
+    private let boundsProvider: BoundsProvider
+    
+    public init(atlasFile: String, skeletonFile: String, controller: SpineController, boundsProvider: BoundsProvider? = nil) {
         self.atlasFile = atlasFile
         self.skeletonFile = skeletonFile
         self.controller = controller
+        self.boundsProvider = boundsProvider ?? SetupPoseBounds()
     }
     
     public func makeUIViewController(context: Context) -> SpineViewController {
