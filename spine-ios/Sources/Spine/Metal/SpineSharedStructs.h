@@ -31,8 +31,9 @@ typedef struct
 } AAPLVertex;
 
 typedef struct {
-    vector_float2 offset;
+    vector_float2 translation;
     vector_float2 scale;
+    vector_float2 offset;
 } AAPLTransform;
 
 #endif /* SpineSharedStructs_h */

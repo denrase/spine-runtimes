@@ -29,7 +29,9 @@ struct SimpleAnimation: View {
         SpineView(
             atlasFile: "spineboy.atlas",
             skeletonFile: "spineboy-pro.skel",
-            controller: controller
+            controller: controller,
+            contentMode: .fit,
+            alignment: .center
         )
         .navigationTitle("Simple Animation")
         .navigationBarTitleDisplayMode(.inline)

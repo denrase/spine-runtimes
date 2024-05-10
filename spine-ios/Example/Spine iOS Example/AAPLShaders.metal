@@ -41,8 +41,9 @@ typedef struct
 } AAPLVertex;
 
 typedef struct {
-    vector_float2 offset;
+    vector_float2 translation;
     vector_float2 scale;
+    vector_float2 offset;
 } AAPLTransform;
 
 // Vertex shader outputs and fragment shader inputs
@@ -79,7 +80,11 @@ vertexShader(uint vertexID [[vertex_id]],
     vector_float2 viewportSize = vector_float2(*viewportSizePointer);
     
     out.position = vector_float4(0.0, 0.0, 0.0, 1.0);
-    out.position.xy = (pixelSpacePosition + transform->offset) * transform->scale / (viewportSize / 2);
+    
+    out.position.xy = pixelSpacePosition;
+    out.position.xy *= transform->scale;
+    out.position.xy += transform->translation * transform->scale + transform->offset;
+    out.position.xy /= viewportSize / 2;
     out.position.y *= -1;
     
     // Pass the input color directly to the rasterizer.

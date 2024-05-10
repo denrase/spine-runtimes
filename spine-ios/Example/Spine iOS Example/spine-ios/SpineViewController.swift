@@ -21,14 +21,26 @@ public final class SpineViewController: UIViewController {
     private let skeletonFile: String
     private let controller: SpineController
     
+    private let contentMode: SpineContentMode
+    private let alignment: SpineAlignment
     private let boundsProvider: BoundsProvider
     
-    public init(atlasFile: String, skeletonFile: String, controller: SpineController, boundsProvider: BoundsProvider? = nil) {
+    public init(
+        atlasFile: String,
+        skeletonFile: String,
+        controller: SpineController,
+        contentMode: SpineContentMode? = nil,
+        alignment: SpineAlignment? = nil,
+        boundsProvider: BoundsProvider? = nil
+    ) {
         self.atlasFile = atlasFile
         self.skeletonFile = skeletonFile
         self.controller = controller
         
+        self.contentMode = contentMode ?? .fit
+        self.alignment = alignment ?? .center
         self.boundsProvider = boundsProvider ?? SetupPoseBounds()
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -69,6 +81,8 @@ public final class SpineViewController: UIViewController {
             renderer = try SpineRenderer(
                 mtkView: mtkView,
                 atlasPages: atlasPages,
+                contentMode: contentMode,
+                alignment: alignment,
                 boundsProvider: boundsProvider
             )
             renderer?.delegate = controller

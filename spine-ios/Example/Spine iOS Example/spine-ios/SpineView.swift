@@ -15,12 +15,24 @@ public struct SpineView: UIViewControllerRepresentable {
     private let skeletonFile: String
     private let controller: SpineController
     
+    private let contentMode: SpineContentMode
+    private let alignment: SpineAlignment
     private let boundsProvider: BoundsProvider
     
-    public init(atlasFile: String, skeletonFile: String, controller: SpineController, boundsProvider: BoundsProvider? = nil) {
+    public init(
+        atlasFile: String,
+        skeletonFile: String,
+        controller: SpineController,
+        contentMode: SpineContentMode? = nil,
+        alignment: SpineAlignment? = nil,
+        boundsProvider: BoundsProvider? = nil
+    ) {
         self.atlasFile = atlasFile
         self.skeletonFile = skeletonFile
         self.controller = controller
+        
+        self.contentMode = contentMode ?? .fit
+        self.alignment = alignment ?? .center
         self.boundsProvider = boundsProvider ?? SetupPoseBounds()
     }
     
@@ -29,6 +41,8 @@ public struct SpineView: UIViewControllerRepresentable {
             atlasFile: atlasFile,
             skeletonFile: skeletonFile,
             controller: controller,
+            contentMode: contentMode,
+            alignment: alignment,
             boundsProvider: boundsProvider
         )
     }

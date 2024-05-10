@@ -373,6 +373,11 @@ public extension Skin {
     }
 }
 
+public enum SpineContentMode {
+    case fit
+    case fill
+}
+
 public enum SpineAlignment {
     case topLeft
     case topCenter
