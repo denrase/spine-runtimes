@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Spine
 
 struct PlayPauseAnimation: View {
     @StateObject
@@ -27,7 +28,8 @@ struct PlayPauseAnimation: View {
         SpineView(
             atlasFile: "dragon.atlas",
             skeletonFile: "dragon-ess.skel",
-            controller: controller
+            controller: controller,
+            boundsProvider: SkinAndAnimationBounds(animation: "flying")
         )
         .navigationTitle("Play/Pause")
         .navigationBarTitleDisplayMode(.inline)

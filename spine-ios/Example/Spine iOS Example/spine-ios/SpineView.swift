@@ -28,7 +28,8 @@ public struct SpineView: UIViewControllerRepresentable {
         return SpineViewController(
             atlasFile: atlasFile,
             skeletonFile: skeletonFile,
-            controller: controller
+            controller: controller,
+            boundsProvider: boundsProvider
         )
     }
     

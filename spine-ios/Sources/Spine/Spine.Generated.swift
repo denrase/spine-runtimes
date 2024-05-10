@@ -2822,12 +2822,12 @@ public final class Skeleton: NSObject {
         return .init(spine_skeleton_get_color(wrappee))
     }
 
-    public var skin: Skin {
+    public var skin: Skin? {
         get {
-            return .init(spine_skeleton_get_skin(wrappee))
+            return spine_skeleton_get_skin(wrappee).flatMap { .init($0) }
         }
         set {
-            spine_skeleton_set_skin(wrappee, newValue.wrappee)
+            spine_skeleton_set_skin(wrappee, newValue?.wrappee)
         }
     }
 
@@ -3619,10 +3619,6 @@ public final class Skin: NSObject {
 
     public func copySkin(other: Skin) {
         spine_skin_copy_skin(wrappee, other.wrappee)
-    }
-
-    public func create(name: String?) -> Skin {
-        return .init(spine_skin_create(name))
     }
 
     public func dispose() {

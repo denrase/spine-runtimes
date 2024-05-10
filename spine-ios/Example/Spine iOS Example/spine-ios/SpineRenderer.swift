@@ -17,7 +17,7 @@ protocol SpineRendererDelegate: AnyObject {
 
 protocol SpineRendererDataSource: AnyObject {
     func isPlaying(_ spineRenderer: SpineRenderer) -> Bool
-    func skeletonDrawable(_ spineRenderer: SpineRenderer) -> SkeletonDrawable
+    func skeletonDrawable(_ spineRenderer: SpineRenderer) -> SkeletonDrawableWrapper
     func renderCommands(_ spineRenderer: SpineRenderer) -> [RenderCommand]
 }
 
