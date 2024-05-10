@@ -323,9 +323,9 @@ public final class SkinAndAnimationBounds: BoundsProvider {
         let customSkin = Skin.create(name: "custom-skin")
         for skinName in skins {
             let skin = data.findSkin(name: skinName) // TODO: Introduce optionsals where needed
-//            if let skin = data.findSkin(name: skinName) {
+            if let skin = data.findSkin(name: skinName) {
                 customSkin.addSkin(other: skin)
-//            }
+            }
         }
         drawable.skeleton.skin = customSkin
         drawable.skeleton.setToSetupPose();
