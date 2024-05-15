@@ -124,8 +124,8 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     }
     
     private func setTransform(bounds: CGRect, contentMode: SpineContentMode, alignment: SpineAlignment) {
-        let x = -bounds.minX - bounds.width / 2.0// - (alignment.x * bounds.width / 2.0)
-        let y = -bounds.minY - bounds.height / 2.0// - (alignment.y * bounds.height / 2.0)
+        let x = -bounds.minX - bounds.width / 2.0
+        let y = -bounds.minY - bounds.height / 2.0
         
         var scaleX: CGFloat = 1.0
         var scaleY: CGFloat = 1.0
