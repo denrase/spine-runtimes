@@ -6,12 +6,12 @@ public var version: String {
     return "\(majorVersion).\(minorVersion)"
 }
 
-public var majorVersion: Int32 {
-    return spine_major_version()
+public var majorVersion: Int {
+    return Int(spine_major_version())
 }
 
-public var minorVersion: Int32 {
-    return spine_minor_version()
+public var minorVersion: Int {
+    return Int(spine_minor_version())
 }
 
 /// Atlas data loaded from a `.atlas` file and its corresponding `.png` files. For each atlas image,
