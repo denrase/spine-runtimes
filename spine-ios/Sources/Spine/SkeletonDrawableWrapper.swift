@@ -20,6 +20,7 @@ public final class SkeletonDrawableWrapper {
     public let skeleton: Skeleton
     public let animationStateData: AnimationStateData
     public let animationState: AnimationState
+    public let animationStateWrapper: AnimationStateWrapper
     
     internal var disposed = false
     
@@ -47,7 +48,10 @@ public final class SkeletonDrawableWrapper {
             throw "Could not load native animation state"
         }
         animationState = AnimationState(nativeAnimationState)
-        
+        animationStateWrapper = AnimationStateWrapper(
+            animationState: animationState,
+            aninationStateEvents: skeletonDrawable.animationStateEvents
+        )
         skeleton.updateWorldTransform(physics: SPINE_PHYSICS_NONE)
     }
     
@@ -57,7 +61,7 @@ public final class SkeletonDrawableWrapper {
     public func update(delta: Float) {
         if disposed { return }
         
-        animationState.update(delta: delta)
+        animationStateWrapper.update(delta: delta)
         animationState.apply(skeleton: skeleton)
         
         skeleton.update(delta: delta)

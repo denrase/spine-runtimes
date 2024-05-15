@@ -16,7 +16,6 @@ public typealias SpineControllerCallback = (_ controller: SpineController) -> Vo
 public final class SpineController: ObservableObject {
     
     public private(set) var drawable: SkeletonDrawableWrapper!
-    public private(set) var animationStateWrapper: AnimationStateWrapper!
     
     private let onInitialized: SpineControllerCallback?
     private let onBeforeUpdateWorldTransforms: SpineControllerCallback?
@@ -70,6 +69,10 @@ public final class SpineController: ObservableObject {
         drawable.animationState
     }
     
+    public var animationStateWrapper: AnimationStateWrapper {
+        drawable.animationStateWrapper
+    }
+    
     /// Transforms the coordinates given in the [SpineWidget] coordinate system in [position] to
     /// the skeleton coordinate system. See the `IKFollowing.swift` example how to use this
     /// to move a bone based on user touch input.
@@ -100,10 +103,6 @@ public final class SpineController: ObservableObject {
                 skeletonData: skeletonData
             )
             self.drawable = skeletonDrawableWrapper
-            self.animationStateWrapper = AnimationStateWrapper(
-                animationState: skeletonDrawableWrapper.animationState,
-                aninationStateEvents: skeletonDrawableWrapper.skeletonDrawable.animationStateEvents
-            )
         }
     }
     
