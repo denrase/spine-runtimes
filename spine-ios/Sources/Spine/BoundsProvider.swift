@@ -18,6 +18,25 @@ public final class SetupPoseBounds: BoundsProvider {
     }
 }
 
+/// A [BoundsProvider] that returns fixed bounds.
+public final class RawBounds: BoundsProvider {
+    public let x: Double
+    public let y: Double
+    public let width: Double
+    public let height: Double
+
+    public init(x: Double, y: Double, width: Double, height: Double) {
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+    }
+
+    public func computeBounds(for drawable: SkeletonDrawableWrapper) -> CGRect {
+        return CGRectMake(CGFloat(x), CGFloat(y), CGFloat(width), CGFloat(height))
+    }
+}
+
 /// A [BoundsProvider] that calculates the bounding box needed for a combination of skins
 /// and an animation.
 public final class SkinAndAnimationBounds: BoundsProvider {
@@ -82,10 +101,10 @@ public final class SkinAndAnimationBounds: BoundsProvider {
         if let oldSkin {
             drawable.skeleton.skin = oldSkin
         }
-        drawable.skeleton.setToSetupPose();
+        drawable.skeleton.setToSetupPose()
         drawable.update(delta: 0);
-        customSkin.dispose();
-        return CGRectMake(CGFloat(minX), CGFloat(minY), CGFloat(maxX - minX), CGFloat(maxY - minY));
+        customSkin.dispose()
+        return CGRectMake(CGFloat(minX), CGFloat(minY), CGFloat(maxX - minX), CGFloat(maxY - minY))
       }
 }
 
