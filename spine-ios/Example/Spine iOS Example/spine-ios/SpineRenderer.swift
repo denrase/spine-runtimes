@@ -93,6 +93,7 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     
     func draw(in view: MTKView) {
         guard dataSource?.isPlaying(self) ?? false else {
+            lastDraw = CACurrentMediaTime()
             return
         }
         
