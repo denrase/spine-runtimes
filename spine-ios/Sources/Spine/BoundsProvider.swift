@@ -126,29 +126,17 @@ public enum Alignment {
     
     public var x: CGFloat {
         switch self {
-        case .topLeft: return -1.0
-        case .topCenter: return 0.0
-        case .topRight: return 1.0
-        case .centerLeft: return -1.0
-        case .center: return 0.0
-        case .centerRight: return 1.0
-        case .bottomLeft: return -1.0
-        case .bottomCenter: return 0.0
-        case .bottomRight: return 1.0
+        case .topLeft, .centerLeft, .bottomLeft: return -1.0
+        case .topCenter, .center, .bottomCenter: return 0.0
+        case .topRight, .centerRight, .bottomRight: return 1.0
         }
     }
     
     public var y: CGFloat {
         switch self {
-        case .topLeft: return -1.0
-        case .topCenter: return -1.0
-        case .topRight: return -1.0
-        case .centerLeft: return -0.0
-        case .center: return 0.0
-        case .centerRight: return 0.0
-        case .bottomLeft: return -1.0
-        case .bottomCenter: return 1.0
-        case .bottomRight: return 1.0
+        case .topLeft, .topCenter, .topRight: return -1.0
+        case .centerLeft, .center, .centerRight: return 0.0
+        case .bottomLeft, .bottomCenter, .bottomRight: return -1.0
         }
     }
 }
