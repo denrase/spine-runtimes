@@ -12,7 +12,12 @@ import Spine
 import SpineWrapper
 
 protocol SpineRendererDelegate: AnyObject {
+    func spineRendererWillUpdate(_ spineRenderer: SpineRenderer)
     func spineRenderer(_ spineRenderer: SpineRenderer, needsUpdate delta: TimeInterval)
+    func spineRendererDidUpdate(_ spineRenderer: SpineRenderer)
+    
+    func spineRendererWillDraw(_ spineRenderer: SpineRenderer)
+    func spineRendererDidDraw(_ spineRenderer: SpineRenderer)
 }
 
 protocol SpineRendererDataSource: AnyObject {
@@ -112,9 +117,11 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             return
         }
         
+        delegate?.spineRendererWillDraw(self)
         for renderCommand in renderCommands {
             draw(renderCommand: renderCommand, renderEncoder: renderEncoder, in: view)
         }
+        delegate?.spineRendererDidDraw(self)
         
         renderEncoder.endEncoding()
         view.currentDrawable.flatMap {
@@ -139,7 +146,6 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             scaleY = scaleX
         }
         
-        let offset = CGPoint.zero
         let offsetX = (size.width - bounds.width * scaleY) / 2 * alignment.x
         let offsetY = (size.height - bounds.height * scaleY) / 2 * alignment.y
         
@@ -155,8 +161,10 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             lastDraw = CACurrentMediaTime()
         }
         let delta = CACurrentMediaTime() - lastDraw
+        delegate?.spineRendererWillUpdate(self)
         delegate?.spineRenderer(self, needsUpdate: delta)
         lastDraw = CACurrentMediaTime()
+        delegate?.spineRendererDidUpdate(self)
     }
     
     private func draw(renderCommand: RenderCommand, renderEncoder: MTLRenderCommandEncoder, in view: MTKView) {

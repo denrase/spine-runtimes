@@ -10,17 +10,33 @@ import Spine
 import CoreGraphics
 import QuartzCore
 
+public typealias SpineControllerCallback = (_ controller: SpineController) -> Void
+
 public final class SpineController: ObservableObject {
     
     public private(set) var drawable: SkeletonDrawableWrapper!
     
-    private let onInitialized: (_ controller: SpineController) -> Void
+    private let onInitialized: SpineControllerCallback?
+    private let onBeforeUpdateWorldTransforms: SpineControllerCallback?
+    private let onAfterUpdateWorldTransforms: SpineControllerCallback?
+    private let onBeforePaint: SpineControllerCallback?
+    private let onAfterPaint: SpineControllerCallback?
     
     @Published
     public private(set) var isPlaying: Bool = true
     
-    public init(onInitialized: @escaping (_ controller: SpineController) -> Void) {
+    public init(
+        onInitialized: SpineControllerCallback? = nil,
+        onBeforeUpdateWorldTransforms: SpineControllerCallback? = nil,
+        onAfterUpdateWorldTransforms: SpineControllerCallback? = nil,
+        onBeforePaint: SpineControllerCallback? = nil,
+        onAfterPaint: SpineControllerCallback? = nil
+    ) {
         self.onInitialized = onInitialized
+        self.onBeforeUpdateWorldTransforms = onBeforeUpdateWorldTransforms
+        self.onAfterUpdateWorldTransforms = onAfterUpdateWorldTransforms
+        self.onBeforePaint = onBeforePaint
+        self.onAfterPaint = onAfterPaint
     }
     
     deinit {
@@ -52,7 +68,6 @@ public final class SpineController: ObservableObject {
     }
     
     public func resume() {
-        // TODO: Resume at correct time
         isPlaying = true
     }
     
@@ -73,13 +88,30 @@ public final class SpineController: ObservableObject {
     }
     
     internal func initialize() {
-        onInitialized(self)
+        onInitialized?(self)
     }
 }
 
 extension SpineController: SpineRendererDelegate {
+    
+    func spineRendererWillUpdate(_ spineRenderer: SpineRenderer) {
+        onBeforeUpdateWorldTransforms?(self)
+    }
+    
     func spineRenderer(_ spineRenderer: SpineRenderer, needsUpdate delta: TimeInterval) {
         drawable?.update(delta: Float(delta))
+    }
+    
+    func spineRendererDidUpdate(_ spineRenderer: SpineRenderer) {
+        onAfterUpdateWorldTransforms?(self)
+    }
+    
+    func spineRendererWillDraw(_ spineRenderer: SpineRenderer) {
+        onBeforePaint?(self)
+    }
+    
+    func spineRendererDidDraw(_ spineRenderer: SpineRenderer) {
+        onAfterPaint?(self)
     }
 }
 
