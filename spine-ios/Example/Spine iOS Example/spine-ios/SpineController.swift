@@ -16,6 +16,7 @@ public typealias SpineControllerCallback = (_ controller: SpineController) -> Vo
 public final class SpineController: ObservableObject {
     
     public private(set) var drawable: SkeletonDrawableWrapper!
+    public private(set) var animationStateWrapper: AnimationStateWrapper!
     
     private let onInitialized: SpineControllerCallback?
     private let onBeforeUpdateWorldTransforms: SpineControllerCallback?
@@ -99,6 +100,10 @@ public final class SpineController: ObservableObject {
                 skeletonData: skeletonData
             )
             self.drawable = skeletonDrawableWrapper
+            self.animationStateWrapper = AnimationStateWrapper(
+                animationState: skeletonDrawableWrapper.animationState,
+                aninationStateEvents: skeletonDrawableWrapper.skeletonDrawable.animationStateEvents
+            )
         }
     }
     

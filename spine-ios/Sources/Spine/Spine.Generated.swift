@@ -415,8 +415,11 @@ public final class AnimationStateEvents: NSObject {
         return .init(spine_animation_state_events_get_track_entry(wrappee, index))
     }
 
-    public func getEvent(index: Int32) -> Event {
-        return .init(spine_animation_state_events_get_event(wrappee, index))
+    // TODO: This is manually overwritten as it crashes when it's null
+    public func getEvent(index: Int32) -> Event? {
+        return spine_animation_state_events_get_event(wrappee, index).flatMap {
+            .init($0)
+        }
     }
 
     public func reset() {
@@ -1618,7 +1621,6 @@ public final class PathConstraint: NSObject {
 public final class AnimationState: NSObject {
 
     internal let wrappee: spine_animation_state
-    internal var disposed = false
 
     internal init(_ wrappee: spine_animation_state) {
         self.wrappee = wrappee
@@ -1680,12 +1682,6 @@ public final class AnimationState: NSObject {
 
     public func getCurrent(trackIndex: Int32) -> TrackEntry {
         return .init(spine_animation_state_get_current(wrappee, trackIndex))
-    }
-
-    public func disposeTrackEntry(entry: TrackEntry) {
-        if disposed { return }
-        disposed = true
-        spine_animation_state_dispose_track_entry(wrappee, entry.wrappee)
     }
 
     public func setEmptyAnimations(mixDuration: Float) {
