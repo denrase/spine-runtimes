@@ -9,6 +9,7 @@ import Foundation
 import Spine
 import CoreGraphics
 import QuartzCore
+import UIKit
 
 public typealias SpineControllerCallback = (_ controller: SpineController) -> Void
 
@@ -21,6 +22,11 @@ public final class SpineController: ObservableObject {
     private let onAfterUpdateWorldTransforms: SpineControllerCallback?
     private let onBeforePaint: SpineControllerCallback?
     private let onAfterPaint: SpineControllerCallback?
+    
+    private var scaleX: CGFloat = 1
+    private var scaleY: CGFloat = 1
+    private var offsetX: CGFloat = 0
+    private var offsetY: CGFloat = 0
     
     @Published
     public private(set) var isPlaying: Bool = true
@@ -61,6 +67,15 @@ public final class SpineController: ObservableObject {
     
     public var animationState: AnimationState {
         drawable.animationState
+    }
+    
+    /// Transforms the coordinates given in the [SpineWidget] coordinate system in [position] to
+    /// the skeleton coordinate system. See the `IKFollowing.swift` example how to use this
+    /// to move a bone based on user touch input.
+    public func toSkeletonCoordinates(position: CGPoint) -> CGPoint {
+        let x = position.x;
+        let y = position.y;
+        return CGPoint(x: x / scaleX - offsetX, y: y / scaleY - offsetY)
     }
     
     public func pause() {
@@ -112,6 +127,13 @@ extension SpineController: SpineRendererDelegate {
     
     func spineRendererDidDraw(_ spineRenderer: SpineRenderer) {
         onAfterPaint?(self)
+    }
+    
+    func spineRendererDidUpdate(_ spineRenderer: SpineRenderer, scaleX: CGFloat, scaleY: CGFloat, offsetX: CGFloat, offsetY: CGFloat) {
+        self.scaleX = scaleX
+        self.scaleY = scaleY
+        self.offsetX = offsetX
+        self.offsetY = offsetY
     }
 }
 

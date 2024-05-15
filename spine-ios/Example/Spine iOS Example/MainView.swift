@@ -17,6 +17,9 @@ struct MainView: View {
             NavigationLink("Play/Pause") {
                 PlayPauseAnimation()
             }
+            NavigationLink("IK Following") {
+                IKFollowing()
+            }
         }
         .navigationTitle("Spine iOS Example")
     }
