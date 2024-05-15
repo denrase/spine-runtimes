@@ -22,8 +22,8 @@ protocol SpineRendererDataSource: AnyObject {
 }
 
 final class SpineRenderer: NSObject, MTKViewDelegate {
-    private let contentMode: SpineContentMode
-    private let alignment: SpineAlignment
+    private let contentMode: Spine.ContentMode
+    private let alignment: Spine.Alignment
     private let boundsProvider: BoundsProvider
     private let device: MTLDevice
     private let textures: [MTLTexture]
@@ -45,8 +45,8 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     init(
         mtkView: MTKView,
         atlasPages: [CGImage],
-        contentMode: SpineContentMode,
-        alignment: SpineAlignment,
+        contentMode: Spine.ContentMode,
+        alignment: Spine.Alignment,
         boundsProvider: BoundsProvider
     ) throws {
         let device = mtkView.device!
@@ -123,7 +123,7 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         commandBuffer.commit()
     }
     
-    private func setTransform(bounds: CGRect, contentMode: SpineContentMode, alignment: SpineAlignment) {
+    private func setTransform(bounds: CGRect, contentMode: Spine.ContentMode, alignment: Spine.Alignment) {
         let x = -bounds.minX - bounds.width / 2.0
         let y = -bounds.minY - bounds.height / 2.0
         
