@@ -15,7 +15,7 @@ public typealias SpineControllerCallback = (_ controller: SpineController) -> Vo
 
 public final class SpineController: ObservableObject {
     
-    public private(set) var drawable: SkeletonDrawableWrapper!
+    public internal(set) var drawable: SkeletonDrawableWrapper!
     
     private let onInitialized: SpineControllerCallback?
     private let onBeforeUpdateWorldTransforms: SpineControllerCallback?

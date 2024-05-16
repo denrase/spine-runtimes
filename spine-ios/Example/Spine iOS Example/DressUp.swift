@@ -60,14 +60,23 @@ final class DressUpModel: ObservableObject {
                 guard let drawable = controller.drawable else {
                     return
                 }
-                for skin in drawable.skeletonData.skins {
-                    if skin.name == "default" { continue }
+                if let skin = (drawable.skeletonData.skins.first { $0.name != "default" }) {
+//                for skin in drawable.skeletonData.skins {
+//                    if skin.name == "default" { continue }
                     let skeleton = drawable.skeleton
                     skeleton.skin = skin
                     skeleton.setToSetupPose()
                     skeleton.update(delta: 0)
                     skeleton.updateWorldTransform(physics: SPINE_PHYSICS_UPDATE)
                     skin.name.flatMap { skinName in
+                        Task {
+                            do {
+                                try await drawable.renderToSpineUIView(size: CGSize(width: 200, height: 200), backgroundColor: .white)
+                            } catch {
+                                print(error)
+                            }
+                        }
+                        
 //                        weakSelf?.skinImages[skinName] = await drawable.renderToRawImageData(thumbnailSize, thumbnailSize, 0xffffffff);
                         weakSelf?.selectedSkins[skinName] = false
                     }

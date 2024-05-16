@@ -23,18 +23,18 @@ public struct SpineView: UIViewRepresentable {
     public init(
         atlasFile: String,
         skeletonFile: String,
-        controller: SpineController? = nil,
-        mode: Spine.ContentMode? = nil,
-        alignment: Spine.Alignment? = nil,
-        boundsProvider: BoundsProvider? = nil
+        controller: SpineController = SpineController(),
+        mode: Spine.ContentMode = .fit,
+        alignment: Spine.Alignment = .center,
+        boundsProvider: BoundsProvider = SetupPoseBounds(),
+        backgroundColor: UIColor = .white
     ) {
         self.atlasFile = atlasFile
         self.skeletonFile = skeletonFile
-        
-        self.controller = controller ?? SpineController()
-        self.mode = mode ?? .fit
-        self.alignment = alignment ?? .center
-        self.boundsProvider = boundsProvider ?? SetupPoseBounds()
+        self.controller = controller
+        self.mode = mode
+        self.alignment = alignment
+        self.boundsProvider = boundsProvider
     }
     
     public func makeUIView(context: Context) -> SpineUIView {

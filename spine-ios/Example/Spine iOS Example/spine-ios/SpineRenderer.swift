@@ -34,6 +34,7 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     private let textures: [MTLTexture]
     private let pipelineState: MTLRenderPipelineState
     private let commandQueue: MTLCommandQueue
+    private let debug: String?
     
     private var sizeInPoints: CGSize = .zero
     private var viewPortSize = vector_uint2(0, 0)
@@ -49,10 +50,12 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     
     init(
         spineView: SpineUIView,
-        atlasPages: [CGImage]
+        atlasPages: [CGImage],
+        debug: String?
     ) throws {
         let device = spineView.device!
         self.device = device
+        self.debug = debug
         
         let defaultLibrary = device.makeDefaultLibrary()
         let textureLoader = MTKTextureLoader(device: device)
@@ -103,17 +106,12 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         }
         
         callNeedsUpdate()
-        let renderCommands = dataSource?.renderCommands(self) ?? []
         
-        guard let commandBuffer = commandQueue.makeCommandBuffer() else {
-            return
-        }
-        
-        guard let renderPassDescriptor = view.currentRenderPassDescriptor else {
-            return
-        }
-        
-        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
+        guard let renderCommands = dataSource?.renderCommands(self),
+              !renderCommands.isEmpty,
+              let commandBuffer = commandQueue.makeCommandBuffer(),
+              let renderPassDescriptor = view.currentRenderPassDescriptor,
+              let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
             return
         }
         
@@ -128,6 +126,8 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             commandBuffer.present($0)
         }
         commandBuffer.commit()
+        
+        commandBuffer.waitUntilCompleted()
     }
     
     private func setTransform(bounds: CGRect, mode: Spine.ContentMode, alignment: Spine.Alignment) {

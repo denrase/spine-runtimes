@@ -27,6 +27,7 @@
 		921C1EBB2BF60AE90001A0BA /* mix-and-match.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 921C1EB82BF60AE90001A0BA /* mix-and-match.atlas */; };
 		921C1EBC2BF60AE90001A0BA /* mix-and-match.png in Resources */ = {isa = PBXBuildFile; fileRef = 921C1EB92BF60AE90001A0BA /* mix-and-match.png */; };
 		921C1EBE2BF62D190001A0BA /* SpineUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921C1EBD2BF62D190001A0BA /* SpineUIView.swift */; };
+		921C1EC02BF63A060001A0BA /* MTLClearColor+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921C1EBF2BF63A060001A0BA /* MTLClearColor+UIColor.swift */; };
 		922839DF2BF4F7D8006DA9F6 /* AnimationStateEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922839DE2BF4F7D8006DA9F6 /* AnimationStateEvents.swift */; };
 		924C0C162BCFCF21004E63F7 /* SpineExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924C0C152BCFCF21004E63F7 /* SpineExampleApp.swift */; };
 		924C0C182BCFCF21004E63F7 /* SimpleAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924C0C172BCFCF21004E63F7 /* SimpleAnimation.swift */; };
@@ -60,6 +61,7 @@
 		921C1EB82BF60AE90001A0BA /* mix-and-match.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "mix-and-match.atlas"; sourceTree = "<group>"; };
 		921C1EB92BF60AE90001A0BA /* mix-and-match.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mix-and-match.png"; sourceTree = "<group>"; };
 		921C1EBD2BF62D190001A0BA /* SpineUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpineUIView.swift; sourceTree = "<group>"; };
+		921C1EBF2BF63A060001A0BA /* MTLClearColor+UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MTLClearColor+UIColor.swift"; sourceTree = "<group>"; };
 		922839DE2BF4F7D8006DA9F6 /* AnimationStateEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationStateEvents.swift; sourceTree = "<group>"; };
 		924C0C122BCFCF21004E63F7 /* Spine iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spine iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		924C0C152BCFCF21004E63F7 /* SpineExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpineExampleApp.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				920BD10F2BEBA5480050A5A9 /* SpineController.swift */,
 				92FFE5482BD15B1A00C64889 /* SpineView.swift */,
 				921C1EBD2BF62D190001A0BA /* SpineUIView.swift */,
+				921C1EBF2BF63A060001A0BA /* MTLClearColor+UIColor.swift */,
 				92FFE54C2BD15B2000C64889 /* SpineRenderer.swift */,
 				920BD10D2BEBA4390050A5A9 /* RenderCommand+Vertices.swift */,
 			);
@@ -289,6 +292,7 @@
 				920BD10E2BEBA4390050A5A9 /* RenderCommand+Vertices.swift in Sources */,
 				924C0C182BCFCF21004E63F7 /* SimpleAnimation.swift in Sources */,
 				924C0C162BCFCF21004E63F7 /* SpineExampleApp.swift in Sources */,
+				921C1EC02BF63A060001A0BA /* MTLClearColor+UIColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
