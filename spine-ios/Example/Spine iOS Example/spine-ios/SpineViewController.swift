@@ -63,16 +63,21 @@ public final class SpineViewController: UIViewController {
     
     private func load() {
         Task.detached(priority: .high) {
-            try await self.controller.load(
-                atlasFile: self.atlasFile,
-                skeletonFile: self.skeletonFile
-            )
-            await MainActor.run {
-                self.initRenderer(
-                    atlasPages: self.controller.drawable.atlasPages
+            do {
+                try await self.controller.load(
+                    atlasFile: self.atlasFile,
+                    skeletonFile: self.skeletonFile
                 )
-                self.controller.initialize()
+                await MainActor.run {
+                    self.initRenderer(
+                        atlasPages: self.controller.drawable.atlasPages
+                    )
+                    self.controller.initialize()
+                }
+            } catch {
+                print(error)
             }
+            
         }
     }
     

@@ -22,6 +22,10 @@
 		920BD12A2BEBDCD80050A5A9 /* dragon_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 920BD1232BEBDCD80050A5A9 /* dragon_3.png */; };
 		920BD12B2BEBDCD80050A5A9 /* dragon.png in Resources */ = {isa = PBXBuildFile; fileRef = 920BD1242BEBDCD80050A5A9 /* dragon.png */; };
 		920BD12C2BEBDCD80050A5A9 /* dragon.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 920BD1252BEBDCD80050A5A9 /* dragon.atlas */; };
+		921C1EAF2BF609F60001A0BA /* DressUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921C1EAE2BF609F60001A0BA /* DressUp.swift */; };
+		921C1EBA2BF60AE90001A0BA /* mix-and-match-pro.skel in Resources */ = {isa = PBXBuildFile; fileRef = 921C1EB72BF60AE90001A0BA /* mix-and-match-pro.skel */; };
+		921C1EBB2BF60AE90001A0BA /* mix-and-match.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 921C1EB82BF60AE90001A0BA /* mix-and-match.atlas */; };
+		921C1EBC2BF60AE90001A0BA /* mix-and-match.png in Resources */ = {isa = PBXBuildFile; fileRef = 921C1EB92BF60AE90001A0BA /* mix-and-match.png */; };
 		922839DF2BF4F7D8006DA9F6 /* AnimationStateEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922839DE2BF4F7D8006DA9F6 /* AnimationStateEvents.swift */; };
 		924C0C162BCFCF21004E63F7 /* SpineExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924C0C152BCFCF21004E63F7 /* SpineExampleApp.swift */; };
 		924C0C182BCFCF21004E63F7 /* SimpleAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924C0C172BCFCF21004E63F7 /* SimpleAnimation.swift */; };
@@ -51,6 +55,10 @@
 		920BD1232BEBDCD80050A5A9 /* dragon_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dragon_3.png; sourceTree = "<group>"; };
 		920BD1242BEBDCD80050A5A9 /* dragon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dragon.png; sourceTree = "<group>"; };
 		920BD1252BEBDCD80050A5A9 /* dragon.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dragon.atlas; sourceTree = "<group>"; };
+		921C1EAE2BF609F60001A0BA /* DressUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DressUp.swift; sourceTree = "<group>"; };
+		921C1EB72BF60AE90001A0BA /* mix-and-match-pro.skel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mix-and-match-pro.skel"; sourceTree = "<group>"; };
+		921C1EB82BF60AE90001A0BA /* mix-and-match.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "mix-and-match.atlas"; sourceTree = "<group>"; };
+		921C1EB92BF60AE90001A0BA /* mix-and-match.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mix-and-match.png"; sourceTree = "<group>"; };
 		922839DE2BF4F7D8006DA9F6 /* AnimationStateEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationStateEvents.swift; sourceTree = "<group>"; };
 		924C0C122BCFCF21004E63F7 /* Spine iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spine iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		924C0C152BCFCF21004E63F7 /* SpineExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpineExampleApp.swift; sourceTree = "<group>"; };
@@ -102,6 +110,16 @@
 			path = dragon;
 			sourceTree = "<group>";
 		};
+		921C1EB02BF60AA40001A0BA /* mixandmatch */ = {
+			isa = PBXGroup;
+			children = (
+				921C1EB72BF60AE90001A0BA /* mix-and-match-pro.skel */,
+				921C1EB82BF60AE90001A0BA /* mix-and-match.atlas */,
+				921C1EB92BF60AE90001A0BA /* mix-and-match.png */,
+			);
+			path = mixandmatch;
+			sourceTree = "<group>";
+		};
 		924C0C092BCFCF21004E63F7 = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +147,7 @@
 				924C0C172BCFCF21004E63F7 /* SimpleAnimation.swift */,
 				920BD11C2BEBDC380050A5A9 /* PlayPauseAnimation.swift */,
 				922839DE2BF4F7D8006DA9F6 /* AnimationStateEvents.swift */,
+				921C1EAE2BF609F60001A0BA /* DressUp.swift */,
 				92FE93282BF4AB9600CCDF48 /* IKFollowing.swift */,
 				92FFE53A2BD018CA00C64889 /* AAPLShaders.metal */,
 				924C0C192BCFCF22004E63F7 /* Assets.xcassets */,
@@ -140,6 +159,7 @@
 		92921E502BCFEEA1002E2FC4 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				921C1EB02BF60AA40001A0BA /* mixandmatch */,
 				920BD11E2BEBDCD80050A5A9 /* dragon */,
 				920BD1112BEBC52D0050A5A9 /* spineboy */,
 			);
@@ -234,6 +254,7 @@
 				924C0C1A2BCFCF22004E63F7 /* Assets.xcassets in Resources */,
 				920BD1282BEBDCD80050A5A9 /* dragon_2.png in Resources */,
 				920BD1182BEBC52D0050A5A9 /* spineboy-pro.json in Resources */,
+				921C1EBB2BF60AE90001A0BA /* mix-and-match.atlas in Resources */,
 				920BD1192BEBC52D0050A5A9 /* spineboy.atlas in Resources */,
 				920BD1172BEBC52D0050A5A9 /* spineboy.png in Resources */,
 				920BD1292BEBDCD80050A5A9 /* dragon-ess.skel in Resources */,
@@ -241,8 +262,10 @@
 				920BD12B2BEBDCD80050A5A9 /* dragon.png in Resources */,
 				92FFE5462BD15AF700C64889 /* README.md in Resources */,
 				920BD1272BEBDCD80050A5A9 /* dragon_5.png in Resources */,
+				921C1EBC2BF60AE90001A0BA /* mix-and-match.png in Resources */,
 				920BD1262BEBDCD80050A5A9 /* dragon_4.png in Resources */,
 				920BD12C2BEBDCD80050A5A9 /* dragon.atlas in Resources */,
+				921C1EBA2BF60AE90001A0BA /* mix-and-match-pro.skel in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +280,7 @@
 				920BD11B2BEBDBA60050A5A9 /* MainView.swift in Sources */,
 				92FE93292BF4AB9600CCDF48 /* IKFollowing.swift in Sources */,
 				920BD11D2BEBDC380050A5A9 /* PlayPauseAnimation.swift in Sources */,
+				921C1EAF2BF609F60001A0BA /* DressUp.swift in Sources */,
 				92FFE5492BD15B1A00C64889 /* SpineView.swift in Sources */,
 				92FFE54A2BD15B1A00C64889 /* SpineViewController.swift in Sources */,
 				920BD1102BEBA5480050A5A9 /* SpineController.swift in Sources */,
