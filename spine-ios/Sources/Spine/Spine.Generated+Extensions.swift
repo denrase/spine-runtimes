@@ -188,7 +188,7 @@ public extension SkeletonDrawable {
 public extension RenderCommand {
     
     internal var numVertices: Int {
-        Int(spine_render_command_get_num_indices(wrappee))
+        Int(spine_render_command_get_num_vertices(wrappee))
     }
     
     public var positions: [Float] {
