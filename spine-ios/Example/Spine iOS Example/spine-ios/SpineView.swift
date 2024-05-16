@@ -8,46 +8,47 @@
 import SwiftUI
 import Spine
 
-public struct SpineView: UIViewControllerRepresentable {
-    public typealias UIViewControllerType = SpineViewController
+public struct SpineView: UIViewRepresentable {
     
+    public typealias UIViewType = SpineUIView
+
     private let atlasFile: String
     private let skeletonFile: String
-    private let controller: SpineController
     
-    private let contentMode: Spine.ContentMode
+    private let controller: SpineController
+    private let mode: Spine.ContentMode
     private let alignment: Spine.Alignment
     private let boundsProvider: BoundsProvider
     
     public init(
         atlasFile: String,
         skeletonFile: String,
-        controller: SpineController,
-        contentMode: Spine.ContentMode? = nil,
+        controller: SpineController? = nil,
+        mode: Spine.ContentMode? = nil,
         alignment: Spine.Alignment? = nil,
         boundsProvider: BoundsProvider? = nil
     ) {
         self.atlasFile = atlasFile
         self.skeletonFile = skeletonFile
-        self.controller = controller
         
-        self.contentMode = contentMode ?? .fit
+        self.controller = controller ?? SpineController()
+        self.mode = mode ?? .fit
         self.alignment = alignment ?? .center
         self.boundsProvider = boundsProvider ?? SetupPoseBounds()
     }
     
-    public func makeUIViewController(context: Context) -> SpineViewController {
-        return SpineViewController(
+    public func makeUIView(context: Context) -> SpineUIView {
+        return SpineUIView(
             atlasFile: atlasFile,
             skeletonFile: skeletonFile,
             controller: controller,
-            contentMode: contentMode,
+            mode: mode,
             alignment: alignment,
             boundsProvider: boundsProvider
         )
     }
     
-    public func updateUIViewController(_ uiViewController: SpineViewController, context: Context) {
-        //
+    public func updateUIView(_ uiView: SpineUIView, context: Context) {
+        // Stub
     }
 }
