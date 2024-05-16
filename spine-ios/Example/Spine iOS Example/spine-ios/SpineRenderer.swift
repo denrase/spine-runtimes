@@ -74,13 +74,14 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         self.alignment = alignment
         self.boundsProvider = boundsProvider
         
+        // TODO: Create pipeline state for all blend mode / premultiplied combinations and choose the correct one when drawing vertices
         let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
         pipelineStateDescriptor.vertexFunction = defaultLibrary?.makeFunction(name: "vertexShader")
         pipelineStateDescriptor.fragmentFunction = defaultLibrary?.makeFunction(name: "fragmentShader")
         pipelineStateDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
         pipelineStateDescriptor.colorAttachments[0].apply(
-            blendMode: SPINE_BLEND_MODE_NORMAL, // TODO: renderCommand.blendMode ?,
-            with: true // TODO Use renderCommand.premultipliedAlpha ?
+            blendMode: SPINE_BLEND_MODE_NORMAL,
+            with: true
         )
         pipelineState = try device.makeRenderPipelineState(descriptor: pipelineStateDescriptor)
         commandQueue = device.makeCommandQueue()!
