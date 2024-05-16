@@ -32,6 +32,7 @@ struct IKFollowing: View {
         .gesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { gesture in
+                    // TODO: Fix incorrect y offset in SpineRenderer or AAPLShaders
                     model.crossHairPosition = model.controller.toSkeletonCoordinates(position: gesture.location)
                 }
         )
