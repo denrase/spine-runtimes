@@ -25,7 +25,7 @@ struct AnimationStateEvents: View {
                 controller.animationStateWrapper.setTrackEntryListener(entry: walk) { type, entry, event in
                     print("Walk animation event \(type)");
                 }
-                _ = controller.animationState.addAnimationByName(trackIndex: 0, animationName: "jump", loop: false, delay: 2)
+                controller.animationState.addAnimationByName(trackIndex: 0, animationName: "jump", loop: false, delay: 2)
                 let run = controller.animationState.addAnimationByName(trackIndex: 0, animationName: "run", loop: true, delay: 0)
                 controller.animationStateWrapper.setTrackEntryListener(entry: run) { type, entry, event in
                     print("Run animation event \(type)");
