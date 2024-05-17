@@ -21,12 +21,24 @@ struct DressUp: View {
     }
     
     var body: some View {
-        HStack {
-            if !model.skinImages.isEmpty {
-                List {
-                    
+        HStack(spacing: 0) {
+            List {
+                ForEach(model.skinImages.keys.sorted(), id: \.self) { skinName in
+                    let rawImageData = model.skinImages[skinName]!
+                    Button(action: { model.toggleSkin(skinName: skinName) }) {
+                        Image(uiImage: UIImage(cgImage: rawImageData))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: model.thumbnailSize.width, height: model.thumbnailSize.height)
+                            .grayscale(model.selectedSkins[skinName] == true ? 0.0 : 1.0)
+                    }
+                    .listRowSeparator(.hidden)
                 }
             }
+            .listStyle(.plain)
+            
+            Divider()
+            
             SpineView(
                 atlasFile: "mix-and-match.atlas",
                 skeletonFile: "mix-and-match-pro.skel",
@@ -48,36 +60,43 @@ final class DressUpModel: ObservableObject {
     @Published
     var controller: SpineController
     
+    let thumbnailSize = CGSize(width: 200, height: 200)
     var drawable: SkeletonDrawableWrapper?
+    
+    @Published
     var customSkin: Skin?
+    
+    @Published
     var skinImages = [String: CGImage]()
+    
+    @Published
     var selectedSkins = [String: Bool]()
     
     init() {
         weak var weakSelf: DressUpModel?
         controller = SpineController(
             onInitialized: { controller in
+                controller.animationState.setAnimationByName(trackIndex: 0, animationName: "dance", loop: true)
+                
                 guard let drawable = controller.drawable else {
                     return
                 }
-                if let skin = (drawable.skeletonData.skins.first { $0.name != "default" }) {
-//                for skin in drawable.skeletonData.skins {
-//                    if skin.name == "default" { continue }
+                for skin in drawable.skeletonData.skins {
+                    if skin.name == "default" { continue }
                     let skeleton = drawable.skeleton
                     skeleton.skin = skin
                     skeleton.setToSetupPose()
                     skeleton.update(delta: 0)
                     skeleton.updateWorldTransform(physics: SPINE_PHYSICS_UPDATE)
                     skin.name.flatMap { skinName in
-                        Task {
-                            do {
-                                try await drawable.renderToSpineUIView(size: CGSize(width: 200, height: 200), backgroundColor: .white)
-                            } catch {
-                                print(error)
-                            }
+                        do {
+                            weakSelf?.skinImages[skinName] = try drawable.renderToImage(
+                                size: weakSelf?.thumbnailSize ?? .zero,
+                                backgroundColor: .white
+                            )
+                        } catch {
+                            print(error)
                         }
-                        
-//                        weakSelf?.skinImages[skinName] = await drawable.renderToRawImageData(thumbnailSize, thumbnailSize, 0xffffffff);
                         weakSelf?.selectedSkins[skinName] = false
                     }
                 }
@@ -88,7 +107,7 @@ final class DressUpModel: ObservableObject {
         weakSelf = self
     }
     
-    private func toggleSkin(skinName: String) {
+    func toggleSkin(skinName: String) {
         selectedSkins[skinName] = !(selectedSkins[skinName] ?? false)
         customSkin?.dispose()
         customSkin = Skin.create(name: "custom-skin")
@@ -99,7 +118,9 @@ final class DressUpModel: ObservableObject {
               }
           }
         }
-        drawable?.skeleton.skin = customSkin
+        if let customSkin {
+            drawable?.skeleton.skin = customSkin
+        }
         drawable?.skeleton.setToSetupPose()
       }
 }

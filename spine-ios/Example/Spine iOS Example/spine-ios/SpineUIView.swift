@@ -66,12 +66,10 @@ public final class SpineUIView: MTKView {
         backgroundColor: UIColor = .white
     ) {
         self.init(controller: controller, mode: mode, alignment: alignment, boundsProvider: boundsProvider, backgroundColor: backgroundColor)
-        Task.detached(priority: .high) {
-            do {
-                try await self.load(drawable: drawable)
-            } catch {
-                print(error)
-            }
+        do {
+            try load(drawable: drawable)
+        } catch {
+            print(error)
         }
     }
     
@@ -98,14 +96,12 @@ extension SpineUIView {
         }
     }
     
-    internal func load(drawable: SkeletonDrawableWrapper) async throws {
+    internal func load(drawable: SkeletonDrawableWrapper) throws {
         controller.drawable = drawable
-        try await MainActor.run {
-            try self.initRenderer(
-                atlasPages: self.controller.drawable.atlasPages
-            )
-            self.controller.initialize()
-        }
+        try self.initRenderer(
+            atlasPages: self.controller.drawable.atlasPages
+        )
+        self.controller.initialize()
     }
     
     private func initRenderer(atlasPages: [CGImage]) throws {
@@ -122,19 +118,22 @@ extension SpineUIView {
 }
 
 extension SkeletonDrawableWrapper {
-    @MainActor
-    func renderToSpineUIView(size: CGSize, backgroundColor: UIColor) async throws -> UIImage? {
-        let spineView = SpineUIView(backgroundColor: backgroundColor, debug: "foobar")
+    
+    func renderToImage(size: CGSize, backgroundColor: UIColor) throws -> CGImage? {
+        let spineView = SpineUIView(
+            controller: SpineController(disposeOnDeInit: false), // Doesn't own the drawable
+            backgroundColor: backgroundColor, debug: "foobar"
+        )
         spineView.frame = CGRect(origin: .zero, size: size)
         spineView.isPaused = false
         spineView.enableSetNeedsDisplay = false
         spineView.framebufferOnly = false
         
-        try await spineView.load(drawable: self)
+        try spineView.load(drawable: self)
         spineView.delegate?.draw(in: spineView)
         
         guard let texture = spineView.currentDrawable?.texture else {
-            return nil
+            throw "Could not read texture."
         }
         let width = texture.width
         let height = texture.height
@@ -154,9 +153,8 @@ extension SkeletonDrawableWrapper {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         guard let context = CGContext(data: data, width: width, height: height, bitsPerComponent: 8, bytesPerRow: rowBytes, space: colorSpace, bitmapInfo: bitmapInfo.rawValue),
               let cgImage = context.makeImage() else {
-                return nil
+                throw "Could not create image."
         }
-        let image = UIImage(cgImage: cgImage)
-        return image
+        return cgImage
     }
 }
