@@ -18,9 +18,10 @@ public final class SpineUIView: MTKView {
     let boundsProvider: BoundsProvider
     let debug: String?
     
-    private var renderer: SpineRenderer?
+    internal var computedBounds: CGRect = .zero
+    internal var renderer: SpineRenderer?
     
-    public init(
+    init(
         controller: SpineController = SpineController(),
         mode: Spine.ContentMode = .fit,
         alignment: Spine.Alignment = .center,
@@ -89,19 +90,17 @@ extension SpineUIView {
             skeletonFile: skeletonFile
         )
         try await MainActor.run {
-            try self.initRenderer(
-                atlasPages: self.controller.drawable.atlasPages
-            )
-            self.controller.initialize()
+            try self.load(drawable: self.controller.drawable)
         }
     }
     
     internal func load(drawable: SkeletonDrawableWrapper) throws {
         controller.drawable = drawable
-        try self.initRenderer(
-            atlasPages: self.controller.drawable.atlasPages
+        computedBounds = boundsProvider.computeBounds(for: drawable)
+        try initRenderer(
+            atlasPages: controller.drawable.atlasPages
         )
-        self.controller.initialize()
+        controller.initialize()
     }
     
     private func initRenderer(atlasPages: [CGImage]) throws {

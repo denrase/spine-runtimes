@@ -39,12 +39,15 @@ struct DressUp: View {
             
             Divider()
             
-            SpineView(
-                atlasFile: "mix-and-match.atlas",
-                skeletonFile: "mix-and-match-pro.skel",
-                controller: model.controller,
-                boundsProvider: SkinAndAnimationBounds(skins: ["full-skins/girl"])
-            )
+            if let drawable = model.drawable {
+                SpineView(
+                    drawable: drawable,
+                    controller: model.controller,
+                    boundsProvider: SkinAndAnimationBounds(skins: ["full-skins/girl"])
+                )
+            } else {
+                Spacer()
+            }
         }
         .navigationTitle("Dress Up")
         .navigationBarTitleDisplayMode(.inline)
@@ -57,10 +60,12 @@ struct DressUp: View {
 
 final class DressUpModel: ObservableObject {
     
+    let thumbnailSize = CGSize(width: 200, height: 200)
+    
     @Published
     var controller: SpineController
     
-    let thumbnailSize = CGSize(width: 200, height: 200)
+    @Published
     var drawable: SkeletonDrawableWrapper?
     
     @Published
@@ -73,14 +78,17 @@ final class DressUpModel: ObservableObject {
     var selectedSkins = [String: Bool]()
     
     init() {
-        weak var weakSelf: DressUpModel?
         controller = SpineController(
             onInitialized: { controller in
                 controller.animationState.setAnimationByName(trackIndex: 0, animationName: "dance", loop: true)
-                
-                guard let drawable = controller.drawable else {
-                    return
-                }
+            }
+        )
+        Task.detached(priority: .high) {
+            let drawable = try await SkeletonDrawableWrapper.fromAsset(
+                atlasFile: "mix-and-match.atlas",
+                skeletonFile: "mix-and-match-pro.skel"
+            )
+            try await MainActor.run {
                 for skin in drawable.skeletonData.skins {
                     if skin.name == "default" { continue }
                     let skeleton = drawable.skeleton
@@ -88,39 +96,44 @@ final class DressUpModel: ObservableObject {
                     skeleton.setToSetupPose()
                     skeleton.update(delta: 0)
                     skeleton.updateWorldTransform(physics: SPINE_PHYSICS_UPDATE)
-                    skin.name.flatMap { skinName in
-                        do {
-                            weakSelf?.skinImages[skinName] = try drawable.renderToImage(
-                                size: weakSelf?.thumbnailSize ?? .zero,
-                                backgroundColor: .white
-                            )
-                        } catch {
-                            print(error)
-                        }
-                        weakSelf?.selectedSkins[skinName] = false
+                    try skin.name.flatMap { skinName in
+                        self.skinImages[skinName] = try drawable.renderToImage(
+                            size: self.thumbnailSize,
+                            backgroundColor: .white
+                        )
+                        self.selectedSkins[skinName] = false
                     }
                 }
-                weakSelf?.drawable = drawable
-                weakSelf?.toggleSkin(skinName: "full-skins/girl")
+                self.toggleSkin(skinName: "full-skins/girl", drawable: drawable)
+                self.drawable = drawable
             }
-        )
-        weakSelf = self
+        }
+    }
+    
+    deinit {
+        drawable?.dispose()
+        customSkin?.dispose()
     }
     
     func toggleSkin(skinName: String) {
+        if let drawable {
+            toggleSkin(skinName: skinName, drawable: drawable)
+        }
+    }
+    
+    
+    func toggleSkin(skinName: String, drawable: SkeletonDrawableWrapper) {
         selectedSkins[skinName] = !(selectedSkins[skinName] ?? false)
         customSkin?.dispose()
         customSkin = Skin.create(name: "custom-skin")
         for skinName in selectedSkins.keys {
           if selectedSkins[skinName] == true {
-              if let skin = drawable?.skeletonData.findSkin(name: skinName) {
+              if let skin = drawable.skeletonData.findSkin(name: skinName) {
                   customSkin?.addSkin(other: skin)
               }
           }
         }
-        if let customSkin {
-            drawable?.skeleton.skin = customSkin
-        }
-        drawable?.skeleton.setToSetupPose()
-      }
+        drawable.skeleton.skin = customSkin
+        drawable.skeleton.setToSetupPose()
+    }
 }

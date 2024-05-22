@@ -24,7 +24,6 @@ protocol SpineRendererDelegate: AnyObject {
 
 protocol SpineRendererDataSource: AnyObject {
     func isPlaying(_ spineRenderer: SpineRenderer) -> Bool
-    func skeletonDrawable(_ spineRenderer: SpineRenderer) -> SkeletonDrawableWrapper
     func renderCommands(_ spineRenderer: SpineRenderer) -> [RenderCommand]
 }
 
@@ -85,15 +84,13 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         guard let spineView = view as? SpineUIView else { return }
         
-        self.sizeInPoints = CGSize(width: size.width / UIScreen.main.scale, height: size.height / UIScreen.main.scale)
+        sizeInPoints = CGSize(width: size.width / UIScreen.main.scale, height: size.height / UIScreen.main.scale)
         viewPortSize = vector_uint2(UInt32(size.width), UInt32(size.height))
-        if let drawable = dataSource?.skeletonDrawable(self) {
-            setTransform(
-                bounds: spineView.boundsProvider.computeBounds(for: drawable),
-                mode: spineView.mode,
-                alignment: spineView.alignment
-            )
-        }
+        setTransform(
+            bounds: spineView.computedBounds,
+            mode: spineView.mode,
+            alignment: spineView.alignment
+        )
     }
     
     func draw(in view: MTKView) {
@@ -108,7 +105,6 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         callNeedsUpdate()
         
         guard let renderCommands = dataSource?.renderCommands(self),
-              !renderCommands.isEmpty,
               let commandBuffer = commandQueue.makeCommandBuffer(),
               let renderPassDescriptor = view.currentRenderPassDescriptor,
               let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
