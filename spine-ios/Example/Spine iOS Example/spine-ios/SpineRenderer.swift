@@ -19,7 +19,7 @@ protocol SpineRendererDelegate: AnyObject {
     func spineRendererWillDraw(_ spineRenderer: SpineRenderer)
     func spineRendererDidDraw(_ spineRenderer: SpineRenderer)
     
-    func spineRendererDidUpdate(_ spineRenderer: SpineRenderer, scaleX: CGFloat, scaleY: CGFloat, offsetX: CGFloat, offsetY: CGFloat)
+    func spineRendererDidUpdate(_ spineRenderer: SpineRenderer, scaleX: CGFloat, scaleY: CGFloat, offsetX: CGFloat, offsetY: CGFloat, size: CGSize)
 }
 
 protocol SpineRendererDataSource: AnyObject {
@@ -139,9 +139,6 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         let offsetX = abs(sizeInPoints.width - bounds.width) / 2 * alignment.x
         let offsetY = abs(sizeInPoints.height - bounds.height) / 2 * alignment.y
         
-//        let offsetX = sizeInPoints.width / 2.0 + (alignment.x * sizeInPoints.width / 2.0)
-//        let offsetY = sizeInPoints.height / 2.0 + (alignment.y * sizeInPoints.height / 2.0)
-        
         transform = AAPLTransform(
             translation: vector_float2(Float(x), Float(y)),
             scale: vector_float2(Float(scaleX * UIScreen.main.scale), Float(scaleY * UIScreen.main.scale)),
@@ -152,8 +149,9 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             self,
             scaleX: scaleX,
             scaleY: scaleY,
-            offsetX: x / scaleX + bounds.width / 2.0 + offsetX,
-            offsetY: y / scaleY + bounds.height / 2.0 + offsetY
+            offsetX: x, // TODO: fix offset of alignment
+            offsetY: y, // TODO: fix offset of alignment
+            size: sizeInPoints
         )
     }
     

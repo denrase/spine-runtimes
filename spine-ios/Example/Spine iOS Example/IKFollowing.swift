@@ -57,12 +57,12 @@ final class IKFollowingModel: ObservableObject {
         weak var weakSelf: IKFollowingModel?
         controller = SpineController(
             onInitialized: { controller in
-                _ = controller.animationState.setAnimationByName(
+                controller.animationState.setAnimationByName(
                     trackIndex: 0,
                     animationName: "walk",
                     loop: true
                 )
-                _ = controller.animationState.setAnimationByName(
+                controller.animationState.setAnimationByName(
                     trackIndex: 1,
                     animationName: "aim",
                     loop: true
