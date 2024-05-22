@@ -26,6 +26,9 @@ struct MainView: View {
             NavigationLink("IK Following") {
                 IKFollowing()
             }
+            NavigationLink("Physics") {
+                Physics()
+            }
         }
         .navigationTitle("Spine Examples")
     }

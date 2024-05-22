@@ -46,6 +46,7 @@ public final class SpineUIView: MTKView {
         backgroundColor: UIColor = .white
     ) {
         self.init(controller: controller, mode: mode, alignment: alignment, boundsProvider: boundsProvider, backgroundColor: backgroundColor)
+        clearColor = MTLClearColor(backgroundColor)
         Task.detached(priority: .high) {
             do {
                 try await self.load(atlasFile: atlasFile, skeletonFile: skeletonFile)
@@ -64,6 +65,7 @@ public final class SpineUIView: MTKView {
         backgroundColor: UIColor = .white
     ) {
         self.init(controller: controller, mode: mode, alignment: alignment, boundsProvider: boundsProvider, backgroundColor: backgroundColor)
+        clearColor = MTLClearColor(backgroundColor)
         do {
             try load(drawable: drawable)
         } catch {
