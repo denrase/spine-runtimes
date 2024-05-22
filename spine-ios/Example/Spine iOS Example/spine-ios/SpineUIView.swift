@@ -16,7 +16,6 @@ public final class SpineUIView: MTKView {
     let mode: Spine.ContentMode
     let alignment: Spine.Alignment
     let boundsProvider: BoundsProvider
-    let debug: String?
     
     internal var computedBounds: CGRect = .zero
     internal var renderer: SpineRenderer?
@@ -26,14 +25,12 @@ public final class SpineUIView: MTKView {
         mode: Spine.ContentMode = .fit,
         alignment: Spine.Alignment = .center,
         boundsProvider: BoundsProvider = SetupPoseBounds(),
-        backgroundColor: UIColor = .white,
-        debug: String? = nil
+        backgroundColor: UIColor = .white
     ) {
         self.controller = controller
         self.mode = mode
         self.alignment = alignment
         self.boundsProvider = boundsProvider
-        self.debug = debug
         
         super.init(frame: .zero, device: MTLCreateSystemDefaultDevice())
         clearColor = MTLClearColor(backgroundColor)
@@ -104,11 +101,7 @@ extension SpineUIView {
     }
     
     private func initRenderer(atlasPages: [CGImage]) throws {
-        renderer = try SpineRenderer(
-            spineView: self,
-            atlasPages: atlasPages,
-            debug: debug
-        )
+        renderer = try SpineRenderer(spineView: self, atlasPages: atlasPages)
         renderer?.delegate = controller
         renderer?.dataSource = controller
         renderer?.mtkView(self, drawableSizeWillChange: drawableSize)
@@ -121,7 +114,7 @@ extension SkeletonDrawableWrapper {
     func renderToImage(size: CGSize, backgroundColor: UIColor) throws -> CGImage? {
         let spineView = SpineUIView(
             controller: SpineController(disposeOnDeInit: false), // Doesn't own the drawable
-            backgroundColor: backgroundColor, debug: "foobar"
+            backgroundColor: backgroundColor
         )
         spineView.frame = CGRect(origin: .zero, size: size)
         spineView.isPaused = false

@@ -69,13 +69,12 @@ final class DressUpModel: ObservableObject {
     var drawable: SkeletonDrawableWrapper?
     
     @Published
-    var customSkin: Skin?
-    
-    @Published
     var skinImages = [String: CGImage]()
     
     @Published
     var selectedSkins = [String: Bool]()
+    
+    private var customSkin: Skin?
     
     init() {
         controller = SpineController(

@@ -33,7 +33,6 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     private let textures: [MTLTexture]
     private let pipelineState: MTLRenderPipelineState
     private let commandQueue: MTLCommandQueue
-    private let debug: String?
     
     private var sizeInPoints: CGSize = .zero
     private var viewPortSize = vector_uint2(0, 0)
@@ -49,12 +48,10 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     
     init(
         spineView: SpineUIView,
-        atlasPages: [CGImage],
-        debug: String?
+        atlasPages: [CGImage]
     ) throws {
         let device = spineView.device!
         self.device = device
-        self.debug = debug
         
         let defaultLibrary = device.makeDefaultLibrary()
         let textureLoader = MTKTextureLoader(device: device)
@@ -94,9 +91,6 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     }
     
     func draw(in view: MTKView) {
-        guard let spineView = view as? SpineUIView else {
-            return
-        }
         guard dataSource?.isPlaying(self) ?? false else {
             lastDraw = CACurrentMediaTime()
             return
