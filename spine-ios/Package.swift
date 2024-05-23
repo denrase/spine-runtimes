@@ -23,7 +23,7 @@ let package = Package(
         .target(
             name: "Spine",
             dependencies: [
-                "SpineWrapper", "SpineSharedStructs"
+                "SpineWrapper", "SpineShadersStructs"
             ],
             path: "Sources/Spine",
             swiftSettings: [
@@ -35,8 +35,8 @@ let package = Package(
             path: "Sources/SpineWrapper"
         ),
         .systemLibrary(
-            name: "SpineSharedStructs",
-            path: "Sources/SpineSharedStructs"
+            name: "SpineShadersStructs",
+            path: "Sources/SpineShadersStructs"
         )
     ],
     cxxLanguageStandard: .cxx11

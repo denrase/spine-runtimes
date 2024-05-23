@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Denis Andrašec on 15.05.24.
-//
-
 import Foundation
 import Spine
 import SpineWrapper
