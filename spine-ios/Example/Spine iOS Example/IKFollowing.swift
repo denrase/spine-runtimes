@@ -32,8 +32,9 @@ struct IKFollowing: View {
         .gesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { gesture in
-                    // TODO: Fix incorrect y offset in SpineRenderer or AAPLShaders
-                    model.crossHairPosition = model.controller.toSkeletonCoordinates(position: gesture.location)
+                    model.crossHairPosition = model.controller.toSkeletonCoordinates(
+                        position: gesture.location
+                    )
                 }
         )
         .navigationTitle("IK Following")
@@ -49,13 +50,12 @@ struct IKFollowing: View {
 final class IKFollowingModel: ObservableObject {
     
     @Published
-    var controller: SpineController
+    var controller: SpineController!
     
     @Published
     var crossHairPosition: CGPoint?
     
     init() {
-        weak var weakSelf: IKFollowingModel?
         controller = SpineController(
             onInitialized: { controller in
                 controller.animationState.setAnimationByName(
@@ -69,8 +69,9 @@ final class IKFollowingModel: ObservableObject {
                     loop: true
                 )
             },
-            onAfterUpdateWorldTransforms: { controller in
-                guard let worldPosition = weakSelf?.crossHairPosition else {
+            onAfterUpdateWorldTransforms: { 
+                [weak self] controller in guard let self else { return }
+                guard let worldPosition = self.crossHairPosition else {
                     return
                 }
                 let bone = controller.skeleton.findBone(boneName: "crosshair")!
@@ -80,6 +81,5 @@ final class IKFollowingModel: ObservableObject {
                 bone.y = position.y
             }
         )
-        weakSelf = self
     }
 }

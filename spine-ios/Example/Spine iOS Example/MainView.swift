@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        
         List {
             NavigationLink("SimpleAnimation") {
                 SimpleAnimation()
@@ -35,5 +34,7 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
+    NavigationStack {
+        MainView()
+    }
 }
