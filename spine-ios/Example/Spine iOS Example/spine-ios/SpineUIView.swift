@@ -25,7 +25,7 @@ public final class SpineUIView: MTKView {
         mode: Spine.ContentMode = .fit,
         alignment: Spine.Alignment = .center,
         boundsProvider: BoundsProvider = SetupPoseBounds(),
-        backgroundColor: UIColor = .white
+        backgroundColor: UIColor = .clear
     ) {
         self.controller = controller
         self.mode = mode
@@ -34,6 +34,7 @@ public final class SpineUIView: MTKView {
         
         super.init(frame: .zero, device: MTLCreateSystemDefaultDevice())
         clearColor = MTLClearColor(backgroundColor)
+        isOpaque = backgroundColor != .clear
     }
     
     convenience init(
@@ -43,7 +44,7 @@ public final class SpineUIView: MTKView {
         mode: Spine.ContentMode = .fit,
         alignment: Spine.Alignment = .center,
         boundsProvider: BoundsProvider = SetupPoseBounds(),
-        backgroundColor: UIColor = .white
+        backgroundColor: UIColor = .clear
     ) {
         self.init(controller: controller, mode: mode, alignment: alignment, boundsProvider: boundsProvider, backgroundColor: backgroundColor)
         Task.detached(priority: .high) {
@@ -61,7 +62,7 @@ public final class SpineUIView: MTKView {
         mode: Spine.ContentMode = .fit,
         alignment: Spine.Alignment = .center,
         boundsProvider: BoundsProvider = SetupPoseBounds(),
-        backgroundColor: UIColor = .white
+        backgroundColor: UIColor = .clear
     ) {
         self.init(controller: controller, mode: mode, alignment: alignment, boundsProvider: boundsProvider, backgroundColor: backgroundColor)
         do {
