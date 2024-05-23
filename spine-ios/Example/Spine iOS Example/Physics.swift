@@ -55,9 +55,6 @@ final class PhysicsModel: ObservableObject {
     @Published
     var lastMousePosition: CGPoint?
     
-    @Published
-    var delta: CGPoint?
-    
     init() {
         controller = SpineController(
             onInitialized: { controller in
