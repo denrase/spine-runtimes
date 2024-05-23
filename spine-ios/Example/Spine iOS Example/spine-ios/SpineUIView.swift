@@ -114,7 +114,7 @@ extension SkeletonDrawableWrapper {
     
     func renderToImage(size: CGSize, backgroundColor: UIColor) throws -> CGImage? {
         let spineView = SpineUIView(
-            controller: SpineController(disposeOnDeInit: false), // Doesn't own the drawable
+            controller: SpineController(disposeDrawableOnDeInit: false), // Doesn't own the drawable
             backgroundColor: backgroundColor
         )
         spineView.frame = CGRect(origin: .zero, size: size)

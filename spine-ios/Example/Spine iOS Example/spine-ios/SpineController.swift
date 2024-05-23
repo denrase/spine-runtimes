@@ -22,7 +22,7 @@ public final class SpineController: ObservableObject {
     private let onAfterUpdateWorldTransforms: SpineControllerCallback?
     private let onBeforePaint: SpineControllerCallback?
     private let onAfterPaint: SpineControllerCallback?
-    private let disposeOnDeInit: Bool
+    private let disposeDrawableOnDeInit: Bool
     
     private var scaleX: CGFloat = 1
     private var scaleY: CGFloat = 1
@@ -41,18 +41,18 @@ public final class SpineController: ObservableObject {
         onAfterUpdateWorldTransforms: SpineControllerCallback? = nil,
         onBeforePaint: SpineControllerCallback? = nil,
         onAfterPaint: SpineControllerCallback? = nil,
-        disposeOnDeInit: Bool = true
+        disposeDrawableOnDeInit: Bool = true
     ) {
         self.onInitialized = onInitialized
         self.onBeforeUpdateWorldTransforms = onBeforeUpdateWorldTransforms
         self.onAfterUpdateWorldTransforms = onAfterUpdateWorldTransforms
         self.onBeforePaint = onBeforePaint
         self.onAfterPaint = onAfterPaint
-        self.disposeOnDeInit = disposeOnDeInit
+        self.disposeDrawableOnDeInit = disposeDrawableOnDeInit
     }
     
     deinit {
-        if disposeOnDeInit {
+        if disposeDrawableOnDeInit {
             drawable?.dispose() // TODO move drawable out of view?
         }
     }
