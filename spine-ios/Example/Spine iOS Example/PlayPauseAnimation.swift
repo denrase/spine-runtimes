@@ -23,8 +23,7 @@ struct PlayPauseAnimation: View {
     
     var body: some View {
         SpineView(
-            atlasFile: "dragon.atlas",
-            skeletonFile: "dragon-ess.skel",
+            from: .bundle(atlasFileName: "dragon.atlas", skeletonFileName: "dragon-ess.skel"),
             controller: controller,
             boundsProvider: SkinAndAnimationBounds(animation: "flying")
         )

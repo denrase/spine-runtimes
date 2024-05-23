@@ -23,8 +23,7 @@ struct SimpleAnimation: View {
     
     var body: some View {
         SpineView(
-            atlasFile: "spineboy.atlas",
-            skeletonFile: "spineboy-pro.skel",
+            from: .bundle(atlasFileName: "spineboy.atlas", skeletonFileName: "spineboy-pro.skel"),
             controller: controller,
             mode: .fit,
             alignment: .center
