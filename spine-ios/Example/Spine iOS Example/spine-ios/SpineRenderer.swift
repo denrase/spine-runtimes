@@ -121,8 +121,8 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     }
     
     private func setTransform(bounds: CGRect, mode: Spine.ContentMode, alignment: Spine.Alignment) {
-        let x = -bounds.minX - bounds.width / 2.0// - (alignment.x * bounds.width / 2.0)
-        let y = -bounds.minY - bounds.height / 2.0// - (alignment.y * bounds.height / 2.0)
+        let x = -bounds.minX - bounds.width / 2.0
+        let y = -bounds.minY - bounds.height / 2.0
         
         var scaleX: CGFloat = 1.0
         var scaleY: CGFloat = 1.0
@@ -136,8 +136,8 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             scaleY = scaleX
         }
         
-        let offsetX = abs(sizeInPoints.width - bounds.width) / 2 * alignment.x
-        let offsetY = abs(sizeInPoints.height - bounds.height) / 2 * alignment.y
+        let offsetX = abs(sizeInPoints.width - bounds.width * scaleX) / 2 * alignment.x
+        let offsetY = abs(sizeInPoints.height - bounds.height * scaleY) / 2 * alignment.y
         
         transform = AAPLTransform(
             translation: vector_float2(Float(x), Float(y)),
@@ -149,8 +149,8 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             self,
             scaleX: scaleX,
             scaleY: scaleY,
-            offsetX: x, // TODO: fix offset of alignment
-            offsetY: y, // TODO: fix offset of alignment
+            offsetX: x + offsetX / scaleX,
+            offsetY: y + offsetY / scaleY,
             size: sizeInPoints
         )
     }

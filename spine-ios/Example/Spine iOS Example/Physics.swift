@@ -41,7 +41,7 @@ struct Physics: View {
 }
 
 #Preview {
-    IKFollowing()
+    Physics()
 }
 
 final class PhysicsModel: ObservableObject {

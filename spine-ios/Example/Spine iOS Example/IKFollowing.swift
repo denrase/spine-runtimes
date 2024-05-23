@@ -43,6 +43,7 @@ struct IKFollowing: View {
 
 #Preview {
     IKFollowing()
+        .previewInterfaceOrientation(.landscapeLeft)
 }
 
 final class IKFollowingModel: ObservableObject {
