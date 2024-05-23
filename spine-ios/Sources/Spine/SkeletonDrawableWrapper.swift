@@ -1,6 +1,6 @@
 import Foundation
 import Spine
-import SpineWrapper
+import SpineCppLite
 import CoreGraphics
 
 public final class SkeletonDrawableWrapper {

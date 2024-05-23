@@ -15,15 +15,15 @@ let package = Package(
             targets: ["Spine"]
         ),
         .library(
-            name: "SpineWrapper",
-            targets: ["SpineWrapper"]
+            name: "SpineCppLite",
+            targets: ["SpineCppLite"]
         )
     ],
     targets: [
         .target(
             name: "Spine",
             dependencies: [
-                "SpineWrapper", "SpineShadersStructs"
+                "SpineCppLite", "SpineShadersStructs"
             ],
             path: "Sources/Spine",
             swiftSettings: [
@@ -31,8 +31,8 @@ let package = Package(
             ]
         ),
         .target(
-            name: "SpineWrapper",
-            path: "Sources/SpineWrapper"
+            name: "SpineCppLite",
+            path: "Sources/SpineCppLite"
         ),
         .systemLibrary(
             name: "SpineShadersStructs",

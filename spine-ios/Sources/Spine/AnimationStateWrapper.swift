@@ -1,5 +1,5 @@
 import Foundation
-import SpineWrapper
+import SpineCppLite
 
 public typealias AnimationStateListener = (_ type: EventType, _ entry: TrackEntry, _ event: Event?) -> Void
 
