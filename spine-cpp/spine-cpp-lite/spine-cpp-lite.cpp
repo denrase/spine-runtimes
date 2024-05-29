@@ -297,8 +297,7 @@ int32_t spine_atlas_get_num_image_paths(spine_atlas atlas) {
 
 spine_bool spine_atlas_is_pma(spine_atlas atlas) {
 	if (!atlas) return 0;
-	_spine_atlas *spine_atlas = (_spine_atlas *) atlas;
-	Atlas *_atlas = static_cast<Atlas *>(spine_atlas->atlas);
+	Atlas *_atlas = static_cast<Atlas *>(((_spine_atlas *) atlas)->atlas);
 	if (_atlas->getPages().size() > 0) {
 		return _atlas->getPages()[0]->pma;
 	} else {

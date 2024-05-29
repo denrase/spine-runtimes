@@ -47,22 +47,6 @@ public final class SpineUIView: MTKView {
         }
     }
     
-    convenience init(
-        drawable: SkeletonDrawableWrapper,
-        controller: SpineController = SpineController(),
-        mode: Spine.ContentMode = .fit,
-        alignment: Spine.Alignment = .center,
-        boundsProvider: BoundsProvider = SetupPoseBounds(),
-        backgroundColor: UIColor = .clear
-    ) {
-        self.init(controller: controller, mode: mode, alignment: alignment, boundsProvider: boundsProvider, backgroundColor: backgroundColor)
-        do {
-            try load(drawable: drawable)
-        } catch {
-            print(error)
-        }
-    }
-    
     public override init(frame frameRect: CGRect, device: MTLDevice?) {
         fatalError("init(frame: device:) has not been implemented. Use init() instead.")
     }
