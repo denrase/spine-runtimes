@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SimpleAnimationRepresentable: UIViewControllerRepresentable {
+struct SimpleAnimationViewControllerRepresentable: UIViewControllerRepresentable {
     typealias UIViewControllerType = SimpleAnimationViewController
     
     func makeUIViewController(context: Context) -> SimpleAnimationViewController {

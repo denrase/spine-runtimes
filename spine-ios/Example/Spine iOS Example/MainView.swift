@@ -12,7 +12,7 @@ struct MainView: View {
     var body: some View {
         List {
             Section {
-                NavigationLink("SimpleAnimation") {
+                NavigationLink("Simple Animation") {
                     SimpleAnimation()
                 }
                 NavigationLink("Play/Pause") {
@@ -37,9 +37,9 @@ struct MainView: View {
                 Text("Swift + SwiftUI")
             }
             Section {
-                NavigationLink("SimpleAnimationViewController") {
-                    SimpleAnimationRepresentable()
-                        .navigationTitle("SimpleAnimation")
+                NavigationLink("Simple Animation") {
+                    SimpleAnimationViewControllerRepresentable()
+                        .navigationTitle("Simple Animation")
                         .navigationBarTitleDisplayMode(.inline)
                 }
             } header: {

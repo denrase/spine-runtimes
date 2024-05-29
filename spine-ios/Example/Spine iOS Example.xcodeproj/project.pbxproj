@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9205FCD42C0760B1006EE07E /* SimpleAnimationRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9205FCD32C0760B1006EE07E /* SimpleAnimationRepresentable.swift */; };
+		9205FCD42C0760B1006EE07E /* SimpleAnimationViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9205FCD32C0760B1006EE07E /* SimpleAnimationViewControllerRepresentable.swift */; };
 		920BD1162BEBC52D0050A5A9 /* spineboy-pro.skel in Resources */ = {isa = PBXBuildFile; fileRef = 920BD1122BEBC52D0050A5A9 /* spineboy-pro.skel */; };
 		920BD1182BEBC52D0050A5A9 /* spineboy-pro.json in Resources */ = {isa = PBXBuildFile; fileRef = 920BD1142BEBC52D0050A5A9 /* spineboy-pro.json */; };
 		920BD1192BEBC52D0050A5A9 /* spineboy.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 920BD1152BEBC52D0050A5A9 /* spineboy.atlas */; };
@@ -40,7 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9205FCD32C0760B1006EE07E /* SimpleAnimationRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAnimationRepresentable.swift; sourceTree = "<group>"; };
+		9205FCD32C0760B1006EE07E /* SimpleAnimationViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAnimationViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		920BD1122BEBC52D0050A5A9 /* spineboy-pro.skel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "spineboy-pro.skel"; sourceTree = "<group>"; };
 		920BD1142BEBC52D0050A5A9 /* spineboy-pro.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "spineboy-pro.json"; sourceTree = "<group>"; };
 		920BD1152BEBC52D0050A5A9 /* spineboy.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spineboy.atlas; sourceTree = "<group>"; };
@@ -146,7 +146,7 @@
 				924C0C152BCFCF21004E63F7 /* SpineExampleApp.swift */,
 				920BD11A2BEBDBA60050A5A9 /* MainView.swift */,
 				924C0C172BCFCF21004E63F7 /* SimpleAnimation.swift */,
-				9205FCD32C0760B1006EE07E /* SimpleAnimationRepresentable.swift */,
+				9205FCD32C0760B1006EE07E /* SimpleAnimationViewControllerRepresentable.swift */,
 				9240C26C2C0754DD003EE243 /* SimpleAnimationViewController.h */,
 				9240C26D2C0754DD003EE243 /* SimpleAnimationViewController.m */,
 				920BD11C2BEBDC380050A5A9 /* PlayPauseAnimation.swift */,
@@ -283,7 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9205FCD42C0760B1006EE07E /* SimpleAnimationRepresentable.swift in Sources */,
+				9205FCD42C0760B1006EE07E /* SimpleAnimationViewControllerRepresentable.swift in Sources */,
 				9270C16E2BFE356000BD25BC /* Physics.swift in Sources */,
 				920BD11B2BEBDBA60050A5A9 /* MainView.swift in Sources */,
 				92D7DDA82BFF3C8800EB9E3A /* DebugRendering.swift in Sources */,
