@@ -52,8 +52,6 @@ public extension Atlas {
             atlasPages.append(image)
         }
         
-        // TODO: Paint in Swift?
-        
         return (Atlas(atlas), atlasPages)
     }
     

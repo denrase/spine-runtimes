@@ -84,7 +84,7 @@ extension SpineUIView {
     }
     
     private func initRenderer(atlasPages: [CGImage]) throws {
-        renderer = try SpineRenderer(spineView: self, atlasPages: atlasPages)
+        renderer = try SpineRenderer(spineView: self, atlasPages: atlasPages, pma: controller.drawable.atlas.isPma)
         renderer?.delegate = controller
         renderer?.dataSource = controller
         renderer?.mtkView(self, drawableSizeWillChange: drawableSize)
