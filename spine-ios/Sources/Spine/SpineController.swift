@@ -28,7 +28,7 @@ public final class SpineController: NSObject, ObservableObject {
     @Published
     public private(set) var viewSize: CGSize = .zero
     
-    @objc public init(
+    public init(
         onInitialized: SpineControllerCallback? = nil,
         onBeforeUpdateWorldTransforms: SpineControllerCallback? = nil,
         onAfterUpdateWorldTransforms: SpineControllerCallback? = nil,

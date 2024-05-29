@@ -1,10 +1,3 @@
-//
-//  MainView.swift
-//  Spine iOS Example
-//
-//  Created by Denis Andrašec on 08.05.24.
-//
-
 import SwiftUI
 import Spine
 
