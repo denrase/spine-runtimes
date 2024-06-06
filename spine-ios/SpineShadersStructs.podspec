@@ -14,7 +14,7 @@ Metal shaders structs for spine.
   s.license             = { :file => '../LICENSE' }
   s.platform            = :ios, '13.0'
 
-  s.source              = { :path => '.' }
+  s.source              = { :path => "." }
   s.public_header_files = 'Sources/Spine/Metal/**/*.{h}'
   s.source_files        = 'Sources/Spine/Metal/**/*.{h,cpp}'
   

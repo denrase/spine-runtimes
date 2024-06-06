@@ -14,7 +14,7 @@ Spine runtimes for iOS.
   s.license             = { :file => '../LICENSE' }
   s.platform            = :ios, '13.0'
 
-  s.source              = { :path => '.' }
+  s.source              = { :path => "." }
   s.public_header_files = 'spine-cpp/include/**/*.{h}', 'spine-cpp-lite/**/*.{h}'
   s.source_files        =  'spine-cpp/src/**/*.{h,cpp}', 'spine-cpp-lite/**/*.{h,cpp}'
 

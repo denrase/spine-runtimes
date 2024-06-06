@@ -13,7 +13,7 @@ Spine runtimes for iOS.
   s.author           = { "Esoteric Software LLC  " => "http://esotericsoftware.com" }
   s.license          = { :file => '../LICENSE' }
 
-  s.source           = { :path => '.' }
+  s.source           = { :path => "." }
   s.source_files     = 'Sources/Spine/**/*.{swift}', 'Sources/Spine/**/*.{metal}'
   s.platform         = :ios, '13.0'
 
