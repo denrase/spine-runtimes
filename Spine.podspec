@@ -13,12 +13,12 @@ Spine runtimes for iOS.
   s.author           = { "Esoteric Software LLC  " => "http://esotericsoftware.com" }
   s.license          = { :file => '../LICENSE' }
 
-  s.source           = { :podspec => 'https://raw.githubusercontent.com/denrase/spine-runtimes/cocoapods/spine-ios/Spine.podspec' }
-  s.source_files     = 'Sources/Spine/**/*.{swift}', 'Sources/Spine/**/*.{metal}'
+  s.source           = { :git => 'git@github.com:denrase/spine-runtimes.git', :branch => 'cocoapods' }
+  s.source_files     = 'spine-ios/Sources/Spine/**/*.{swift}', 'spine-ios/Sources/Spine/**/*.{metal}'
   s.platform         = :ios, '13.0'
 
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
-  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/../spine-cpp/spine-cpp/include ' + __dir__ + '/../spine-cpp/spine-cpp-lite ' + __dir__ + '/Sources/Spine/Metal' }
+  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/spine-cpp/spine-cpp/include ' + __dir__ + '/spine-cpp/spine-cpp-lite ' + __dir__ + '/spine-ios/Sources/Spine/Metal' }
   s.swift_version = '5.0'
 
   # External Dependencies
