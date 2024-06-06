@@ -18,7 +18,6 @@ Spine runtimes for iOS.
   s.platform         = :ios, '13.0'
 
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
-  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/spine-cpp/spine-cpp/include ' + __dir__ + '/spine-cpp/spine-cpp-lite ' + __dir__ + '/spine-ios/Sources/Spine/Metal' }
   s.swift_version = '5.0'
 
   # External Dependencies

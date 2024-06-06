@@ -19,5 +19,5 @@ Spine runtimes for iOS.
   s.source_files        =  'spine-cpp/spine-cpp/include/**/*.{h}', 'spine-cpp/spine-cpp/src/**/*.{cpp}', 'spine-cpp/spine-cpp-lite/**/*.{h,cpp}'
 
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
-  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/spine-cpp/spine-cpp/include ' + __dir__ + '/spine-cpp/spine-cpp-lite' }
+  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/SpineCppLite/spine-cpp/spine-cpp/include" "$(PODS_ROOT)/SpineCppLite/spine-cpp/spine-cpp-lite"' }
 end

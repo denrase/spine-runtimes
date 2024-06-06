@@ -5,7 +5,7 @@ target 'Spine iOS Example' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'Spine', :path => '../Spine.podspec'
-  pod 'SpineCppLite', :path => '../../spine-cpp/SpineCppLite.podspec'
-  pod 'SpineShadersStructs', :path => '../SpineShadersStructs.podspec'
+  pod 'Spine', :path => '../../Spine.podspec'
+  pod 'SpineCppLite', :path => '../../SpineCppLite.podspec'
+  pod 'SpineShadersStructs', :path => '../../SpineShadersStructs.podspec'
 end

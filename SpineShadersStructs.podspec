@@ -19,5 +19,4 @@ Metal shaders structs for spine.
   s.source_files        = 'spine-ios/Sources/Spine/Metal/**/*.{h,cpp}'
   
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
-  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/spine-ios/Sources/Spine/Metal' }
 end
