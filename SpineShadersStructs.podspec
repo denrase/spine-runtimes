@@ -14,13 +14,10 @@ Metal shaders structs for spine.
   s.license             = { :file => '../LICENSE' }
   s.platform            = :ios, '13.0'
 
-  s.source              = { :podspec => 'https://raw.githubusercontent.com/denrase/spine-runtimes/cocoapods/spine-ios/Sources/SpineShadersStructs/SpineShadersStructs.podspec' }
-  s.public_header_files = '../Spine/Metal/**/*.{h}'
-  s.source_files        = '../Spine/Metal/**/*.{h,cpp}'
+  s.source              = { :git => 'https://github.com/denrase/spine-runtimes.git', :branch => 'cocoapods' }
+  s.public_header_files = 'spine-ios/Sources/Spine/Metal/**/*.{h}'
+  s.source_files        = 'spine-ios/Sources/Spine/Metal/**/*.{h,cpp}'
   
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
-  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/../Spine/Metal' }
-
-  # s.preserve_path = 'Sources/SpineShadersStructs/module.modulemap'
-  # s.module_map = 'Sources/SpineShadersStructs/module.modulemap'
+  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/spine-ios/Sources/Spine/Metal' }
 end

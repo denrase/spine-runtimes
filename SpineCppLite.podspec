@@ -14,11 +14,10 @@ Spine runtimes for iOS.
   s.license             = { :file => '../LICENSE' }
   s.platform            = :ios, '13.0'
 
-  s.source              = { :podspec => 'https://raw.githubusercontent.com/denrase/spine-runtimes/cocoapods/spine-cpp/SpineCppLite.podspec' }
-  s.public_header_files = 'spine-cpp/include/**/*.{h}', 'spine-cpp-lite/**/*.{h}'
-  s.source_files        =  'spine-cpp/src/**/*.{h,cpp}', 'spine-cpp-lite/**/*.{h,cpp}'
+  s.source              = { :git => 'https://github.com/denrase/spine-runtimes.git', :branch => 'cocoapods' }
+  s.public_header_files = 'spine-cpp/spine-cpp/include/**/*.{h}', 'spine-cpp/spine-cpp-lite/**/*.{h}'
+  s.source_files        =  'spine-cpp/spine-cpp/src/**/*.{h,cpp}', 'spine-cpp/spine-cpp-lite/**/*.{h,cpp}'
 
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
-  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/spine-cpp/include ' + __dir__ + '/spine-cpp-lite' }
-  
+  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/spine-cpp/spine-cpp/include ' + __dir__ + '/spine-cpp/spine-cpp-lite' }
 end
