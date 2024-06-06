@@ -13,7 +13,7 @@ Spine runtimes for iOS.
   s.author           = { "Esoteric Software LLC  " => "http://esotericsoftware.com" }
   s.license          = { :file => '../LICENSE' }
 
-  s.source           = { :path => "." }
+  s.source           = { :podspec => 'https://raw.githubusercontent.com/denrase/spine-runtimes/cocoapods/spine-ios/Spine.podspec' }
   s.source_files     = 'Sources/Spine/**/*.{swift}', 'Sources/Spine/**/*.{metal}'
   s.platform         = :ios, '13.0'
 

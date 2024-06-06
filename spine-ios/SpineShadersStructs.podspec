@@ -14,7 +14,7 @@ Metal shaders structs for spine.
   s.license             = { :file => '../LICENSE' }
   s.platform            = :ios, '13.0'
 
-  s.source              = { :path => "." }
+  s.source              = { :podspec => 'https://raw.githubusercontent.com/denrase/spine-runtimes/cocoapods/spine-ios/SpineShadersStructs.podspec' }
   s.public_header_files = 'Sources/Spine/Metal/**/*.{h}'
   s.source_files        = 'Sources/Spine/Metal/**/*.{h,cpp}'
   
