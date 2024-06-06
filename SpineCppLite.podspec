@@ -16,7 +16,7 @@ Spine runtimes for iOS.
 
   s.source              = { :git => 'https://github.com/denrase/spine-runtimes.git', :branch => 'cocoapods' }
   s.public_header_files = 'spine-cpp/spine-cpp/include/**/*.{h}', 'spine-cpp/spine-cpp-lite/**/*.{h}'
-  s.source_files        =  'spine-cpp/spine-cpp/src/**/*.{h,cpp}', 'spine-cpp/spine-cpp-lite/**/*.{h,cpp}'
+  s.source_files        =  'spine-cpp/spine-cpp/include/**/*.{h}', 'spine-cpp/spine-cpp/src/**/*.{cpp}', 'spine-cpp/spine-cpp-lite/**/*.{h,cpp}'
 
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/spine-cpp/spine-cpp/include ' + __dir__ + '/spine-cpp/spine-cpp-lite' }
