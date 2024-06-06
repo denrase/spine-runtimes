@@ -12,7 +12,7 @@ import SpineCppLite
 struct Spine_iOS_ExampleApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SimpleAnimation()
         }
     }
 }

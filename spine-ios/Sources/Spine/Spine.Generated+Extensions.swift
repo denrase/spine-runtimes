@@ -272,11 +272,17 @@ internal enum FileSource {
         case .file(let fileUrl):
             return try Data(contentsOf: fileUrl, options: [])
         case .http(let url):
-            let (temp, response) = try await URLSession.shared.download(from: url)
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                throw URLError(.badServerResponse)
+            if #available(iOS 15.0, *) {
+
+                let (temp, response) = try await URLSession.shared.download(from: url)
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw URLError(.badServerResponse)
+                }
+                return try Data(contentsOf: temp, options: [])
+            } else {
+                throw "Not yet implemented"
             }
-            return try Data(contentsOf: temp, options: [])
+            
         }
     }
 }

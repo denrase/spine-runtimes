@@ -3,11 +3,11 @@
 # Run `pod lib lint spine_flutter.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name                = 'SpineCppLite'
+  s.name                = 'SpineShadersStructs'
   s.version             = '0.0.1'
-  s.summary             = 'Spine runtimes for iOS.'
+  s.summary             = 'Metal shaders structs for spine'
   s.description         = <<-DESC
-Spine runtimes for iOS.
+Metal shaders structs for spine.
                        DESC
   s.homepage            = 'http://esotericsoftware.com'
   s.author              = { "Esoteric Software LLC  " => "http://esotericsoftware.com" }
@@ -15,10 +15,12 @@ Spine runtimes for iOS.
   s.platform            = :ios, '13.0'
 
   s.source              = { :path => '.' }
-  s.public_header_files = 'spine-cpp/include/**/*.{h}', 'spine-cpp-lite/**/*.{h}'
-  s.source_files        =  'spine-cpp/src/**/*.{h,cpp}', 'spine-cpp-lite/**/*.{h,cpp}'
-
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
-  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/spine-cpp/include ' + __dir__ + '/spine-cpp-lite' }
+  s.public_header_files = 'Sources/Spine/Metal/**/*.{h}'
+  s.source_files        = 'Sources/Spine/Metal/**/*.{h,cpp}'
   
+  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
+  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '$(inherited) ' + __dir__ + '/Sources/Spine/Metal' }
+
+  # s.preserve_path = 'Sources/SpineShadersStructs/module.modulemap'
+  # s.module_map = 'Sources/SpineShadersStructs/module.modulemap'
 end
