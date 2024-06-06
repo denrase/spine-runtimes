@@ -11,7 +11,7 @@ Spine runtimes for iOS.
                        DESC
   s.homepage         = 'http://esotericsoftware.com'
   s.author           = { "Esoteric Software LLC  " => "http://esotericsoftware.com" }
-  s.license          = { :file => '../LICENSE' }
+  s.license          = { :file => 'LICENSE' }
 
   s.source           = { :git => 'https://github.com/denrase/spine-runtimes.git', :branch => 'cocoapods' }
   s.source_files     = 'spine-ios/Sources/Spine/**/*.{swift}', 'spine-ios/Sources/Spine/**/*.{metal}'

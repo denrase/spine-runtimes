@@ -11,7 +11,7 @@ Metal shaders structs for spine.
                        DESC
   s.homepage            = 'http://esotericsoftware.com'
   s.author              = { "Esoteric Software LLC  " => "http://esotericsoftware.com" }
-  s.license             = { :file => '../LICENSE' }
+  s.license             = { :file => 'LICENSE' }
   s.platform            = :ios, '13.0'
 
   s.source              = { :git => 'https://github.com/denrase/spine-runtimes.git', :branch => 'cocoapods' }
