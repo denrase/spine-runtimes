@@ -17,8 +17,7 @@ Metal shaders structs for spine.
   s.source              = { :git => 'https://github.com/denrase/spine-runtimes.git', :branch => 'cocoapods' }
   s.public_header_files = 'spine-ios/Sources/Spine/Metal/**/*.{h}'
   s.source_files        = 'spine-ios/Sources/Spine/Metal/**/*.{h,cpp}'
-
-  s.static_framework = true
+  
   s.pod_target_xcconfig = {
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',
     'CLANG_CXX_LIBRARY' => 'libc++'
