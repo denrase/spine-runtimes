@@ -9,8 +9,8 @@ Pod::Spec.new do |s|
   s.description         = <<-DESC
 Metal shaders structs for spine.
                        DESC
-  s.homepage            = 'http://esotericsoftware.com'
-  s.author              = { "Esoteric Software LLC  " => "http://esotericsoftware.com" }
+  s.homepage            = 'https://esotericsoftware.com'
+  s.author              = { "Esoteric Software LLC  " => "https://esotericsoftware.com" }
   s.license             = { :file => 'LICENSE' }
   s.platform            = :ios, '13.0'
 

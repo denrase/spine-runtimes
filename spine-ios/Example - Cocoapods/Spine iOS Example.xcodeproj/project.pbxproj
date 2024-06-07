@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		770B19515C1645F597ADAA7F /* Pods_Spine_iOS_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 992477F604AD6AA9BE9A49C4 /* Pods_Spine_iOS_Example.framework */; };
+		029E40AACC629A2B19C75855 /* Pods_Spine_iOS_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A23DBBF6B9A1877F1E82A7 /* Pods_Spine_iOS_Example.framework */; };
 		9281EF152C07885C00BE19F5 /* Spine_iOS_ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9281EF142C07885C00BE19F5 /* Spine_iOS_ExampleApp.swift */; };
 		9281EF192C07885D00BE19F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9281EF182C07885D00BE19F5 /* Assets.xcassets */; };
 		9281EF1C2C07885D00BE19F5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9281EF1B2C07885D00BE19F5 /* Preview Assets.xcassets */; };
@@ -19,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		63A23DBBF6B9A1877F1E82A7 /* Pods_Spine_iOS_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Spine_iOS_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C440864BA6BF0A3BA8297E4 /* Pods-Spine iOS Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spine iOS Example.debug.xcconfig"; path = "Target Support Files/Pods-Spine iOS Example/Pods-Spine iOS Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9206EF0B2C119BC500320243 /* SpineCppLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SpineCppLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9281EF112C07885C00BE19F5 /* Spine iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spine iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9281EF142C07885C00BE19F5 /* Spine_iOS_ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spine_iOS_ExampleApp.swift; sourceTree = "<group>"; };
@@ -29,9 +31,7 @@
 		92BFC4B42C11BCA10051F2EA /* spineboy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spineboy.png; sourceTree = "<group>"; };
 		92BFC4B52C11BCA10051F2EA /* spineboy.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spineboy.atlas; sourceTree = "<group>"; };
 		92BFC4BA2C11BCC50051F2EA /* SimpleAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleAnimation.swift; path = "Spine iOS Example/SimpleAnimation.swift"; sourceTree = SOURCE_ROOT; };
-		992477F604AD6AA9BE9A49C4 /* Pods_Spine_iOS_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Spine_iOS_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A04C857D842E72DFA6AA254F /* Pods-Spine iOS Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spine iOS Example.debug.xcconfig"; path = "Target Support Files/Pods-Spine iOS Example/Pods-Spine iOS Example.debug.xcconfig"; sourceTree = "<group>"; };
-		C2C7C1710BDCA6790CCCF8D0 /* Pods-Spine iOS Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spine iOS Example.release.xcconfig"; path = "Target Support Files/Pods-Spine iOS Example/Pods-Spine iOS Example.release.xcconfig"; sourceTree = "<group>"; };
+		F571992938153AF59959A005 /* Pods-Spine iOS Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spine iOS Example.release.xcconfig"; path = "Target Support Files/Pods-Spine iOS Example/Pods-Spine iOS Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,7 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				770B19515C1645F597ADAA7F /* Pods_Spine_iOS_Example.framework in Frameworks */,
+				029E40AACC629A2B19C75855 /* Pods_Spine_iOS_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,8 +49,8 @@
 		646ABFDC442BA39836A04383 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A04C857D842E72DFA6AA254F /* Pods-Spine iOS Example.debug.xcconfig */,
-				C2C7C1710BDCA6790CCCF8D0 /* Pods-Spine iOS Example.release.xcconfig */,
+				7C440864BA6BF0A3BA8297E4 /* Pods-Spine iOS Example.debug.xcconfig */,
+				F571992938153AF59959A005 /* Pods-Spine iOS Example.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -108,7 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				9206EF0B2C119BC500320243 /* SpineCppLite.framework */,
-				992477F604AD6AA9BE9A49C4 /* Pods_Spine_iOS_Example.framework */,
+				63A23DBBF6B9A1877F1E82A7 /* Pods_Spine_iOS_Example.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -120,11 +120,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9281EF1F2C07885D00BE19F5 /* Build configuration list for PBXNativeTarget "Spine iOS Example" */;
 			buildPhases = (
-				3B6AF32B01E0245C1CB01876 /* [CP] Check Pods Manifest.lock */,
+				4CE732AF2F7C247F187833EC /* [CP] Check Pods Manifest.lock */,
 				9281EF0D2C07885C00BE19F5 /* Sources */,
 				9281EF0E2C07885C00BE19F5 /* Frameworks */,
 				9281EF0F2C07885C00BE19F5 /* Resources */,
-				C0ECE439F90570D6281851F2 /* [CP] Embed Pods Frameworks */,
+				A39FE6D793C3DED23C563AA5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -185,7 +185,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3B6AF32B01E0245C1CB01876 /* [CP] Check Pods Manifest.lock */ = {
+		4CE732AF2F7C247F187833EC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -207,7 +207,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C0ECE439F90570D6281851F2 /* [CP] Embed Pods Frameworks */ = {
+		A39FE6D793C3DED23C563AA5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -360,7 +360,7 @@
 		};
 		9281EF202C07885D00BE19F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A04C857D842E72DFA6AA254F /* Pods-Spine iOS Example.debug.xcconfig */;
+			baseConfigurationReference = 7C440864BA6BF0A3BA8297E4 /* Pods-Spine iOS Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -394,7 +394,7 @@
 		};
 		9281EF212C07885D00BE19F5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C2C7C1710BDCA6790CCCF8D0 /* Pods-Spine iOS Example.release.xcconfig */;
+			baseConfigurationReference = F571992938153AF59959A005 /* Pods-Spine iOS Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
