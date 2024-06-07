@@ -17,7 +17,9 @@ Spine runtimes for iOS.
   s.source_files     = 'spine-ios/Sources/Spine/**/*.{swift}', 'spine-ios/Sources/Spine/**/*.{metal}'
   s.platform         = :ios, '13.0'
 
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
+  # s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
+  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/SpineCppLite/spine-cpp/spine-cpp-lite"' }
+
   s.swift_version = '5.0'
 
   # External Dependencies

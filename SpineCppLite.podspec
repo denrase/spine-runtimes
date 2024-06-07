@@ -18,6 +18,9 @@ Spine runtimes for iOS.
   s.public_header_files = 'spine-cpp/spine-cpp/include/**/*.{h}', 'spine-cpp/spine-cpp-lite/**/*.{h}'
   s.source_files        =  'spine-cpp/spine-cpp/include/**/*.{h}', 'spine-cpp/spine-cpp/src/**/*.{cpp}', 'spine-cpp/spine-cpp-lite/**/*.{h,cpp}'
 
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
-  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/SpineCppLite/spine-cpp/spine-cpp/include/spine" "$(PODS_ROOT)/SpineCppLite/spine-cpp/spine-cpp-lite"' }
+  # s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
+  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/SpineCppLite/spine-cpp/spine-cpp/include" "$(PODS_ROOT)/SpineCppLite/spine-cpp/spine-cpp-lite"' }
+  
+  s.preserve_path = 'spine-cpp/spine-cpp-lite/module.modulemap'
+  s.module_map = 'spine-cpp/spine-cpp-lite/module.modulemap'
 end
