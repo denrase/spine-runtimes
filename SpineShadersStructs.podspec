@@ -18,8 +18,10 @@ Metal shaders structs for spine.
   s.public_header_files = 'spine-ios/Sources/Spine/Metal/**/*.{h}'
   s.source_files        = 'spine-ios/Sources/Spine/Metal/**/*.{h,cpp}'
 
-  # s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
-  
-  s.preserve_path = 'spine-ios/Sources/SpineShadersStructs/module.modulemap'
-  s.module_map = 'spine-ios/Sources/SpineShadersStructs/module.modulemap'
+  s.static_framework = true
+  s.pod_target_xcconfig = {
+    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',
+    'CLANG_CXX_LIBRARY' => 'libc++'
+  }
+  s.libraries = 'c++'
 end
