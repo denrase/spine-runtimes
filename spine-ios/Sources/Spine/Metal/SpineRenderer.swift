@@ -47,12 +47,14 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     weak var delegate: SpineRendererDelegate?
     
     init(
-        spineView: SpineUIView,
+        device: MTLDevice,
+        commandQueue: MTLCommandQueue,
+        pixelFormat: MTLPixelFormat,
         atlasPages: [UIImage],
         pma: Bool
     ) throws {
-        let device = spineView.device!
         self.device = device
+        self.commandQueue = commandQueue
         
         let bundle: Bundle
         #if SWIFT_PACKAGE // SPM
@@ -85,14 +87,13 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             let descriptor = MTLRenderPipelineDescriptor()
             descriptor.vertexFunction = defaultLibrary.makeFunction(name: "vertexShader")
             descriptor.fragmentFunction = defaultLibrary.makeFunction(name: "fragmentShader")
-            descriptor.colorAttachments[0].pixelFormat = spineView.colorPixelFormat
+            descriptor.colorAttachments[0].pixelFormat = pixelFormat
             descriptor.colorAttachments[0].apply(
                 blendMode: blendMode,
                 with: pma
             )
             pipelineStatesByBlendMode[Int(blendMode.rawValue)] = try device.makeRenderPipelineState(descriptor: descriptor)
         }
-        commandQueue = device.makeCommandQueue()!
         
         super.init()
                 
