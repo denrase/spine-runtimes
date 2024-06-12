@@ -25,18 +25,18 @@ let package = Package(
             dependencies: [
                 "SpineCppLite", "SpineShadersStructs"
             ],
-            path: "Sources/Spine",
+            path: "spine-ios/Sources/Spine",
             swiftSettings: [
                 .interoperabilityMode(.Cxx)
             ]
         ),
         .target(
             name: "SpineCppLite",
-            path: "Sources/SpineCppLite"
+            path: "spine-ios/Sources/SpineCppLite"
         ),
         .systemLibrary(
             name: "SpineShadersStructs",
-            path: "Sources/SpineShadersStructs"
+            path: "spine-ios/Sources/SpineShadersStructs"
         )
     ],
     cxxLanguageStandard: .cxx11
