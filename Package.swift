@@ -13,10 +13,6 @@ let package = Package(
         .library(
             name: "Spine",
             targets: ["Spine"]
-        ),
-        .library(
-            name: "SpineCppLite",
-            targets: ["SpineCppLite"]
         )
     ],
     targets: [
