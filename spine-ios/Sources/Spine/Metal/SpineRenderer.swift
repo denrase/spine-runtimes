@@ -116,9 +116,7 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         }
         
         delegate?.spineRendererWillDraw(self)
-        for renderCommand in renderCommands {
-            draw(renderCommand: renderCommand, renderEncoder: renderEncoder, in: view)
-        }
+        draw(renderCommands: renderCommands, renderEncoder: renderEncoder, in: view)
         delegate?.spineRendererDidDraw(self)
         
         renderEncoder.endEncoding()
@@ -176,16 +174,18 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         delegate?.spineRendererDidUpdate(self)
     }
     
-    private func draw(renderCommand: RenderCommand, renderEncoder: MTLRenderCommandEncoder, in view: MTKView) {
-        let vertices = Array(renderCommand.getVertices())
-        
-        guard !vertices.isEmpty else {
-            return
+    private func draw(renderCommands: [RenderCommand], renderEncoder: MTLRenderCommandEncoder, in view: MTKView) {
+        let allVertices = renderCommands.map { renderCommand in
+            Array(renderCommand.getVertices())
         }
+        let vertices = allVertices.flatMap { $0 }
         let verticesBufferSize = MemoryLayout<SpineVertex>.stride * vertices.count
         
-        guard let vertexBuffer = device.makeBuffer(length: verticesBufferSize, options: .storageModeShared),
-            let pipelineState = getPipelineState(blendMode: renderCommand.blendMode) else {
+        guard verticesBufferSize > 0 else {
+            return
+        }
+        
+        guard let vertexBuffer = device.makeBuffer(length: verticesBufferSize, options: .storageModeShared) else {
             return
         }
         
@@ -199,7 +199,6 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
                 zfar: 1.0
             )
         )
-        renderEncoder.setRenderPipelineState(pipelineState)
         
         memcpy(vertexBuffer.contents(), vertices, verticesBufferSize)
         
@@ -219,19 +218,30 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             index: Int(SpineVertexInputIndexViewportSize.rawValue)
         )
         
-        let textureIndex = Int(renderCommand.atlasPage)
-        if textures.indices.contains(textureIndex) {
-            renderEncoder.setFragmentTexture(
-                textures[textureIndex],
-                index: Int(SpineTextureIndexBaseColor.rawValue)
+        var vertexStart = 0
+        for (index, renderCommand) in renderCommands.enumerated() {
+            guard let pipelineState = getPipelineState(blendMode: renderCommand.blendMode) else {
+                continue
+            }
+            renderEncoder.setRenderPipelineState(pipelineState)
+            
+            let vertices = allVertices[index]
+            
+            let textureIndex = Int(renderCommand.atlasPage)
+            if textures.indices.contains(textureIndex) {
+                renderEncoder.setFragmentTexture(
+                    textures[textureIndex],
+                    index: Int(SpineTextureIndexBaseColor.rawValue)
+                )
+            }
+            
+            renderEncoder.drawPrimitives(
+                type: .triangle,
+                vertexStart: vertexStart,
+                vertexCount: vertices.count
             )
+            vertexStart += vertices.count
         }
-        
-        renderEncoder.drawPrimitives(
-            type: .triangle,
-            vertexStart: 0,
-            vertexCount: vertices.count
-        )
     }
     
     private func getPipelineState(blendMode: BlendMode) -> MTLRenderPipelineState? {
