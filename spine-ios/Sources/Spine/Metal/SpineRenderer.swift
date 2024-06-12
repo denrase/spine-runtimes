@@ -36,6 +36,13 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     private var lastDraw: CFTimeInterval = 0
     private var pipelineStatesByBlendMode = [Int: MTLRenderPipelineState]()
     
+    private static let numberOfBuffers = 3
+    private static let defaultBufferSize = 64 * 1024 // 64KB
+    
+    private var buffers = [MTLBuffer]()
+    private let bufferingSemaphore = DispatchSemaphore(value: SpineRenderer.numberOfBuffers)
+    private var currentBufferIndex: Int = 0
+    
     weak var dataSource: SpineRendererDataSource?
     weak var delegate: SpineRendererDelegate?
     
@@ -86,6 +93,10 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             pipelineStatesByBlendMode[Int(blendMode.rawValue)] = try device.makeRenderPipelineState(descriptor: descriptor)
         }
         commandQueue = device.makeCommandQueue()!
+        
+        super.init()
+                
+        increaseBuffersSize(to: SpineRenderer.defaultBufferSize)
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -108,6 +119,9 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         
         callNeedsUpdate()
         
+        bufferingSemaphore.wait()
+        currentBufferIndex = (currentBufferIndex + 1) % SpineRenderer.numberOfBuffers
+        
         guard let renderCommands = dataSource?.renderCommands(self),
               let commandBuffer = commandQueue.makeCommandBuffer(),
               let renderPassDescriptor = view.currentRenderPassDescriptor,
@@ -123,9 +137,10 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         view.currentDrawable.flatMap {
             commandBuffer.present($0)
         }
+        commandBuffer.addCompletedHandler { [bufferingSemaphore] _ in
+            bufferingSemaphore.signal()
+        }
         commandBuffer.commit()
-        
-        commandBuffer.waitUntilCompleted()
     }
     
     private func setTransform(bounds: CGRect, mode: Spine.ContentMode, alignment: Spine.Alignment) {
@@ -179,14 +194,18 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             Array(renderCommand.getVertices())
         }
         let vertices = allVertices.flatMap { $0 }
-        let verticesBufferSize = MemoryLayout<SpineVertex>.stride * vertices.count
+        let verticesSize = MemoryLayout<SpineVertex>.stride * vertices.count
         
-        guard verticesBufferSize > 0 else {
+        guard verticesSize > 0 else {
             return
         }
         
-        guard let vertexBuffer = device.makeBuffer(length: verticesBufferSize, options: .storageModeShared) else {
-            return
+        var vertexBuffer = buffers[currentBufferIndex]
+        var vertexBufferSize = vertexBuffer.length
+        
+        if vertexBufferSize < verticesSize {
+            increaseBuffersSize(to: verticesSize)
+            vertexBuffer = buffers[currentBufferIndex]
         }
         
         renderEncoder.setViewport(
@@ -200,7 +219,7 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             )
         )
         
-        memcpy(vertexBuffer.contents(), vertices, verticesBufferSize)
+        memcpy(vertexBuffer.contents(), vertices, verticesSize)
         
         renderEncoder.setVertexBuffer(
             vertexBuffer,
@@ -246,6 +265,12 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     
     private func getPipelineState(blendMode: BlendMode) -> MTLRenderPipelineState? {
         pipelineStatesByBlendMode[Int(blendMode.rawValue)]
+    }
+    
+    private func increaseBuffersSize(to size: Int) {
+        buffers = (0 ..< SpineRenderer.numberOfBuffers).map { _ in
+            device.makeBuffer(length: size, options: .storageModeShared)!
+        }
     }
 }
 
