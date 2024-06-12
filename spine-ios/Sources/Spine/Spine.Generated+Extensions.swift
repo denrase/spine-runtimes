@@ -273,16 +273,35 @@ enum FileSource {
             return try Data(contentsOf: fileUrl, options: [])
         case .http(let url):
             if #available(iOS 15.0, *) {
-
                 let (temp, response) = try await URLSession.shared.download(from: url)
                 guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                     throw URLError(.badServerResponse)
                 }
                 return try Data(contentsOf: temp, options: [])
             } else {
-                throw "Not yet implemented"
+                return try await withCheckedThrowingContinuation { continuation in
+                    let task = URLSession.shared.downloadTask(with: url) { temp, response, error in
+                        if let error {
+                            continuation.resume(throwing: error)
+                        } else {
+                            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                                continuation.resume(throwing: URLError(.badServerResponse))
+                                return
+                            }
+                            guard let temp else {
+                                continuation.resume(throwing: "Could not download file.")
+                                return
+                            }
+                            do {
+                                continuation.resume(returning: try Data(contentsOf: temp, options: []))
+                            } catch {
+                                continuation.resume(throwing: error)
+                            }
+                        }
+                    }
+                    task.resume()
+                }
             }
-            
         }
     }
 }
