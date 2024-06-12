@@ -37,7 +37,7 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
     private var pipelineStatesByBlendMode = [Int: MTLRenderPipelineState]()
     
     private static let numberOfBuffers = 3
-    private static let defaultBufferSize = 64 * 1024 // 64KB
+    private static let defaultBufferSize = 32 * 1024 // 32KB
     
     private var buffers = [MTLBuffer]()
     private let bufferingSemaphore = DispatchSemaphore(value: SpineRenderer.numberOfBuffers)
@@ -119,6 +119,8 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
         
         callNeedsUpdate()
         
+        // Tripple Buffering
+        // Source: https://developer.apple.com/library/archive/documentation/3DDrawing/Conceptual/MTLBestPracticesGuide/TripleBuffering.html#//apple_ref/doc/uid/TP40016642-CH5-SW1
         bufferingSemaphore.wait()
         currentBufferIndex = (currentBufferIndex + 1) % SpineRenderer.numberOfBuffers
         
@@ -237,6 +239,8 @@ final class SpineRenderer: NSObject, MTKViewDelegate {
             index: Int(SpineVertexInputIndexViewportSize.rawValue)
         )
         
+        // Buffer Bindings
+        // https://developer.apple.com/library/archive/documentation/3DDrawing/Conceptual/MTLBestPracticesGuide/BufferBindings.html#//apple_ref/doc/uid/TP40016642-CH28-SW3
         var vertexStart = 0
         for (index, renderCommand) in renderCommands.enumerated() {
             guard let pipelineState = getPipelineState(blendMode: renderCommand.blendMode) else {
