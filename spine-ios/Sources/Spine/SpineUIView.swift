@@ -43,12 +43,12 @@ public final class SpineUIView: MTKView {
     /// modifying how the skeleton inside the widget is animated and rendered.
     ///
     /// - Parameters:
-    ///     - from: Specifies the ``SpineViewSource`` from which to load atlas and skeleton data.
-    ///     - skeletonFileName: Specifies either a Skeleton `.json` or `.skel` file containing the skeleton data
-    ///     - bundle: Specifies from which bundle to load the files. Per default, it is `Bundle.main`
+    ///     - from: Specifies the ``SpineViewSource`` from which to load `atlas` and `skeleton` data.
+    ///     - controller: The ``SpineController`` used to modify how the skeleton inside the view is animated and rendered.
     ///     - mode: How the skeleton is fitted inside ``SpineUIView``. Per default, it is `.fit`
     ///     - alignment: How the skeleton is alignment inside ``SpineUIView``. Per default, it is `.center`
     ///     - boundsProvider: The skeleton bounds must be computed via a ``BoundsProvider``. Per default, ``SetupPoseBounds`` is used.
+    ///     - backgroundColor: The background color of the view. Per defaut, `UIColor.clear` is used
     ///
     /// - Returns: A new instance of ``SpineUIView``.
     public convenience init(
@@ -79,9 +79,11 @@ public final class SpineUIView: MTKView {
     ///     - atlasFileName: Specifies the `.atlas` file to be loaded for the images used to render the skeleton
     ///     - skeletonFileName: Specifies either a Skeleton `.json` or `.skel` file containing the skeleton data
     ///     - bundle: Specifies from which bundle to load the files. Per default, it is `Bundle.main`
+    ///     - controller: The ``SpineController`` used to modify how the skeleton inside the view is animated and rendered.
     ///     - mode: How the skeleton is fitted inside ``SpineUIView``. Per default, it is `.fit`
     ///     - alignment: How the skeleton is alignment inside ``SpineUIView``. Per default, it is `.center`
     ///     - boundsProvider: The skeleton bounds must be computed via a ``BoundsProvider``. Per default, ``SetupPoseBounds`` is used.
+    ///     - backgroundColor: The background color of the view. Per defaut, `UIColor.clear` is used
     ///
     /// - Returns: A new instance of ``SpineUIView``.
     @objc public convenience init(
@@ -105,10 +107,11 @@ public final class SpineUIView: MTKView {
     /// - Parameters:
     ///     - atlasFile: Specifies the `.atlas` file to be loaded for the images used to render the skeleton
     ///     - skeletonFile: Specifies either a Skeleton `.json` or `.skel` file containing the skeleton data
-    ///     - bundle: Specifies from which bundle to load the files. Per default, it is `Bundle.main`
+    ///     - controller: The ``SpineController`` used to modify how the skeleton inside the view is animated and rendered.
     ///     - mode: How the skeleton is fitted inside ``SpineUIView``. Per default, it is `.fit`
     ///     - alignment: How the skeleton is alignment inside ``SpineUIView``. Per default, it is `.center`
     ///     - boundsProvider: The skeleton bounds must be computed via a ``BoundsProvider``. Per default, ``SetupPoseBounds`` is used.
+    ///     - backgroundColor: The background color of the view. Per defaut, `UIColor.clear` is used
     ///
     /// - Returns: A new instance of ``SpineUIView``.
     @objc public convenience init(
@@ -131,10 +134,11 @@ public final class SpineUIView: MTKView {
     /// - Parameters:
     ///     - atlasURL: Specifies the `.atlas` file http URL to be loaded for the images used to render the skeleton
     ///     - skeletonURL: Specifies either a Skeleton `.json` or `.skel` file http URL containing the skeleton data
-    ///     - bundle: Specifies from which bundle to load the files. Per default, it is `Bundle.main`
+    ///     - controller: The ``SpineController`` used to modify how the skeleton inside the view is animated and rendered.
     ///     - mode: How the skeleton is fitted inside ``SpineUIView``. Per default, it is `.fit`
     ///     - alignment: How the skeleton is alignment inside ``SpineUIView``. Per default, it is `.center`
     ///     - boundsProvider: The skeleton bounds must be computed via a ``BoundsProvider``. Per default, ``SetupPoseBounds`` is used.
+    ///     - backgroundColor: The background color of the view. Per defaut, `UIColor.clear` is used
     ///
     /// - Returns: A new instance of ``SpineUIView``.
     @objc public convenience init(
@@ -156,7 +160,7 @@ public final class SpineUIView: MTKView {
     ///
     /// - Parameters:
     ///     - drawable: The ``SkeletonDrawableWrapper`` provided directly to the ``SpineController``
-    ///     - bundle: Specifies from which bundle to load the files. Per default, it is `Bundle.main`
+    ///     - controller: The ``SpineController`` used to modify how the skeleton inside the view is animated and rendered.
     ///     - mode: How the skeleton is fitted inside ``SpineUIView``. Per default, it is `.fit`
     ///     - alignment: How the skeleton is alignment inside ``SpineUIView``. Per default, it is `.center`
     ///     - boundsProvider: The skeleton bounds must be computed via a ``BoundsProvider``. Per default, ``SetupPoseBounds`` is used.
@@ -181,7 +185,7 @@ public final class SpineUIView: MTKView {
         fatalError("init(coder:) has not been implemented. Use init() instead.")
     }
     
-    /// Disable or enable ``MTKView`` rendering.
+    /// Disable or enable rendering. Disable it when the spine view is out of bounds and you want to preserve CPU/GPU resources.
     public var isRendering: Bool {
         get { !super.isPaused }
         set { super.isPaused = !newValue }
