@@ -3,7 +3,7 @@ import CoreGraphics
 
 /// Base class for bounds providers. A bounds provider calculates the axis aligned bounding box
 /// used to scale and fit a skeleton inside the bounds of a [SpineWidget].
-@objc
+@objc(SpineBoundsProvider)
 public protocol BoundsProvider {
     func computeBounds(for drawable: SkeletonDrawableWrapper) -> CGRect
 }
