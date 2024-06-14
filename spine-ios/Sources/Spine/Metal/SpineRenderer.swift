@@ -34,6 +34,7 @@ internal final class SpineRenderer: NSObject, MTKViewDelegate {
         offset: vector_float2(0, 0)
     )
     internal var lastDraw: CFTimeInterval = 0
+    internal var waitUntilCompleted = false
     private var pipelineStatesByBlendMode = [Int: MTLRenderPipelineState]()
     
     private static let numberOfBuffers = 3
@@ -144,6 +145,9 @@ internal final class SpineRenderer: NSObject, MTKViewDelegate {
             bufferingSemaphore.signal()
         }
         commandBuffer.commit()
+        if waitUntilCompleted {
+            commandBuffer.waitUntilCompleted()
+        }
     }
     
     private func setTransform(bounds: CGRect, mode: Spine.ContentMode, alignment: Spine.Alignment) {
