@@ -34,6 +34,32 @@ public final class SkeletonDrawableWrapper: NSObject {
         )
     }
     
+    public static func fromFile(atlasFile: URL, skeletonFile: URL) async throws -> SkeletonDrawableWrapper {
+        let atlasAndPages = try await Atlas.fromFile(atlasFile)
+        let skeletonData = try await SkeletonData.fromFile(
+            atlas: atlasAndPages.0,
+            skeletonFile: skeletonFile
+        )
+        return try SkeletonDrawableWrapper(
+            atlas: atlasAndPages.0,
+            atlasPages: atlasAndPages.1,
+            skeletonData: skeletonData
+        )
+    }
+    
+    public static func fromHttp(atlasURL: URL, skeletonURL: URL) async throws -> SkeletonDrawableWrapper {
+        let atlasAndPages = try await Atlas.fromHttp(atlasURL)
+        let skeletonData = try await SkeletonData.fromHttp(
+            atlas: atlasAndPages.0,
+            skeletonURL: skeletonURL
+        )
+        return try SkeletonDrawableWrapper(
+            atlas: atlasAndPages.0,
+            atlasPages: atlasAndPages.1,
+            skeletonData: skeletonData
+        )
+    }
+    
     public init(atlas: Atlas, atlasPages: [UIImage], skeletonData: SkeletonData) throws {
         self.atlas = atlas
         self.atlasPages = atlasPages
