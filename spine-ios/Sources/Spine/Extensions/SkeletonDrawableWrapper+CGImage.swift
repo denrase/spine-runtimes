@@ -4,7 +4,11 @@ import CoreGraphics
 
 public extension SkeletonDrawableWrapper {
     
-    func renderToImage(size: CGSize, backgroundColor: UIColor) throws -> CGImage? {
+    /// Render the ``Skeleton`` to a `CGImage`
+    ///
+    /// Parameters:
+    ///     - size: The size of the `CGImage` that should be rendered.
+    func renderToImage(size: CGSize, backgroundColor: UIColor, scaleFactor: CGFloat = 1) throws -> CGImage? {
         let spineView = SpineUIView(
             controller: SpineController(disposeDrawableOnDeInit: false), // Doesn't own the drawable
             backgroundColor: backgroundColor
@@ -13,6 +17,7 @@ public extension SkeletonDrawableWrapper {
         spineView.isPaused = false
         spineView.enableSetNeedsDisplay = false
         spineView.framebufferOnly = false
+        spineView.contentScaleFactor = scaleFactor
         
         try spineView.load(drawable: self)
         spineView.delegate?.draw(in: spineView)
